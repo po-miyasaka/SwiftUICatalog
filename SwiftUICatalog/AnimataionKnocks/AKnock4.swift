@@ -24,36 +24,36 @@ enum AKnock4 {
         @State var sourceHeight: CGFloat = .zero
         var paddingValue: CGFloat = 16
         var body: some View {
-            
-            VStack(alignment: .leading) {
-               
-                
                 ScrollView {
-                    GeometryReader { geometry in
-                        tags(data: $hashTags, proxy: geometry) {
-                            !selection.contains($0)
+                    VStack( alignment: .center, spacing: 200) {
+                        GeometryReader { geometry in
+                            tags(data: $hashTags, proxy: geometry) {
+                                !selection.contains($0)
+                            }
                         }
-                    }
-                    .frame(minHeight: sourceHeight)
-                    .zIndex(1)
-                    
-                    
-                    GeometryReader { geometry in
-                        selectedTags(data: $selection,  proxy: geometry)
-                    }
-                    .frame(height: selectionHeight)
+                        .frame(minHeight: sourceHeight)
+                        .zIndex(1)
                         
- 
-                    
-                    
+                        
+                        GeometryReader { geometry in
+                            selectedTags(data: $selection,  proxy: geometry)
+                        }
+                        .frame(height: selectionHeight)
+                        .padding()
+                    }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding()
                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                
+                .onPreferenceChange(SelectionPreferenceKey.self, perform: { value in
+                    selectionHeight = value
+                })
+                .onPreferenceChange(SourcePreferenceKey.self, perform: { value in
+                    sourceHeight = value
+                })
                 
 
-            }
+            
             
         }
         
@@ -61,6 +61,7 @@ enum AKnock4 {
         func selectedTags(data: Binding<[HashTag]>, proxy: GeometryProxy) -> some View {
             var width: CGFloat = 0
             var height: CGFloat = 0
+            var selectionHeight: CGFloat = 0.0
             
             
             
@@ -77,9 +78,9 @@ enum AKnock4 {
                         let result = height
                         
                         if hashtag == data.wrappedValue.last! {
-                            let _ = Task {[h = d.height] in
-                                self.selectionHeight = -(result - h  - paddingValue )
-                            }
+                            
+                                selectionHeight = -(result - d.height  - paddingValue )
+                            
                             
                             height = 0
                         }
@@ -98,8 +99,10 @@ enum AKnock4 {
                         }
                         return result
                     })
+                    .preference(key: SelectionPreferenceKey.self, value: selectionHeight)
                 }
-            }.padding(paddingValue)
+            }
+            .padding(paddingValue)
                 .background(Color.gray.opacity(0.5))
                 .cornerRadius(paddingValue)
         }
@@ -108,6 +111,7 @@ enum AKnock4 {
         func tags(data: Binding<[HashTag]>, proxy: GeometryProxy, isSource: @escaping (HashTag) -> Bool) -> some View {
             var width: CGFloat = 0
             var height: CGFloat = 0
+            var sourceHeight: CGFloat = 0
             
             ZStack(alignment: .topLeading) {
                 // .topLeadingが無いとalignmentGuideが呼ばれない。
@@ -128,9 +132,9 @@ enum AKnock4 {
                     .alignmentGuide(.top, computeValue: { d in
                         let result = height
                         if hashtag == data.wrappedValue.last! {
-                            let _ = Task {[h = d.height] in
-                                self.sourceHeight = -(result - h - paddingValue)
-                            }
+                            
+                                sourceHeight = -(result - d.height - paddingValue)
+                            
                             height = 0
                         }
                         return result
@@ -147,7 +151,7 @@ enum AKnock4 {
                             width -= d.width
                         }
                         return result
-                    })
+                    }).preference(key: SourcePreferenceKey.self, value: sourceHeight)
                     
                     // modifier の順番は関係なく　.leadingが先に実行されるような感じっぽい
                 }.padding(paddingValue)
@@ -161,6 +165,23 @@ enum AKnock4 {
     }
 }
 
+struct SelectionPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = .zero
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
+    
+    typealias Value = CGFloat
+}
+
+struct SourcePreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = .zero
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
+    
+    typealias Value = CGFloat
+}
 
 #Preview {
     AKnock4.ContentView()
