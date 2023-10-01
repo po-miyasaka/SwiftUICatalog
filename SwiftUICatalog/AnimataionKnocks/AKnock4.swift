@@ -13,63 +13,11 @@ struct HashTag: Identifiable, Equatable, Sendable {
 }
 
 enum AKnock4 {
-    struct ContentView: View, Sendable {
+    struct ContentView: View {
         
         @Namespace var namespace
         
-        @State var hashTags: [HashTag] = [  .init(tag: "love"),
-                                            .init(tag: "instagood"),
-                                            .init(tag: "fashion"),
-                                            .init(tag: "instagram"),
-                                            .init(tag: "photooftheday"),
-                                            .init(tag: "art"),
-                                            .init(tag: "photography"),
-                                            .init(tag: "beautiful"),
-                                            .init(tag: "nature"),
-                                            .init(tag: "picoftheday"),
-                                            .init(tag: "travel"),
-                                            .init(tag: "happy"),
-                                            .init(tag: "cute"),
-                                            .init(tag: "instadaily"),
-                                            .init(tag: "style"),
-                                            .init(tag: "tbt"),
-                                            .init(tag: "repost"),
-                                            .init(tag: "followme"),
-                                            .init(tag: "summer"),
-                                            .init(tag: "reels"),
-                                            .init(tag: "like"),
-                                            .init(tag: "beauty"),
-                                            .init(tag: "fitness"),
-                                            .init(tag: "food"),
-                                            .init(tag: "instalike"),
-                                            .init(tag: "explore"),
-                                            .init(tag: "photo"),
-                                            .init(tag: "me"),
-                                            .init(tag: "selfie"),
-                                            .init(tag: "music"),
-                                            .init(tag: "viral"),
-                                            .init(tag: "friends"),
-                                            .init(tag: "life"),
-                                            .init(tag: "fun"),
-                                            .init(tag: "smile"),
-                                            .init(tag: "family"),
-                                            .init(tag: "ootd"),
-                                            .init(tag: "sun"),
-                                            .init(tag: "flowers"),
-                                            .init(tag: "sky"),
-                                            .init(tag: "gym"),
-                                            .init(tag: "wedding"),
-                                            .init(tag: "moda"),
-                                            .init(tag: "photographer"),
-                                            .init(tag: "follow"),
-                                            .init(tag: "hair"),
-                                            .init(tag: "foodie"),
-                                            .init(tag: "inspiration"),
-                                            .init(tag: "funny"),
-                                            .init(tag: "instafood"),
-                                            .init(tag: "memes"),
-                                            
-        ]
+        @State var hashTags: [HashTag] = Array(defaultTags.prefix(30))
         @State var selected: HashTag?
         @State var selection: [HashTag] = []
         @State var selectionHeight: CGFloat = .zero

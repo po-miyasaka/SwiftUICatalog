@@ -23,14 +23,16 @@ enum AKnock2 {
     }
     
     @available(iOS 15.0, *)
-    struct SkyButton: View {
+    struct SkyButton: View, Sendable {
         @State var progress: Double = 0.0
         @State var starOffset: Double = -45
         @State var cloudOffset: Double = 0
         @Binding var isNight: Bool
+        @State var isNightForBackGround: Bool
         @State var cancellable: AnyCancellable?
         init(isOn: Binding<Bool>) {
             _isNight = isOn
+            isNightForBackGround = isOn.wrappedValue
         }
         var body: some View {
             button
@@ -38,40 +40,51 @@ enum AKnock2 {
         
         var button: some View {
             
-                ZStack(alignment: .center) {
-                    isNight ? Color.black : Color.blue
-                    cloudBack.rotationEffect(.degrees(isNight ? -180.0 : 0.0), anchor: .init(x: 3, y: 0))
-                    cloud.rotationEffect(.degrees(isNight ? -180.0 : 0.0), anchor: .init(x: 3, y: 0))
-                    mainStarLight.offset(x: isNight ? 45 : -45)
-                    moon.offset(x: isNight ? 0 : -30).mask {
-                        Color.white.frame(width: 46, height: 46)
-                            .clipShape(Circle()).opacity(isNight ? 0.9 : 0.0).offset(x: isNight ? 45 : -45)
+            ZStack(alignment: .center) {
+                isNightForBackGround ? Color.black : Color.blue
+                cloudBack.rotationEffect(.degrees(isNight ? -180.0 : 0.0), anchor: .init(x: 3, y: 0))
+                cloud.rotationEffect(.degrees(isNight ? -60.0 : 0.0), anchor: .init(x: 3, y: 0))
+                mainStarLight.offset(x: isNight ? 45 : -45)
+                moon.offset(x: isNight ? 0 : -90).mask {
+                    Color.white.frame(width: 46, height: 46)
+                        .clipShape(Circle()).opacity(isNight ? 0.9 : 0.0).offset(x: isNight ? 45 : -45)
+                }
+                stars.rotationEffect(.degrees(isNight ? 0.0 : 180.0), anchor: .init(x: 3, y: 0))
+                meteo
+                buttonOutLine
+            }
+            
+            .onTapGesture {
+                
+                withAnimation(Animation.spring(duration: 0.4, bounce: 0.4, blendDuration: 0.3)) {
+                    isNight.toggle()
+                }
+                if !isNightForBackGround {
+                    isNightForBackGround = true
+                    
+                } else {
+                    withAnimation(Animation.spring(duration: 0.4, bounce: 0.0, blendDuration: 0.3)) {
+                        isNightForBackGround = false
                     }
-                    stars.rotationEffect(.degrees(isNight ? 0.0 : 180.0), anchor: .init(x: 3, y: 0))
-                    meteo
-                    buttonOutLine
+                    
                 }
                 
-                .onTapGesture {
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        isNight.toggle()
-                    }
-                        shootingProgress = 0
-                    Task { @MainActor in
-                        triggerHaptic()
-                    }
-                    Task {
-                        try await Task.sleep(nanoseconds:1_000_000_000)
-                        if isNight {
-                            withAnimation(.easeInOut(duration: 1.1)) {
-                                shootingProgress = 1
-                            }
+                shootingProgress = 0
+                Task { @MainActor in
+                    triggerHaptic()
+                }
+                Task {
+                    try await Task.sleep(nanoseconds:2_000_000_000)
+                    if isNight {
+                        withAnimation(.easeInOut(duration: 1.4)) {
+                            shootingProgress = 1
                         }
                     }
                 }
-                .frame(width: 150, height: 60)
-                .clipShape(Capsule().size(width: 150, height: 60))
-                .contentShape(Capsule().size(width: 150, height: 60))
+            }
+            .frame(width: 150, height: 60)
+            .clipShape(Capsule().size(width: 150, height: 60))
+            .contentShape(Capsule().size(width: 150, height: 60))
         }
         
         @ViewBuilder
@@ -83,7 +96,10 @@ enum AKnock2 {
                 (0, 35, 40, 40),
                 (30, 45, 40, 40),
                 (40, 30, 50, 50),
-                (70, 5, 50, 50)
+                (70, 5, 50, 50),
+                (-75, 50, 150, 40),
+                (-10, 60, 50, 50),
+                (0, 60, 50, 50),
             ]
             
             ForEach(cloudParts, id: \.0) { offsetX, offsetY, width, height in

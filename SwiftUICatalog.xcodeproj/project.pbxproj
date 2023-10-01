@@ -40,8 +40,12 @@
 		D50C3FBB2AC4855300255761 /* Knock86.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50C3FBA2AC4855300255761 /* Knock86.swift */; };
 		D50C3FBD2AC491D700255761 /* Knock87.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50C3FBC2AC491D700255761 /* Knock87.swift */; };
 		D50C3FBF2AC4923A00255761 /* Knock89.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50C3FBE2AC4923A00255761 /* Knock89.swift */; };
+		D529FA222AC94B60000A9524 /* AKnock9.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529FA212AC94B60000A9524 /* AKnock9.swift */; };
 		D538BE0B2AC6665A00D3EE25 /* Aknock3.swift in Sources */ = {isa = PBXBuildFile; fileRef = D538BE0A2AC6665A00D3EE25 /* Aknock3.swift */; };
 		D538BE0D2AC66C2F00D3EE25 /* AUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D538BE0C2AC66C2F00D3EE25 /* AUtil.swift */; };
+		D557B7F42AC7A15700559930 /* AKnock5.swift in Sources */ = {isa = PBXBuildFile; fileRef = D557B7F32AC7A15700559930 /* AKnock5.swift */; };
+		D56AACC72AC811EE00950767 /* AKnock7.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56AACC62AC811EE00950767 /* AKnock7.swift */; };
+		D58D15092AC8E23B0010BC01 /* AKnock8.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58D15082AC8E23B0010BC01 /* AKnock8.swift */; };
 		D5904FA22ABD11A10073E9D8 /* Knock29.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5904FA12ABD11A10073E9D8 /* Knock29.swift */; };
 		D5904FA42ABD129F0073E9D8 /* Knock30.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5904FA32ABD129F0073E9D8 /* Knock30.swift */; };
 		D5904FA62ABD13160073E9D8 /* Knock31.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5904FA52ABD13160073E9D8 /* Knock31.swift */; };
@@ -85,6 +89,7 @@
 		D5B6FE2F2AC3B18B00149AD0 /* Knock80.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6FE2E2AC3B18B00149AD0 /* Knock80.swift */; };
 		D5B6FE312AC3D78D00149AD0 /* Knock81.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6FE302AC3D78D00149AD0 /* Knock81.swift */; };
 		D5B6FE332AC40E7A00149AD0 /* Knock82.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6FE322AC40E7A00149AD0 /* Knock82.swift */; };
+		D5BF92F02AC7E96C00188A2E /* AKnock6.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BF92EF2AC7E96C00188A2E /* AKnock6.swift */; };
 		D5DD9E632AC58E490032D308 /* AKnock2.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DD9E622AC58E490032D308 /* AKnock2.swift */; };
 		D5E15D012AC1C8D900DD618F /* Knock65.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E15D002AC1C8D900DD618F /* Knock65.swift */; };
 		D5E15D032AC1CD1500DD618F /* Knock68.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E15D022AC1CD1400DD618F /* Knock68.swift */; };
@@ -143,8 +148,12 @@
 		D50C3FBA2AC4855300255761 /* Knock86.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock86.swift; sourceTree = "<group>"; };
 		D50C3FBC2AC491D700255761 /* Knock87.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock87.swift; sourceTree = "<group>"; };
 		D50C3FBE2AC4923A00255761 /* Knock89.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock89.swift; sourceTree = "<group>"; };
+		D529FA212AC94B60000A9524 /* AKnock9.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKnock9.swift; sourceTree = "<group>"; };
 		D538BE0A2AC6665A00D3EE25 /* Aknock3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Aknock3.swift; sourceTree = "<group>"; };
 		D538BE0C2AC66C2F00D3EE25 /* AUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUtil.swift; sourceTree = "<group>"; };
+		D557B7F32AC7A15700559930 /* AKnock5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKnock5.swift; sourceTree = "<group>"; };
+		D56AACC62AC811EE00950767 /* AKnock7.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKnock7.swift; sourceTree = "<group>"; };
+		D58D15082AC8E23B0010BC01 /* AKnock8.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKnock8.swift; sourceTree = "<group>"; };
 		D5904FA12ABD11A10073E9D8 /* Knock29.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock29.swift; sourceTree = "<group>"; };
 		D5904FA32ABD129F0073E9D8 /* Knock30.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock30.swift; sourceTree = "<group>"; };
 		D5904FA52ABD13160073E9D8 /* Knock31.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock31.swift; sourceTree = "<group>"; };
@@ -188,6 +197,7 @@
 		D5B6FE2E2AC3B18B00149AD0 /* Knock80.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock80.swift; sourceTree = "<group>"; };
 		D5B6FE302AC3D78D00149AD0 /* Knock81.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock81.swift; sourceTree = "<group>"; };
 		D5B6FE322AC40E7A00149AD0 /* Knock82.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock82.swift; sourceTree = "<group>"; };
+		D5BF92EF2AC7E96C00188A2E /* AKnock6.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKnock6.swift; sourceTree = "<group>"; };
 		D5DD9E622AC58E490032D308 /* AKnock2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKnock2.swift; sourceTree = "<group>"; };
 		D5E15D002AC1C8D900DD618F /* Knock65.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock65.swift; sourceTree = "<group>"; };
 		D5E15D022AC1CD1400DD618F /* Knock68.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock68.swift; sourceTree = "<group>"; };
@@ -363,6 +373,11 @@
 				D5DD9E622AC58E490032D308 /* AKnock2.swift */,
 				D538BE0A2AC6665A00D3EE25 /* Aknock3.swift */,
 				D50AEF032AC6EE530096ECEF /* AKnock4.swift */,
+				D557B7F32AC7A15700559930 /* AKnock5.swift */,
+				D5BF92EF2AC7E96C00188A2E /* AKnock6.swift */,
+				D56AACC62AC811EE00950767 /* AKnock7.swift */,
+				D58D15082AC8E23B0010BC01 /* AKnock8.swift */,
+				D529FA212AC94B60000A9524 /* AKnock9.swift */,
 				D538BE0C2AC66C2F00D3EE25 /* AUtil.swift */,
 			);
 			path = AnimataionKnocks;
@@ -460,6 +475,7 @@
 				D5904FB82ABDA01C0073E9D8 /* Knock40.swift in Sources */,
 				D5904FA82ABD142F0073E9D8 /* Knock32.swift in Sources */,
 				D5FC1C6F2ABB87E300E927E9 /* Knock24.swift in Sources */,
+				D529FA222AC94B60000A9524 /* AKnock9.swift in Sources */,
 				D50C3FBB2AC4855300255761 /* Knock86.swift in Sources */,
 				D50545582ABB126E00CE1BF4 /* Knock20.swift in Sources */,
 				D50545502ABB032800CE1BF4 /* Knock18.swift in Sources */,
@@ -476,6 +492,7 @@
 				D505454C2ABADCED00CE1BF4 /* Knock14.swift in Sources */,
 				D5B6FE2F2AC3B18B00149AD0 /* Knock80.swift in Sources */,
 				D5904FBA2ABDA1020073E9D8 /* Knock41.swift in Sources */,
+				D557B7F42AC7A15700559930 /* AKnock5.swift in Sources */,
 				D5B6FE332AC40E7A00149AD0 /* Knock82.swift in Sources */,
 				D5A3E0A22AC5339700D2EA2C /* Knock101.swift in Sources */,
 				D5904FDE2AC091AB0073E9D8 /* Knock56.swift in Sources */,
@@ -501,11 +518,13 @@
 				D5904FCE2ABF1DE00073E9D8 /* Knock50.swift in Sources */,
 				D5E15D072AC1D5E900DD618F /* Knock69.swift in Sources */,
 				D5E15D032AC1CD1500DD618F /* Knock68.swift in Sources */,
+				D5BF92F02AC7E96C00188A2E /* AKnock6.swift in Sources */,
 				D5904FCC2ABF1BDF0073E9D8 /* Knock49.swift in Sources */,
 				D5904FEE2AC1B10C0073E9D8 /* Knock63.swift in Sources */,
 				D50C3FB92AC4641200255761 /* Knock85.swift in Sources */,
 				D50545362ABAAF7700CE1BF4 /* Knock3.swift in Sources */,
 				D5FC1C752ABB98A800E927E9 /* Knock27.swift in Sources */,
+				D56AACC72AC811EE00950767 /* AKnock7.swift in Sources */,
 				D538BE0D2AC66C2F00D3EE25 /* AUtil.swift in Sources */,
 				D5E15D092AC1E10F00DD618F /* Knock70.swift in Sources */,
 				D5904FD42AC0739E0073E9D8 /* Knock53.swift in Sources */,
@@ -534,6 +553,7 @@
 				D5904FA62ABD13160073E9D8 /* Knock31.swift in Sources */,
 				D5904FEA2AC1AC620073E9D8 /* Knock61.swift in Sources */,
 				D5A3E0A52AC54C8D00D2EA2C /* AKnock1.swift in Sources */,
+				D58D15092AC8E23B0010BC01 /* AKnock8.swift in Sources */,
 				D5B6FE312AC3D78D00149AD0 /* Knock81.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,9 +12,13 @@ struct SwiftUICatalogApp: App {
     var body: some Scene {
         WindowGroup {
             if #available(iOS 17.0, *) {
-//                AKnock1.ContentView()
-//                AKnock2.ContentView()
                 AKnock4.ContentView()
+//                AKnock8.ContentView()
+//                VStack(spacing: 16) {
+//                    GeometryReader { geometryProxy in AKnock9.ContentView(viewSize: geometryProxy.size) }.frame(height: 250).background(Color.gray)
+//                    GeometryReader { geometryProxy in AKnock7.ContentView(viewSize: geometryProxy.size) }.background(Color.gray)
+//                }.background(Color.black)
+                
             } else {
                 // Fallback on earlier versions
             }
