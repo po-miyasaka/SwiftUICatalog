@@ -10,20 +10,20 @@ enum AKnock9 {
         @State var isGoingRight = false
         let viewSize: CGSize
         var body: some View {
-            ScrollView(.horizontal) { // Change direction to horizontal
+            ScrollView(.horizontal) {
                 
                 LazyHStack(spacing: 8) {
-                    // Use LazyHStack
+                   
                     ForEach(arr) { tag in
                         GeometryReader { proxy in
                             let rect = proxy.frame(in: .named("ScrollView"))
-                            let when = rect.minX > -500 && rect.minX < viewSize.width + 500 // Change minY to minX
-                            let distanceFromCenter = abs(rect.midX - viewSize.width / 2) // Change midY to midX
-                            let offsetFactor = distanceFromCenter / viewSize.width // Adjust for width
+                            let when = rect.minX > -500 && rect.minX < viewSize.width + 500
+                            let distanceFromCenter = abs(rect.midX - viewSize.width / 2)
+                            let offsetFactor = distanceFromCenter / viewSize.width
                             let offsetAbs = abs(scrollVelocity * offsetFactor)
                             let offsetSign: CGFloat = isGoingRight ? -1 : 1
                             let minMargin: CGFloat = 32
-                            let maxOffset = minMargin // Adjust for width
+                            let maxOffset = minMargin
                             
                             let calculatedOffset: CGFloat = offsetSign * min(offsetAbs, maxOffset)
                             
@@ -32,12 +32,12 @@ enum AKnock9 {
                                 Color.white
                                 Text(tag.tag).foregroundStyle(.black).font(.title)
                             }
-                            .frame(width: 180) // Adjust frame for width
+                            .frame(width: 180)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
-                            .padding(.vertical) // Change padding to vertical
-                            .offset(x: when ? calculatedOffset : 0) // Offset x instead of y
+                            .padding(.vertical)
+                            .offset(x: when ? calculatedOffset : 0)
                         }
-                        .frame(width: 200) // Adjust frame for width
+                        .frame(width: 200)
                         
                     }
                 }
@@ -49,8 +49,8 @@ enum AKnock9 {
 
     struct ScrollViewOffsetModifier: ViewModifier {
         @Binding var scrollVelocity: CGFloat
-        @State private var scrollX: CGFloat = 0.0 // Change Y to X
-        @State private var lastScrollX: CGFloat = 0.0 // Change Y to X
+        @State private var scrollX: CGFloat = 0.0
+        @State private var lastScrollX: CGFloat = 0.0
         @State private var lastUpdateTime: Date = Date()
         @Binding var isGoingRight: Bool
 
@@ -59,17 +59,17 @@ enum AKnock9 {
                 .overlay(
                     GeometryReader { proxy in
                         Color.blue.opacity(0.0001)
-                            .preference(key: ScrollViewOffsetPreferenceKey.self, value: proxy.frame(in: .named("ScrollView")).minX) // Change minY to minX
+                            .preference(key: ScrollViewOffsetPreferenceKey.self, value: proxy.frame(in: .named("ScrollView")).minX)
                     }.allowsHitTesting(false)
                 )
                 .onPreferenceChange(ScrollViewOffsetPreferenceKey.self) { value in
                     let timePassed = Date().timeIntervalSince(lastUpdateTime)
-                    isGoingRight = value > lastScrollX // Change lastScrollY to lastScrollX
-                    let distance = abs(value - lastScrollX) // Change lastScrollY to lastScrollX
+                    isGoingRight = value > lastScrollX
+                    let distance = abs(value - lastScrollX)
                     let new = min(distance / CGFloat(timePassed) / 20, 100)
 
                     scrollVelocity = new
-                    lastScrollX = value // Change lastScrollY to lastScrollX
+                    lastScrollX = value
                     lastUpdateTime = Date()
                 }
         }
