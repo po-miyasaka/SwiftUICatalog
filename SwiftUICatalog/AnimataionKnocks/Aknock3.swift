@@ -22,7 +22,9 @@ enum AKnock3 {
         var body: some View {
             NavigationView {
                 ZStack(alignment: .topLeading) {
+                    
                     ScrollView {
+                        
                         VStack {
                             ForEach(images) { image in
                                 

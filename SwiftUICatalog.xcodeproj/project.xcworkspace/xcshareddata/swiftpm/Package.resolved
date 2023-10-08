@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "lookingglassui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ryanlintott/LookingGlassUI",
+      "state" : {
+        "revision" : "3257e1b5392a8b39e4620e09cfdb672d2be42855",
+        "version" : "0.3.1"
+      }
+    }
+  ],
+  "version" : 2
+}

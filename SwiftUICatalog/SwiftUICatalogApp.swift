@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import LookingGlassUI
 
 @main
 struct SwiftUICatalogApp: App {
@@ -13,16 +14,41 @@ struct SwiftUICatalogApp: App {
         WindowGroup {
             if #available(iOS 17.0, *) {
 //                AKnock5.ContentView().frame(height: 200)
-//                AKnock6.ContentView()
-////                AKnock8.ContentView()
-                VStack(spacing: 16) {
-                    GeometryReader { geometryProxy in AKnock9.ContentView(viewSize: geometryProxy.size) }.frame(height: 250).background(Color.gray)
-                    GeometryReader { geometryProxy in AKnock7.ContentView(viewSize: geometryProxy.size) }.background(Color.gray)
-                }.background(Color.black)
+                MainView()
+                    .environment(\.screenSize, UIScreen.main.bounds.size)
+                    .environment(\.safeArea,{ UIApplication.shared.windows
+                        .filter({$0.isKeyWindow}).first?.safeAreaInsets ?? .zero })
+                
                 
             } else {
                 // Fallback on earlier versions
             }
         }
+    }
+}
+
+private struct ScreenSizeKey: EnvironmentKey {
+    static var defaultValue: CGSize = .zero
+    
+    typealias Value = CGSize
+}
+
+extension EnvironmentValues {
+    var screenSize: CGSize {
+        get { self[ScreenSizeKey.self] }
+        set { self[ScreenSizeKey.self] = newValue }
+    }
+}
+
+private struct SafeAreaKey: EnvironmentKey {
+    static var defaultValue: () -> UIEdgeInsets = {.zero}
+    
+    typealias Value = () -> UIEdgeInsets
+}
+
+extension EnvironmentValues {
+    var safeArea: () -> UIEdgeInsets {
+        get { self[SafeAreaKey.self] }
+        set { self[SafeAreaKey.self] = newValue }
     }
 }

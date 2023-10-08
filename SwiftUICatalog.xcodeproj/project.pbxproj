@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D50545222ABA41BE00CE1BF4 /* SwiftUICatalogApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50545212ABA41BE00CE1BF4 /* SwiftUICatalogApp.swift */; };
-		D50545242ABA41BE00CE1BF4 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50545232ABA41BE00CE1BF4 /* MainView.swift */; };
+		D50545242ABA41BE00CE1BF4 /* KnockRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50545232ABA41BE00CE1BF4 /* KnockRootView.swift */; };
 		D50545262ABA41BF00CE1BF4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D50545252ABA41BF00CE1BF4 /* Assets.xcassets */; };
 		D50545292ABA41BF00CE1BF4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D50545282ABA41BF00CE1BF4 /* Preview Assets.xcassets */; };
 		D50545322ABA9D5400CE1BF4 /* Knock1.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50545312ABA9D5400CE1BF4 /* Knock1.swift */; };
@@ -41,10 +41,14 @@
 		D50C3FBD2AC491D700255761 /* Knock87.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50C3FBC2AC491D700255761 /* Knock87.swift */; };
 		D50C3FBF2AC4923A00255761 /* Knock89.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50C3FBE2AC4923A00255761 /* Knock89.swift */; };
 		D529FA222AC94B60000A9524 /* AKnock9.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529FA212AC94B60000A9524 /* AKnock9.swift */; };
+		D5332B012AD248850069F4DB /* TagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5332B002AD248850069F4DB /* TagsView.swift */; };
 		D538BE0B2AC6665A00D3EE25 /* Aknock3.swift in Sources */ = {isa = PBXBuildFile; fileRef = D538BE0A2AC6665A00D3EE25 /* Aknock3.swift */; };
 		D538BE0D2AC66C2F00D3EE25 /* AUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D538BE0C2AC66C2F00D3EE25 /* AUtil.swift */; };
 		D557B7F42AC7A15700559930 /* AKnock5.swift in Sources */ = {isa = PBXBuildFile; fileRef = D557B7F32AC7A15700559930 /* AKnock5.swift */; };
+		D55874562AD271A8005EE53A /* S1Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55874552AD271A8005EE53A /* S1Util.swift */; };
 		D56AACC72AC811EE00950767 /* AKnock7.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56AACC62AC811EE00950767 /* AKnock7.swift */; };
+		D57153C02ACC154B007A0768 /* LookingGlassUI in Frameworks */ = {isa = PBXBuildFile; productRef = D57153BF2ACC154B007A0768 /* LookingGlassUI */; };
+		D57153C32ACC6DD6007A0768 /* SKnock11.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57153C22ACC6DD6007A0768 /* SKnock11.swift */; };
 		D58D15092AC8E23B0010BC01 /* AKnock8.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58D15082AC8E23B0010BC01 /* AKnock8.swift */; };
 		D5904FA22ABD11A10073E9D8 /* Knock29.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5904FA12ABD11A10073E9D8 /* Knock29.swift */; };
 		D5904FA42ABD129F0073E9D8 /* Knock30.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5904FA32ABD129F0073E9D8 /* Knock30.swift */; };
@@ -84,6 +88,21 @@
 		D5904FEC2AC1B0AA0073E9D8 /* Knock62.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5904FEB2AC1B0AA0073E9D8 /* Knock62.swift */; };
 		D5904FEE2AC1B10C0073E9D8 /* Knock63.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5904FED2AC1B10C0073E9D8 /* Knock63.swift */; };
 		D5904FF02AC1B6F10073E9D8 /* Knock64.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5904FEF2AC1B6F10073E9D8 /* Knock64.swift */; };
+		D59768C12AD059C300FE88B2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768C02AD059C300FE88B2 /* MainView.swift */; };
+		D59768C32AD059E000FE88B2 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768C22AD059E000FE88B2 /* VideoView.swift */; };
+		D59768C52AD05A0600FE88B2 /* PlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768C42AD05A0600FE88B2 /* PlayingView.swift */; };
+		D59768C72AD05A1300FE88B2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768C62AD05A1300FE88B2 /* HomeView.swift */; };
+		D59768C92AD05A1A00FE88B2 /* ShortsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768C82AD05A1A00FE88B2 /* ShortsView.swift */; };
+		D59768CB2AD05A4700FE88B2 /* CreateModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768CA2AD05A4700FE88B2 /* CreateModal.swift */; };
+		D59768CF2AD05A7000FE88B2 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768CE2AD05A7000FE88B2 /* ViewModel.swift */; };
+		D59768D12AD05C1600FE88B2 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768D02AD05C1600FE88B2 /* MainTabView.swift */; };
+		D59768D42AD0DE6500FE88B2 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768D32AD0DE6500FE88B2 /* HeaderView.swift */; };
+		D59768D62AD0DE8300FE88B2 /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768D52AD0DE8300FE88B2 /* ToolbarView.swift */; };
+		D59768D82AD1092000FE88B2 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768D72AD1092000FE88B2 /* VideoCell.swift */; };
+		D59768DA2AD10A9800FE88B2 /* AdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768D92AD10A9800FE88B2 /* AdCell.swift */; };
+		D59768DC2AD10ACB00FE88B2 /* ShortsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768DB2AD10ACB00FE88B2 /* ShortsCell.swift */; };
+		D59768DE2AD111BF00FE88B2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768DD2AD111BF00FE88B2 /* Constants.swift */; };
+		D59FFB9C2ACEA8AE00B8E569 /* movie.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D59FFB9B2ACEA87F00B8E569 /* movie.mp4 */; };
 		D5A3E0A22AC5339700D2EA2C /* Knock101.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A3E0A12AC5339700D2EA2C /* Knock101.swift */; };
 		D5A3E0A52AC54C8D00D2EA2C /* AKnock1.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A3E0A42AC54C8D00D2EA2C /* AKnock1.swift */; };
 		D5B6FE2F2AC3B18B00149AD0 /* Knock80.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6FE2E2AC3B18B00149AD0 /* Knock80.swift */; };
@@ -105,6 +124,8 @@
 		D5E15D172AC2CE5500DD618F /* Knock77.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E15D162AC2CE5500DD618F /* Knock77.swift */; };
 		D5E15D192AC2F54000DD618F /* Knock78.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E15D182AC2F54000DD618F /* Knock78.swift */; };
 		D5E15D1B2AC3648000DD618F /* Knock79.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E15D1A2AC3648000DD618F /* Knock79.swift */; };
+		D5F67EA82ACAC6C80033A146 /* Aknock10.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F67EA72ACAC6C80033A146 /* Aknock10.swift */; };
+		D5F67EAC2ACAF3E00033A146 /* ShinyShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = D5F67EA92ACAD2670033A146 /* ShinyShader.metal */; };
 		D5FC1C6D2ABB86D400E927E9 /* Knock23.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FC1C6C2ABB86D400E927E9 /* Knock23.swift */; };
 		D5FC1C6F2ABB87E300E927E9 /* Knock24.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FC1C6E2ABB87E300E927E9 /* Knock24.swift */; };
 		D5FC1C712ABB896B00E927E9 /* Knock25.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FC1C702ABB896B00E927E9 /* Knock25.swift */; };
@@ -116,7 +137,7 @@
 /* Begin PBXFileReference section */
 		D505451E2ABA41BE00CE1BF4 /* SwiftUICatalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUICatalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D50545212ABA41BE00CE1BF4 /* SwiftUICatalogApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUICatalogApp.swift; sourceTree = "<group>"; };
-		D50545232ABA41BE00CE1BF4 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		D50545232ABA41BE00CE1BF4 /* KnockRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnockRootView.swift; sourceTree = "<group>"; };
 		D50545252ABA41BF00CE1BF4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D50545282ABA41BF00CE1BF4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D50545312ABA9D5400CE1BF4 /* Knock1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock1.swift; sourceTree = "<group>"; };
@@ -149,10 +170,13 @@
 		D50C3FBC2AC491D700255761 /* Knock87.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock87.swift; sourceTree = "<group>"; };
 		D50C3FBE2AC4923A00255761 /* Knock89.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock89.swift; sourceTree = "<group>"; };
 		D529FA212AC94B60000A9524 /* AKnock9.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKnock9.swift; sourceTree = "<group>"; };
+		D5332B002AD248850069F4DB /* TagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsView.swift; sourceTree = "<group>"; };
 		D538BE0A2AC6665A00D3EE25 /* Aknock3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Aknock3.swift; sourceTree = "<group>"; };
 		D538BE0C2AC66C2F00D3EE25 /* AUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUtil.swift; sourceTree = "<group>"; };
 		D557B7F32AC7A15700559930 /* AKnock5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKnock5.swift; sourceTree = "<group>"; };
+		D55874552AD271A8005EE53A /* S1Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = S1Util.swift; sourceTree = "<group>"; };
 		D56AACC62AC811EE00950767 /* AKnock7.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKnock7.swift; sourceTree = "<group>"; };
+		D57153C22ACC6DD6007A0768 /* SKnock11.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKnock11.swift; sourceTree = "<group>"; };
 		D58D15082AC8E23B0010BC01 /* AKnock8.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKnock8.swift; sourceTree = "<group>"; };
 		D5904FA12ABD11A10073E9D8 /* Knock29.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock29.swift; sourceTree = "<group>"; };
 		D5904FA32ABD129F0073E9D8 /* Knock30.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock30.swift; sourceTree = "<group>"; };
@@ -192,6 +216,21 @@
 		D5904FEB2AC1B0AA0073E9D8 /* Knock62.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock62.swift; sourceTree = "<group>"; };
 		D5904FED2AC1B10C0073E9D8 /* Knock63.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock63.swift; sourceTree = "<group>"; };
 		D5904FEF2AC1B6F10073E9D8 /* Knock64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock64.swift; sourceTree = "<group>"; };
+		D59768C02AD059C300FE88B2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		D59768C22AD059E000FE88B2 /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
+		D59768C42AD05A0600FE88B2 /* PlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingView.swift; sourceTree = "<group>"; };
+		D59768C62AD05A1300FE88B2 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		D59768C82AD05A1A00FE88B2 /* ShortsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortsView.swift; sourceTree = "<group>"; };
+		D59768CA2AD05A4700FE88B2 /* CreateModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateModal.swift; sourceTree = "<group>"; };
+		D59768CE2AD05A7000FE88B2 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		D59768D02AD05C1600FE88B2 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		D59768D32AD0DE6500FE88B2 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		D59768D52AD0DE8300FE88B2 /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
+		D59768D72AD1092000FE88B2 /* VideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
+		D59768D92AD10A9800FE88B2 /* AdCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdCell.swift; sourceTree = "<group>"; };
+		D59768DB2AD10ACB00FE88B2 /* ShortsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortsCell.swift; sourceTree = "<group>"; };
+		D59768DD2AD111BF00FE88B2 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		D59FFB9B2ACEA87F00B8E569 /* movie.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = movie.mp4; sourceTree = "<group>"; };
 		D5A3E0A12AC5339700D2EA2C /* Knock101.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock101.swift; sourceTree = "<group>"; };
 		D5A3E0A42AC54C8D00D2EA2C /* AKnock1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKnock1.swift; sourceTree = "<group>"; };
 		D5B6FE2E2AC3B18B00149AD0 /* Knock80.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock80.swift; sourceTree = "<group>"; };
@@ -213,6 +252,8 @@
 		D5E15D162AC2CE5500DD618F /* Knock77.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock77.swift; sourceTree = "<group>"; };
 		D5E15D182AC2F54000DD618F /* Knock78.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock78.swift; sourceTree = "<group>"; };
 		D5E15D1A2AC3648000DD618F /* Knock79.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock79.swift; sourceTree = "<group>"; };
+		D5F67EA72ACAC6C80033A146 /* Aknock10.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Aknock10.swift; sourceTree = "<group>"; };
+		D5F67EA92ACAD2670033A146 /* ShinyShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ShinyShader.metal; sourceTree = "<group>"; };
 		D5FC1C6C2ABB86D400E927E9 /* Knock23.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock23.swift; sourceTree = "<group>"; };
 		D5FC1C6E2ABB87E300E927E9 /* Knock24.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock24.swift; sourceTree = "<group>"; };
 		D5FC1C702ABB896B00E927E9 /* Knock25.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock25.swift; sourceTree = "<group>"; };
@@ -226,6 +267,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D57153C02ACC154B007A0768 /* LookingGlassUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,6 +277,7 @@
 		D50545152ABA41BE00CE1BF4 = {
 			isa = PBXGroup;
 			children = (
+				D5F67EA92ACAD2670033A146 /* ShinyShader.metal */,
 				D50545202ABA41BE00CE1BF4 /* SwiftUICatalog */,
 				D505451F2ABA41BE00CE1BF4 /* Products */,
 			);
@@ -251,6 +294,7 @@
 		D50545202ABA41BE00CE1BF4 /* SwiftUICatalog */ = {
 			isa = PBXGroup;
 			children = (
+				D57153C12ACC6DC4007A0768 /* ScreenKnock */,
 				D50545212ABA41BE00CE1BF4 /* SwiftUICatalogApp.swift */,
 				D5A3E0A32AC54C6A00D2EA2C /* AnimataionKnocks */,
 				D50C3FC02AC4984500255761 /* Knocks */,
@@ -271,7 +315,7 @@
 		D50C3FC02AC4984500255761 /* Knocks */ = {
 			isa = PBXGroup;
 			children = (
-				D50545232ABA41BE00CE1BF4 /* MainView.swift */,
+				D50545232ABA41BE00CE1BF4 /* KnockRootView.swift */,
 				D5904FBD2ABE51600073E9D8 /* GithubRepository.swift */,
 				D5904FD92AC087660073E9D8 /* Util.swift */,
 				D50545312ABA9D5400CE1BF4 /* Knock1.swift */,
@@ -366,6 +410,47 @@
 			path = Knocks;
 			sourceTree = "<group>";
 		};
+		D57153C12ACC6DC4007A0768 /* ScreenKnock */ = {
+			isa = PBXGroup;
+			children = (
+				D59768BF2AD059B100FE88B2 /* SKnock1 */,
+				D57153C22ACC6DD6007A0768 /* SKnock11.swift */,
+				D59FFB9B2ACEA87F00B8E569 /* movie.mp4 */,
+			);
+			path = ScreenKnock;
+			sourceTree = "<group>";
+		};
+		D59768BF2AD059B100FE88B2 /* SKnock1 */ = {
+			isa = PBXGroup;
+			children = (
+				D59768D22AD0DE5200FE88B2 /* Main */,
+				D59768C22AD059E000FE88B2 /* VideoView.swift */,
+				D59768C42AD05A0600FE88B2 /* PlayingView.swift */,
+				D59768C62AD05A1300FE88B2 /* HomeView.swift */,
+				D55874552AD271A8005EE53A /* S1Util.swift */,
+				D59768C82AD05A1A00FE88B2 /* ShortsView.swift */,
+				D59768CA2AD05A4700FE88B2 /* CreateModal.swift */,
+				D5332B002AD248850069F4DB /* TagsView.swift */,
+				D59768CE2AD05A7000FE88B2 /* ViewModel.swift */,
+				D59768D72AD1092000FE88B2 /* VideoCell.swift */,
+				D59768D92AD10A9800FE88B2 /* AdCell.swift */,
+				D59768DB2AD10ACB00FE88B2 /* ShortsCell.swift */,
+			);
+			path = SKnock1;
+			sourceTree = "<group>";
+		};
+		D59768D22AD0DE5200FE88B2 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				D59768C02AD059C300FE88B2 /* MainView.swift */,
+				D59768DD2AD111BF00FE88B2 /* Constants.swift */,
+				D59768D02AD05C1600FE88B2 /* MainTabView.swift */,
+				D59768D32AD0DE6500FE88B2 /* HeaderView.swift */,
+				D59768D52AD0DE8300FE88B2 /* ToolbarView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 		D5A3E0A32AC54C6A00D2EA2C /* AnimataionKnocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -378,6 +463,7 @@
 				D56AACC62AC811EE00950767 /* AKnock7.swift */,
 				D58D15082AC8E23B0010BC01 /* AKnock8.swift */,
 				D529FA212AC94B60000A9524 /* AKnock9.swift */,
+				D5F67EA72ACAC6C80033A146 /* Aknock10.swift */,
 				D538BE0C2AC66C2F00D3EE25 /* AUtil.swift */,
 			);
 			path = AnimataionKnocks;
@@ -399,6 +485,9 @@
 			dependencies = (
 			);
 			name = SwiftUICatalog;
+			packageProductDependencies = (
+				D57153BF2ACC154B007A0768 /* LookingGlassUI */,
+			);
 			productName = SwiftUICatalog;
 			productReference = D505451E2ABA41BE00CE1BF4 /* SwiftUICatalog.app */;
 			productType = "com.apple.product-type.application";
@@ -427,6 +516,9 @@
 				Base,
 			);
 			mainGroup = D50545152ABA41BE00CE1BF4;
+			packageReferences = (
+				D57153BE2ACC154B007A0768 /* XCRemoteSwiftPackageReference "LookingGlassUI" */,
+			);
 			productRefGroup = D505451F2ABA41BE00CE1BF4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -441,6 +533,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D59FFB9C2ACEA8AE00B8E569 /* movie.mp4 in Resources */,
 				D50545292ABA41BF00CE1BF4 /* Preview Assets.xcassets in Resources */,
 				D50545262ABA41BF00CE1BF4 /* Assets.xcassets in Resources */,
 			);
@@ -453,14 +546,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5F67EAC2ACAF3E00033A146 /* ShinyShader.metal in Sources */,
 				D5E15D192AC2F54000DD618F /* Knock78.swift in Sources */,
 				D5904FBC2ABDAFBE0073E9D8 /* Knock42.swift in Sources */,
 				D505454E2ABADD0100CE1BF4 /* Knock15.swift in Sources */,
 				D5904FB42ABD31640073E9D8 /* Knock38.swift in Sources */,
+				D59768D12AD05C1600FE88B2 /* MainTabView.swift in Sources */,
 				D5904FA42ABD129F0073E9D8 /* Knock30.swift in Sources */,
 				D5904FE62AC1AA870073E9D8 /* Knock60.swift in Sources */,
 				D5FC1C6D2ABB86D400E927E9 /* Knock23.swift in Sources */,
 				D5DD9E632AC58E490032D308 /* AKnock2.swift in Sources */,
+				D59768C72AD05A1300FE88B2 /* HomeView.swift in Sources */,
+				D5332B012AD248850069F4DB /* TagsView.swift in Sources */,
 				D5E15D132AC2CD1000DD618F /* Knock75.swift in Sources */,
 				D5904FB62ABD947C0073E9D8 /* Knock39.swift in Sources */,
 				D50545322ABA9D5400CE1BF4 /* Knock1.swift in Sources */,
@@ -468,8 +565,11 @@
 				D5904FC42ABEC8A00073E9D8 /* Knock45.swift in Sources */,
 				D5E15D0D2AC1EA6F00DD618F /* Knock72.swift in Sources */,
 				D505455C2ABB7F0C00CE1BF4 /* Knock22.swift in Sources */,
+				D59768DE2AD111BF00FE88B2 /* Constants.swift in Sources */,
 				D5904FAC2ABD1E170073E9D8 /* Knock34.swift in Sources */,
+				D59768C32AD059E000FE88B2 /* VideoView.swift in Sources */,
 				D50545542ABB052500CE1BF4 /* Knock17.swift in Sources */,
+				D59768CF2AD05A7000FE88B2 /* ViewModel.swift in Sources */,
 				D50545382ABAB1A000CE1BF4 /* Knock4.swift in Sources */,
 				D5E15D112AC1ED6000DD618F /* Knock74.swift in Sources */,
 				D5904FB82ABDA01C0073E9D8 /* Knock40.swift in Sources */,
@@ -484,6 +584,7 @@
 				D5904FE22AC106DF0073E9D8 /* Knock58.swift in Sources */,
 				D5904FCA2ABF1ABC0073E9D8 /* Knock48.swift in Sources */,
 				D5904FAA2ABD1DCA0073E9D8 /* Knock33.swift in Sources */,
+				D59768DC2AD10ACB00FE88B2 /* ShortsCell.swift in Sources */,
 				D50C3FB32AC453DD00255761 /* Knock83.swift in Sources */,
 				D50545402ABAC57C00CE1BF4 /* Knock8.swift in Sources */,
 				D5FC1C732ABB90B900E927E9 /* Knock26.swift in Sources */,
@@ -502,11 +603,12 @@
 				D5E15D0B2AC1E41900DD618F /* Knock71.swift in Sources */,
 				D50AEF042AC6EE530096ECEF /* AKnock4.swift in Sources */,
 				D505453C2ABAC07300CE1BF4 /* Knock6.swift in Sources */,
+				D59768D62AD0DE8300FE88B2 /* ToolbarView.swift in Sources */,
 				D5904FC02ABEBC410073E9D8 /* Knock43.swift in Sources */,
 				D5E15D0F2AC1EB6900DD618F /* Knock73.swift in Sources */,
 				D5904FBE2ABE51600073E9D8 /* GithubRepository.swift in Sources */,
 				D505455A2ABB746300CE1BF4 /* Knock21.swift in Sources */,
-				D50545242ABA41BE00CE1BF4 /* MainView.swift in Sources */,
+				D50545242ABA41BE00CE1BF4 /* KnockRootView.swift in Sources */,
 				D505453E2ABAC1E700CE1BF4 /* Knock7.swift in Sources */,
 				D5904FD82AC086D50073E9D8 /* Knock54.swift in Sources */,
 				D5E15D172AC2CE5500DD618F /* Knock77.swift in Sources */,
@@ -515,9 +617,11 @@
 				D50545522ABB04C300CE1BF4 /* Knock16.swift in Sources */,
 				D5904FDC2AC0885D0073E9D8 /* Knock55.swift in Sources */,
 				D5904FEC2AC1B0AA0073E9D8 /* Knock62.swift in Sources */,
+				D59768C12AD059C300FE88B2 /* MainView.swift in Sources */,
 				D5904FCE2ABF1DE00073E9D8 /* Knock50.swift in Sources */,
 				D5E15D072AC1D5E900DD618F /* Knock69.swift in Sources */,
 				D5E15D032AC1CD1500DD618F /* Knock68.swift in Sources */,
+				D59768DA2AD10A9800FE88B2 /* AdCell.swift in Sources */,
 				D5BF92F02AC7E96C00188A2E /* AKnock6.swift in Sources */,
 				D5904FCC2ABF1BDF0073E9D8 /* Knock49.swift in Sources */,
 				D5904FEE2AC1B10C0073E9D8 /* Knock63.swift in Sources */,
@@ -525,16 +629,23 @@
 				D50545362ABAAF7700CE1BF4 /* Knock3.swift in Sources */,
 				D5FC1C752ABB98A800E927E9 /* Knock27.swift in Sources */,
 				D56AACC72AC811EE00950767 /* AKnock7.swift in Sources */,
+				D57153C32ACC6DD6007A0768 /* SKnock11.swift in Sources */,
 				D538BE0D2AC66C2F00D3EE25 /* AUtil.swift in Sources */,
 				D5E15D092AC1E10F00DD618F /* Knock70.swift in Sources */,
 				D5904FD42AC0739E0073E9D8 /* Knock53.swift in Sources */,
+				D5F67EA82ACAC6C80033A146 /* Aknock10.swift in Sources */,
 				D5904FC62ABEE6BC0073E9D8 /* Knock46.swift in Sources */,
+				D59768D82AD1092000FE88B2 /* VideoCell.swift in Sources */,
 				D50545462ABAD4C800CE1BF4 /* Knock11.swift in Sources */,
+				D59768C92AD05A1A00FE88B2 /* ShortsView.swift in Sources */,
 				D5E15D1B2AC3648000DD618F /* Knock79.swift in Sources */,
 				D50545342ABAAA4400CE1BF4 /* Knock2.swift in Sources */,
+				D59768CB2AD05A4700FE88B2 /* CreateModal.swift in Sources */,
 				D5904FF02AC1B6F10073E9D8 /* Knock64.swift in Sources */,
+				D59768D42AD0DE6500FE88B2 /* HeaderView.swift in Sources */,
 				D50545482ABAD56A00CE1BF4 /* Knock12.swift in Sources */,
 				D505454A2ABAD66900CE1BF4 /* Knock13.swift in Sources */,
+				D59768C52AD05A0600FE88B2 /* PlayingView.swift in Sources */,
 				D5904FB22ABD2F130073E9D8 /* Knock37.swift in Sources */,
 				D5E15D152AC2CE0400DD618F /* Knock76.swift in Sources */,
 				D5904FE42AC194550073E9D8 /* Knock59.swift in Sources */,
@@ -546,6 +657,7 @@
 				D5904FD22ABF388F0073E9D8 /* Knock52.swift in Sources */,
 				D50545222ABA41BE00CE1BF4 /* SwiftUICatalogApp.swift in Sources */,
 				D5904FC82ABF1A040073E9D8 /* Knock47.swift in Sources */,
+				D55874562AD271A8005EE53A /* S1Util.swift in Sources */,
 				D50C3FBD2AC491D700255761 /* Knock87.swift in Sources */,
 				D50C3FB72AC45B8F00255761 /* Knock84.swift in Sources */,
 				D5904FD02ABF33A10073E9D8 /* Knock51.swift in Sources */,
@@ -704,6 +816,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MTL_LANGUAGE_REVISION = Metal31;
 				PRODUCT_BUNDLE_IDENTIFIER = "jp.po-miyasaka.SwiftUICatalog.SwiftUICatalog";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -737,6 +850,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MTL_LANGUAGE_REVISION = Metal31;
 				PRODUCT_BUNDLE_IDENTIFIER = "jp.po-miyasaka.SwiftUICatalog.SwiftUICatalog";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -768,6 +882,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D57153BE2ACC154B007A0768 /* XCRemoteSwiftPackageReference "LookingGlassUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ryanlintott/LookingGlassUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D57153BF2ACC154B007A0768 /* LookingGlassUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D57153BE2ACC154B007A0768 /* XCRemoteSwiftPackageReference "LookingGlassUI" */;
+			productName = LookingGlassUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D50545162ABA41BE00CE1BF4 /* Project object */;
 }

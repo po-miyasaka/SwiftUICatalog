@@ -7,12 +7,13 @@
 
 import SwiftUI
 
-enum Page: Hashable {
-    case first
-    case second
-    case third
-}
+
 enum Knock37 {
+    enum Page: Hashable {
+        case first
+        case second
+        case third
+    }
     struct ContentView: View {
         @State var shouldPush: Bool = false
         @State var selection: Page = .first
