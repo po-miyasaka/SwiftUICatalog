@@ -8,43 +8,41 @@
 import SwiftUI
 
 enum Knock28 {
-    
     struct SectionData: Identifiable {
         let id: String
         let rows: [Row]
     }
-    
+
     struct Row: Identifiable {
         let distination: Dist
         let title: String
         let id = UUID()
     }
-    
+
     enum Dist {
         case thunder
         case normal
         case trainer
     }
-    
+
     struct ContentView: View {
         @State var selected: Row?
         @State var isSelected: Bool = false
         @State var sections: [SectionData] = [
             .init(
                 id: "Pokemon",
-                  rows: [
+                rows: [
                     .init(distination: .thunder, title: "Pikachu"),
-                    .init(distination: .normal, title: "Kabigon")]),
+                    .init(distination: .normal, title: "Kabigon"),
+                ]
+            ),
             .init(id: "Trainer",
                   rows: [
-                    .init(distination: .trainer, title: "takeshi")
-                  ])
+                      .init(distination: .trainer, title: "takeshi"),
+                  ]),
         ]
         @State var isPresentingAlert: Bool = false
         var body: some View {
-            
-           
-            
             NavigationView {
                 List(sections) { section in
                     ForEach(section.rows) { row in
@@ -53,7 +51,7 @@ enum Knock28 {
                             NavigationLink(row.title, destination: {
                                 Text("normal \(row.title)")
                             })
-                            
+
                         case .thunder:
                             NavigationLink(row.title, destination: {
                                 Text("thunder \(row.title)")
@@ -64,7 +62,7 @@ enum Knock28 {
                             })
                         }
                     }.if { forEach in // 構造がわかりにくくてよくない。
-                        
+
                         if #available(iOS 15.0, *) {
                             Section(section.id) {
                                 forEach
@@ -75,21 +73,11 @@ enum Knock28 {
                             }
                         }
                     }
-                    
-                    
                 }
-                
             }
-            
         }
-        
-        
     }
 }
-
-
-
-
 
 #Preview {
     Knock28.ContentView()

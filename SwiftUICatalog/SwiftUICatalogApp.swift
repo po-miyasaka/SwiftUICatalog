@@ -5,8 +5,8 @@
 //  Created by po_miyasaka on 2023/09/20.
 //
 
-import SwiftUI
 import LookingGlassUI
+import SwiftUI
 
 @main
 struct SwiftUICatalogApp: App {
@@ -16,10 +16,10 @@ struct SwiftUICatalogApp: App {
 //                AKnock5.ContentView().frame(height: 200)
                 MainView()
                     .environment(\.screenSize, UIScreen.main.bounds.size)
-                    .environment(\.safeArea,{ UIApplication.shared.windows
-                        .filter({$0.isKeyWindow}).first?.safeAreaInsets ?? .zero })
-                
-                
+                    .environment(\.safeArea) { UIApplication.shared.windows
+                        .filter { $0.isKeyWindow }.first?.safeAreaInsets ?? .zero
+                    }
+
             } else {
                 // Fallback on earlier versions
             }
@@ -29,7 +29,7 @@ struct SwiftUICatalogApp: App {
 
 private struct ScreenSizeKey: EnvironmentKey {
     static var defaultValue: CGSize = .zero
-    
+
     typealias Value = CGSize
 }
 
@@ -41,8 +41,8 @@ extension EnvironmentValues {
 }
 
 private struct SafeAreaKey: EnvironmentKey {
-    static var defaultValue: () -> UIEdgeInsets = {.zero}
-    
+    static var defaultValue: () -> UIEdgeInsets = { .zero }
+
     typealias Value = () -> UIEdgeInsets
 }
 

@@ -7,23 +7,20 @@
 
 import SwiftUI
 enum Knock61 {
-    
-    
     struct ContentView: View {
         let column = [GridItem(), GridItem()]
         var body: some View {
             ScrollView(.horizontal) {
-                LazyHStack{
-                    ForEach(0..<7) { _ in
+                LazyHStack {
+                    ForEach(0 ..< 7) { _ in
                         VStack {
                             Image("kabigon", bundle: nil)
                                 .resizable()
                                 .scaledToFit()
-                                .frame(maxWidth:100 ,maxHeight: 100)
+                                .frame(maxWidth: 100, maxHeight: 100)
                             Text("All")
                         }
                     }
-                    
                 }
             }
         }
@@ -33,4 +30,3 @@ enum Knock61 {
 #Preview {
     Knock60.ContentView()
 }
-

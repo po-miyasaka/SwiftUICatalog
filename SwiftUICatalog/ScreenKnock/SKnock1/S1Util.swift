@@ -8,14 +8,13 @@
 import SwiftUI
 
 struct AnimationShowModifier<V: View>: ViewModifier {
-    
     @Binding var showing: Bool
     @State var prepare: Bool = false
     @State var isShow: Bool = false
     let v: () -> V
     func body(content: Content) -> some View {
         content.overlay(
-            ZStack{
+            ZStack {
                 if prepare {
                     Color.black.opacity(0.3).ignoresSafeArea().onTapGesture {
                         withAnimation {
@@ -32,12 +31,12 @@ struct AnimationShowModifier<V: View>: ViewModifier {
                         ).transition(
                             .asymmetric(insertion: .move(edge: .bottom), removal: .move(edge: .bottom))
                         )
-                            .zIndex(3)
+                        .zIndex(3)
                     }
                 }
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
         )
-        .onChange(of: showing, perform:  { value in
+        .onChange(of: showing, perform: { value in
             if value {
                 prepare = true
                 withAnimation {
@@ -45,14 +44,5 @@ struct AnimationShowModifier<V: View>: ViewModifier {
                 }
             }
         })
-        
     }
-    
-    
-    
-    
-    
-    
-    
-    
 }

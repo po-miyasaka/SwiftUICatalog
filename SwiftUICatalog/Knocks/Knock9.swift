@@ -7,22 +7,16 @@
 
 import SwiftUI
 
-
 enum Knock9 {
     struct ContentView: View {
         @State var tapped = false
         var body: some View {
-            
             Button("Button", action: {
                 tapped.toggle()
             })
             Text(tapped ? "tapped" : "tap here").font(.caption)
-            
         }
     }
-    
-    
-
 }
 
 #Preview {

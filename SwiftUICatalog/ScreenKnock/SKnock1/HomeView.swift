@@ -14,9 +14,7 @@ struct HomeView: View {
     @State var scrollOffset: CGFloat = .zero
     @ViewBuilder
     var body: some View {
-        
         ZStack(alignment: .top) {
-            
             ScrollView {
                 GeometryReader { proxy in
                     ZStack(alignment: .bottom) {
@@ -31,35 +29,33 @@ struct HomeView: View {
                     VStack(alignment: .leading, spacing: 32) {
                         ForEach(viewModel.recommendedObjects, id: \.self) { data in
                             switch data {
-                            case .ad(let data):
+                            case let .ad(data):
                                 AdCell(adData: data)
-                            case .shorts(let data):
+                            case let .shorts(data):
                                 ShortsCell(shortsData: data, transition: { data in
-                                    withAnimation
-                                    {
+                                    withAnimation {
                                         viewModel.shortsTransitionContext = .init(source: .homeView, data: data)
                                         offsetObject.showingMiniPlayer = true
                                     }
-                                    
+
                                 })
-                            case .video(let data):
+                            case let .video(data):
                                 VideoCell(videoData: data, playingVideoNameSpaceID: nil) { video, rect in
                                     viewModel.select(video: video, rect: rect)
                                 }
                             }
                         }
                     }
-                    
+
                     Color.black.frame(height: 50)
                 }
-                
+
             }.coordinateSpace(name: "HomeView_ScrollView")
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-               
+
             HeaderView(attachedViewHeight: 44, attachedView: { TagsView() })
                 .background(Color.black)
-                .offset(y: min(0, scrollOffset ))
-            
+                .offset(y: min(0, scrollOffset))
         }
     }
 }

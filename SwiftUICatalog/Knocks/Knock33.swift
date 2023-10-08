@@ -16,8 +16,8 @@ enum Knock33 {
 
 #Preview {
     if #available(iOS 15.0, *) {
-            Knock33.ContentView().previewInterfaceOrientation(.landscapeLeft)
-        } else {
-            Knock33.ContentView().previewLayout(PreviewLayout.fixed(width:568,height:320))
-        }
+        Knock33.ContentView().previewInterfaceOrientation(.landscapeLeft)
+    } else {
+        Knock33.ContentView().previewLayout(PreviewLayout.fixed(width: 568, height: 320))
+    }
 }

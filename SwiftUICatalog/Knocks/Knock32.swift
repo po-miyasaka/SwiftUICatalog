@@ -13,13 +13,9 @@ enum Knock32 {
             Button("show", action: {
                 isPresentSheet = true
             }).fullScreenCover(isPresented: $isPresentSheet, content: {
-                
-                
                 NavigationView {
                     VStack {
                         Text("sheet")
-                        
-                        
                     }
                     //                .toolbar(content: {
                     //
@@ -30,8 +26,7 @@ enum Knock32 {
                     //                                 }
                     //                })
                 }
-                
-                
+
             })
         }
     }

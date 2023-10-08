@@ -15,7 +15,7 @@ enum Knock31 {
                 isPresentSheet = true
             }).fullScreenCover(isPresented: $isPresentSheet, content: {
                 Text("sheet")
-                Button(action: {isPresentSheet = false}, label: {
+                Button(action: { isPresentSheet = false }, label: {
                     Text("Dismiss")
                 })
             })
@@ -26,4 +26,3 @@ enum Knock31 {
 #Preview {
     Knock31.ContentView()
 }
-

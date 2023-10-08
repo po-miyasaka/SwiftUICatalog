@@ -5,31 +5,30 @@
 //  Created by po_miyasaka on 2023/09/23.
 //
 
-import Foundation
 import Combine
+import Foundation
 @MainActor
 class Repository: ObservableObject {
-    
     @Published var isLoading = false
-    
+
     // for combine
     var reposPublisher: AnyPublisher<[Repo], Never> { repos.eraseToAnyPublisher() }
     // for combine
     var repos: CurrentValueSubject<[Repo], Never> = .init([])
-    
+
     var currentQuery = ""
     var currentPage = 1
-    
-    var api: API =  .init()
+
+    var api: API = .init()
     var continuation: AsyncStream<[Repo]>.Continuation?
     lazy var stream = AsyncStream<[Repo]> { continuation in
-        self.continuation  = continuation
+        self.continuation = continuation
     }
-    
+
     deinit {
         continuation?.finish()
     }
-    
+
     // for async await
     func search(query: String) async {
         if currentQuery != query {
@@ -38,14 +37,14 @@ class Repository: ObservableObject {
         }
         await next()
     }
+
     // for async await
     func next() async {
-        
         if isLoading {
             print("now loading")
             return
         }
-        
+
         isLoading = true
         currentPage += 1
         do {
@@ -58,13 +57,12 @@ class Repository: ObservableObject {
         }
         isLoading = false
     }
-    
+
     // for closure
-    func search(query: String, completion: @escaping ([Repo]) -> Void)  {
-        
+    func search(query: String, completion: @escaping ([Repo]) -> Void) {
         guard !isLoading else { return }
         isLoading = true
-        
+
         if currentQuery != query {
             currentQuery = query
             currentPage = 0
@@ -80,20 +78,19 @@ class Repository: ObservableObject {
             isLoading = false
         }
     }
-    
+
     // for combine
     func search(query: String) {
-        
         guard !isLoading else { return }
         isLoading = true
-        
+
         if currentQuery != query {
             currentQuery = query
             currentPage = 0
             repos.send([])
         }
         currentPage += 1
-        
+
         Task { [weak self] in
             do {
                 let result = try await self?.api.searchRepos(endpoint: GithubEndpoint(query: self?.currentQuery ?? "", page: self?.currentPage ?? 0))
@@ -103,11 +100,8 @@ class Repository: ObservableObject {
             }
             self?.isLoading = false
         }
-        
     }
 }
-
-
 
 struct GithubSearchResult<T: Codable>: Codable {
     let items: [T]
@@ -119,7 +113,6 @@ struct Repo: Codable, Identifiable, Equatable {
     let description: String?
     let stargazers_count: Int
 }
-
 
 protocol Endpoint {
     associatedtype ResponseData: Decodable
@@ -134,7 +127,7 @@ struct GithubEndpoint: Endpoint {
     let pageSize = 20
     let page: Int
     let sort = "stars"
-    
+
     var urlComponents: URLComponents {
         var components = URLComponents()
         components.scheme = "https"
@@ -146,28 +139,25 @@ struct GithubEndpoint: Endpoint {
                                  .init(name: "page", value: "\(page)")]
         return components
     }
-    
+
     func urlRequest() throws -> URLRequest {
         guard let url = urlComponents.url else {
             throw NSError(domain: "Request", code: 400)
         }
-        
+
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
         return urlRequest
     }
-    
+
     func result(data: Data) throws -> ResponseData {
         let decoder = JSONDecoder()
         return try decoder.decode(ResponseData.self, from: data)
     }
-    
-    
 }
 
 struct API {
     func searchRepos<T: Endpoint>(endpoint: T) async throws -> T.ResponseData {
-        
         let request: URLRequest
         do {
             request = try endpoint.urlRequest()
@@ -175,10 +165,10 @@ struct API {
             print(e)
             throw e
         }
-        
+
         let data: Data
         do {
-            let (d, _) = try await  URLSession.shared
+            let (d, _) = try await URLSession.shared
                 .data(for: request)
             data = d
         } catch let e {
@@ -188,12 +178,12 @@ struct API {
         let result: T.ResponseData
         do {
             result = try endpoint.result(data: data)
-            
+
         } catch let e {
             print(e)
             throw e
         }
-        
+
         return result
     }
 }

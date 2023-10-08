@@ -5,21 +5,21 @@
 //  Created by po_miyasaka on 2023/09/27.
 //
 
-import SwiftUI
 import MapKit
+import SwiftUI
 enum Knock80 {
     struct ContentView: View {
         @State private var latitude: Double = 0
         @State private var longitude: Double = 0
-        
+
         func updatLocation(location: CLLocationCoordinate2D) {
             latitude = location.latitude
             longitude = location.longitude
         }
-        
+
         var body: some View {
             ZStack(alignment: .topLeading) {
-                GeometryReader { proxy in
+                GeometryReader { _ in
                     MView(latitude: $latitude, longitude: $longitude)
                     VStack(alignment: .leading) {
                         Text("latitutde 緯度: \(latitude)")
@@ -28,7 +28,6 @@ enum Knock80 {
                     .padding(.top, 48)
                     .padding(.leading, 16)
                 }
-                
             }
             .ignoresSafeArea(.all, edges: .all)
         }
@@ -39,8 +38,7 @@ enum Knock80 {
     Knock80.ContentView()
 }
 
-
-//struct MView: UIViewRepresentable, Equatable  {
+// struct MView: UIViewRepresentable, Equatable  {
 //    let size: CGSize
 //    let delegate: Delegate
 //    init(size: CGSize, delegate: Delegate) {
@@ -64,38 +62,40 @@ enum Knock80 {
 //    static func == (lhs: Self, rhs: Self) -> Bool {
 //        true
 //    }
-//}
+// }
 
 struct MView: UIViewRepresentable, Equatable {
 //    let size: CGSize
     @Binding var latitude: Double
     @Binding var longitude: Double
-    init( latitude: Binding<Double>, longitude: Binding<Double>) {
+    init(latitude: Binding<Double>, longitude: Binding<Double>) {
         print("init")
-        self._latitude = latitude
-        self._longitude = longitude
+        _latitude = latitude
+        _longitude = longitude
     }
+
     func makeUIView(context: Context) -> MKMapView {
         print("makeUIView")
         let mv = MKMapView(frame: .init(origin: .zero, size: .zero))
         mv.delegate = context.coordinator
         return mv
     }
+
     func makeCoordinator() -> Delegate {
         Delegate(location: { location in
             latitude = location.latitude
             longitude = location.longitude
         })
     }
-    
-    func updateUIView(_ uiView: MKMapView, context: Context) {
-#warning("why is this needed")
+
+    func updateUIView(_: MKMapView, context _: Context) {
+        #warning("why is this needed")
         //        uiView.delegate = delegate // Equatableを実装するかこれを実装するかしないと値がデリゲートが呼ばれなくなる。
         // クロージャを受け取っている場合。こうなる。
     }
-    
+
     typealias UIViewType = MKMapView
-    static func == (lhs: Self, rhs: Self) -> Bool {
+    static func == (_: Self, _: Self) -> Bool {
         true
     }
 }
@@ -106,15 +106,15 @@ class Delegate: NSObject, MKMapViewDelegate {
         print("init delegate")
         self.location = location
     }
+
     @MainActor func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
         location(mapView.region.center)
     }
-    
 }
 
 //
 //
-//enum Knock80 {
+// enum Knock80 {
 //    struct ContentView: View {
 //        @State private var latitude: Double = 0
 //           @State private var longitude: Double = 0
@@ -135,9 +135,9 @@ class Delegate: NSObject, MKMapViewDelegate {
 //               .ignoresSafeArea(.all, edges: .all)
 //           }
 //    }
-//}
+// }
 //
-//public struct LocationSelecterView: UIViewRepresentable {
+// public struct LocationSelecterView: UIViewRepresentable {
 //    let locationDidSet: (_ location: CLLocationCoordinate2D) -> Void
 //
 //
@@ -148,9 +148,9 @@ class Delegate: NSObject, MKMapViewDelegate {
 //    }
 //
 //    public func updateUIView(_ uiView: UILocationSelecterView, context: Context) {}
-//}
+// }
 //
-//public class UILocationSelecterView: UIView {
+// public class UILocationSelecterView: UIView {
 //
 //
 //    public var locationLimit: Int?
@@ -196,11 +196,11 @@ class Delegate: NSObject, MKMapViewDelegate {
 //        horizontalLinePath.addLine(to: CGPoint(x: bounds.width / 2, y: (bounds.height / 2) + 50))
 //        horizontalLine.path = horizontalLinePath.cgPath
 //    }
-//}
+// }
 //
-//extension UILocationSelecterView: MKMapViewDelegate {
+// extension UILocationSelecterView: MKMapViewDelegate {
 //    public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
 //        let location = CLLocationCoordinate2D(latitude: mapView.region.center.latitude, longitude: mapView.region.center.longitude)
 //        locationDidSet?(location)
 //    }
-//}
+// }

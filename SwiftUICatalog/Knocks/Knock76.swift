@@ -9,7 +9,6 @@ import SwiftUI
 
 enum Knock76 {
     struct ContentView: View {
-        
         @State var selected = ""
         @State var arr = ["pika", "kabigon", "kirinriki"]
         var body: some View {
@@ -22,7 +21,6 @@ enum Knock76 {
             })
         }
     }
-    
 }
 
 #Preview {

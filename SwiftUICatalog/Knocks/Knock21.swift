@@ -10,12 +10,12 @@ import SwiftUI
 enum Knock21 {
     struct ContentView: View {
         @State var tapped = false
-        
+
         var body: some View {
             ScrollView {
                 HStack(alignment: .top, spacing: 8) {
                     VStack(alignment: .leading) {
-                        Text(tapped ? text : String(text.prefix(30)) ).font(.caption)
+                        Text(tapped ? text : String(text.prefix(30))).font(.caption)
                         if !tapped {
                             Button("Continue", action: {
                                 tapped.toggle()
@@ -25,21 +25,14 @@ enum Knock21 {
                     .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
                     Spacer()
                 }.padding()
-                
             }
-            
-            
         }
     }
-    
-    
-    
 }
 
 #Preview {
     Knock21.ContentView()
 }
-
 
 var text: String = """
 

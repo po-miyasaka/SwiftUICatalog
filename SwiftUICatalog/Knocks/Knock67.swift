@@ -7,33 +7,31 @@
 
 import SwiftUI
 
-
 enum Knock67 {
     struct ContentView: View {
-        @State var arr = [1,2,3,4,5,6,7,8,9,10]
+        @State var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         var body: some View {
-            List{
+            List {
                 ForEach(arr, id: \.self) { num in
                     HStack {
-                        Button("1"){
+                        Button("1") {
                             print("1", num)
                         }
                         .buttonStyle(PlainButtonStyle())
-                            .contentShape(Rectangle())
-                        Button("2"){
+                        .contentShape(Rectangle())
+                        Button("2") {
                             print("2", num)
                         }
                         .buttonStyle(PlainButtonStyle())
-                            .contentShape(Rectangle())
+                        .contentShape(Rectangle())
                         Button(action: {
                             print("3", num)
                         }, label: {
                             Text("3").font(.body).foregroundColor(.blue)
                         })
-                        .buttonStyle(PlainButtonStyle()) // This is essential
+                            .buttonStyle(PlainButtonStyle()) // This is essential
                             .contentShape(Rectangle())
                     }
-                    
                 }
                 .onMove { source, distination in
                     arr.move(fromOffsets: source, toOffset: distination)
@@ -42,7 +40,6 @@ enum Knock67 {
         }
     }
 }
-
 
 #Preview {
     Knock67.ContentView()

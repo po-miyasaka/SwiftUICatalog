@@ -7,18 +7,16 @@
 
 import SwiftUI
 enum Knock78 {
-    
-    
     struct ContentView: View {
         @State var offset: Float = .zero
         @State var height: Float = .zero
         @State var viewHeight: Float = .zero
-        
+
         var body: some View {
             VStack {
                 ZStack {
-                    ScrollViewReader { reader in
-                        
+                    ScrollViewReader { _ in
+
                         ScrollView {
                             GeometryReader { proxy in
                                 Color.clear
@@ -30,7 +28,7 @@ enum Knock78 {
                             }
                             .frame(height: 0)
                             LazyVStack {
-                                ForEach(0..<120, id: \.self) { _ in
+                                ForEach(0 ..< 120, id: \.self) { _ in
                                     Color.blue.frame(height: 100).padding()
                                         .clipShape(Circle())
                                 }
@@ -54,51 +52,48 @@ enum Knock78 {
                         )
                         .coordinateSpace(name: "scrollLayer")
                         .onPreferenceChange(OffsetPreferenceKey.self, perform: { v in
-                            
+
                             self.offset = Float(v)
                         })
                         .onPreferenceChange(HeightPreferenceKey.self, perform: { v in
-                            
+
                             self.height = Float(v)
                         })
-                        
+
                         .onPreferenceChange(ViewHeightPreferenceKey.self, perform: { v in
-                            
+
                             self.viewHeight = Float(v)
                         })
                     }
                 }
-                
+
                 Slider(value: Binding(get: { () -> Float in
-                    print(-offset , height, viewHeight)
-                    
+                    print(-offset, height, viewHeight)
+
                     return (-offset) / (height - viewHeight)
-                }, set: {value in
-                    #warning("make it scroll in accoding to slider value")
+                    }, set: { _ in
+                        #warning("make it scroll in accoding to slider value")
                 }))
-            }   
+            }
         }
     }
-    
+
     #Preview {
         Knock78.ContentView()
     }
-    
 }
 
 private struct OffsetPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = .zero
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {}
+    static func reduce(value _: inout CGFloat, nextValue _: () -> CGFloat) {}
 }
-
 
 private struct HeightPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = .zero
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {}
+    static func reduce(value _: inout CGFloat, nextValue _: () -> CGFloat) {}
 }
-
 
 private struct ViewHeightPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = .zero
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {}
+    static func reduce(value _: inout CGFloat, nextValue _: () -> CGFloat) {}
 }

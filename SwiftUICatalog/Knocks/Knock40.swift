@@ -18,10 +18,8 @@ enum Knock40 {
                 withTransaction(transaction) {
                     isPresentSheet = true
                 }
-                
+
             }).sheet(isPresented: $isPresentSheet, content: {
-                
-                
                 NavigationView {
                     VStack {
                         Button("modal", action: {
@@ -30,15 +28,13 @@ enum Knock40 {
                             withTransaction(transaction) {
                                 shouldShowFullModal = true
                             }
-                                
+
                         }).animation(.none).fullScreenCover(isPresented: $shouldShowFullModal, content: {
                             Text("Full Modal").animation(nil)
                         })
-                           
                     }
                 }.animation(.none)
-                
-                
+
             }).animation(nil)
         }
     }
@@ -47,5 +43,3 @@ enum Knock40 {
 #Preview {
     Knock40.ContentView()
 }
-
-

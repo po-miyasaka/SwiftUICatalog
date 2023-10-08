@@ -5,28 +5,26 @@
 //  Created by po_miyasaka on 2023/09/22.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 enum Knock42 {
-    
     @available(iOS 15, *)
     @MainActor
     struct ContentView: View {
         @ObservedObject var r = Repository()
-        @State var repos: Array<Repo> = []
+        @State var repos: [Repo] = []
         @State var query = ""
-        
+
         func search() {
             r.search(query: query, completion: { result in
-                withAnimation(.easeOut, {
+                withAnimation(.easeOut) {
                     repos += result
-                })
+                }
             })
         }
-        
+
         var body: some View {
-            
             ScrollView(.vertical) {
                 TextField("query", text: $query).onSubmit {
                     repos = []
@@ -36,21 +34,20 @@ enum Knock42 {
                 .onPreferenceChange(OffsetPK.self, perform: { offset in
                     print(offset)
                     // セルの再利用のためにスクロールしてしばらくすると音沙汰がなくなる。再表示される際に
-                }
-                )
-                
+                })
+
                 LazyVStack {
-                    
-                    GeometryReader(content: {reader in
-                        
+                    GeometryReader(content: { reader in
+
                         Color.clear.preference(
                             key: OffsetPK.self,
-                            
-                            value: reader.frame(in: .named("offset")).minY)
+
+                            value: reader.frame(in: .named("offset")).minY
+                        )
                     })
                     Section(
                         content: {
-                            ForEach(Array(zip(repos, repos.indices)) , id: \.0.id) { repository, index in
+                            ForEach(Array(zip(repos, repos.indices)), id: \.0.id) { repository, _ in
                                 Text(repository.name).task {
                                     if repository == repos.last {
                                         search()
@@ -58,7 +55,7 @@ enum Knock42 {
                                 }
                             }
                         },
-                        
+
                         footer: {
                             if r.isLoading {
                                 ProgressView().progressViewStyle(.circular)
@@ -69,29 +66,23 @@ enum Knock42 {
                         }
                     )
                 }
-                
             }
             .coordinateSpace(name: "offset")
-            
         }
     }
-    
 }
-
-
 
 @available(iOS 15, *)
 #Preview {
     Knock42.ContentView()
 }
 
-
 enum OffsetPK: PreferenceKey {
     static var defaultValue: CGFloat = .zero
-    
+
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
         value = nextValue()
     }
-    
+
     typealias Value = CGFloat
 }

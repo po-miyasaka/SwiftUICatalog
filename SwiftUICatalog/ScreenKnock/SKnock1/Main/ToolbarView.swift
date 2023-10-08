@@ -10,15 +10,13 @@ import SwiftUI
 extension MainView {
     @ViewBuilder
     var toolbarView: some View {
-        GeometryReader { proxy in
+        GeometryReader { _ in
             VStack {
                 HStack(alignment: .top, spacing: 0) {
-                    
                     ForEach(pageArray, id: \.title) { page in
                         Button(action: {
-                            
                             if page.tag == .create {
-                                    viewModel.shouldShowCreateModal = true
+                                viewModel.shouldShowCreateModal = true
 
                             } else if page.tag == .shorts {
                                 viewModel.current = page.tag
@@ -31,7 +29,7 @@ extension MainView {
                             if case .create = page.tag {
                                 Image(systemName: page.imageName)
                                     .resizable()
-                                    .foregroundColor(.gray).frame( width: 33, height: 33)
+                                    .foregroundColor(.gray).frame(width: 33, height: 33)
                             } else {
                                 VStack {
                                     Image(systemName: page.imageName).resizable().scaledToFit().frame(height: 22).foregroundColor(.gray)

@@ -15,7 +15,6 @@ extension View {
             self
         }
     }
-
 }
 
 let sampleText = """

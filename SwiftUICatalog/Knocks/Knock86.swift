@@ -5,25 +5,22 @@
 //  Created by po_miyasaka on 2023/09/28.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 enum Knock86 {
-    
     @available(iOS 15, *)
     @MainActor
     struct ContentView: View {
         @ObservedObject var r = Repository()
-        @State var repos: Array<Repo> = []
+        @State var repos: [Repo] = []
         @State var query = ""
-        
+
         var body: some View {
             ScrollView {
                 LazyVStack(spacing: 1, pinnedViews: .sectionHeaders) {
-                    
                     Section(content: {
-                        
-                        ForEach(Array(zip(repos, repos.indices)) , id: \.0.id) { repository, index in
-                            
+                        ForEach(Array(zip(repos, repos.indices)), id: \.0.id) { repository, _ in
+
                             VStack(alignment: .leading) {
                                 HStack {
                                     Text(repository.name).task {
@@ -36,12 +33,10 @@ enum Knock86 {
                                 .padding(.horizontal)
                             }
                             .frame(minHeight: 60)
-                            
-                            
                         }
                         .background(content: { Color.white })
                         .padding(.horizontal)
-                        
+
                     }, header: {
                         ZStack {
                             Color(uiColor: .groupTableViewBackground)
@@ -54,7 +49,7 @@ enum Knock86 {
                                 }
                                 .textFieldStyle(RoundedBorderTextFieldStyle()).padding()
                         }
-                        
+
                     }, footer: {
                         if r.isLoading {
                             ProgressView().progressViewStyle(.circular)
@@ -62,12 +57,8 @@ enum Knock86 {
                         } else {
                             ProgressView().hidden()
                         }
-                    }
-                    )
-                    
+                    })
                 }
-                
-                
             }
             .clipped()
             .task {
@@ -75,16 +66,11 @@ enum Knock86 {
                     withAnimation {
                         repos += result
                     }
-                    
                 }
             }
-            
         }
     }
-    
 }
-
-
 
 @available(iOS 15, *)
 #Preview {

@@ -8,12 +8,11 @@
 import SwiftUI
 
 enum Knock25 {
-    
     struct SectionData: Identifiable {
         let id: String
         let rows: [String]
     }
-    
+
     struct ContentView: View {
         @State var selected: IndexSet = .init()
         @State var sections: [SectionData] = [.init(id: "Pokemon", rows: ["pikachu", "kabigon"]), .init(id: "Trainer", rows: ["Takeshi", "Kasumi"])]
@@ -23,15 +22,12 @@ enum Knock25 {
                     if #available(iOS 15.0, *) {
                         Section(section.id) {
                             ForEach(section.rows, id: \.self) { row in
-                                Button(row, action: {
-                                    
-                                })
+                                Button(row, action: {})
                             }.onDelete(perform: { offsets in
-                                offsets.forEach { offset in
-                                    
+                                offsets.forEach { _ in
                                 }
                                 selected = offsets
-                                print(section.id, offsets.map{$0})
+                                print(section.id, offsets.map { $0 })
                             })
                         }
                     } else {
@@ -39,29 +35,21 @@ enum Knock25 {
                             ForEach(section.rows, id: \.self) { row in
                                 Text(row)
                             }.onDelete(perform: { offsets in
-                                offsets.forEach { offset in
-                                    
+                                offsets.forEach { _ in
                                 }
                                 selected = offsets
-                                print(section.id, offsets.map{$0})
+                                print(section.id, offsets.map { $0 })
                             })
                         }
                     }
-                    
+
                 }.toolbar(content: {
                     EditButton()
                 })
             }
-            
         }
-        
-        
     }
 }
-
-
-
-
 
 #Preview {
     Knock25.ContentView()

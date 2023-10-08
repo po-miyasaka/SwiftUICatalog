@@ -1,23 +1,20 @@
-import SwiftUI
 import Combine
+import SwiftUI
 
 enum Knock45 {
-    
     @available(iOS 15, *)
     @MainActor
     struct ContentView: View {
         @ObservedObject var r = Repository()
-        @State var repos: Array<Repo> = []
+        @State var repos: [Repo] = []
         @State var query = ""
-        
+
         var body: some View {
             ScrollView {
                 LazyVStack(spacing: 1, pinnedViews: .sectionHeaders) {
-                    
                     Section(content: {
-                        
-                        ForEach(Array(zip(repos, repos.indices)) , id: \.0.id) { repository, index in
-                            
+                        ForEach(Array(zip(repos, repos.indices)), id: \.0.id) { repository, _ in
+
                             VStack(alignment: .leading) {
                                 HStack {
                                     Text(repository.name).task {
@@ -30,12 +27,10 @@ enum Knock45 {
                                 .padding(.horizontal)
                             }
                             .frame(minHeight: 60)
-                            
-                            
                         }
                         .background(content: { Color.white })
                         .padding(.horizontal)
-                        
+
                     }, header: {
                         ZStack {
                             Color(uiColor: .groupTableViewBackground)
@@ -48,7 +43,7 @@ enum Knock45 {
                                 }
                                 .textFieldStyle(RoundedBorderTextFieldStyle()).padding()
                         }
-                        
+
                     }, footer: {
                         if r.isLoading {
                             ProgressView().progressViewStyle(.circular)
@@ -56,12 +51,8 @@ enum Knock45 {
                         } else {
                             ProgressView().hidden()
                         }
-                    }
-                    )
-                    
+                    })
                 }
-                
-                
             }
             .clipped()
             .task {
@@ -69,16 +60,11 @@ enum Knock45 {
                     withAnimation {
                         repos += result
                     }
-                    
                 }
             }
-            
         }
     }
-    
 }
-
-
 
 @available(iOS 15, *)
 #Preview {

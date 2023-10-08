@@ -5,10 +5,10 @@
 //  Created by po_miyasaka on 2023/10/07.
 //
 
-import SwiftUI
 import AVFoundation
 import AVKit
 import Combine
+import SwiftUI
 
 enum RecommendedType: Hashable {
     case ad(AdData)
@@ -17,7 +17,7 @@ enum RecommendedType: Hashable {
 }
 
 class ViewModel: NSObject, ObservableObject {
-    @Published var playingVideo: VideoData? = nil
+    @Published var playingVideo: VideoData?
     @Published var shouldReloadVideoIncrement: Int = 0
     private var pauseSubject: PassthroughSubject<Void, Never> = .init()
     var rect: CGRect = .zero
@@ -27,7 +27,6 @@ class ViewModel: NSObject, ObservableObject {
     @Published var isFull: Bool = false
     @Published var shouldShowCreateModal: Bool = false
     @Published var recommendedObjects: [RecommendedType] = [
-        
         .video(.init(title: "video1", color: .red)),
         .video(.init(title: "video2", color: .green)),
         .ad(.init(title: "ad1", color: .purple)),
@@ -44,7 +43,7 @@ class ViewModel: NSObject, ObservableObject {
                 .init(title: "short7", color: .white),
                 .init(title: "short8", color: .red),
                 .init(title: "short9", color: .yellow),
-                .init(title: "short10", color: .red)
+                .init(title: "short10", color: .red),
             ]
         ),
         .video(.init(title: "video5", color: .red)),
@@ -66,30 +65,28 @@ class ViewModel: NSObject, ObservableObject {
                 .init(title: "short17", color: .red),
                 .init(title: "short18", color: .blue),
                 .init(title: "short19", color: .green),
-                .init(title: "short20", color: .red)
+                .init(title: "short20", color: .red),
             ]
         ),
     ]
-    
+
     var pausePublisher: AnyPublisher<Void, Never> {
         pauseSubject.eraseToAnyPublisher()
     }
-    
+
     func pause() {
         pauseSubject.send(())
     }
-    
+
     func select(video: VideoData, rect: CGRect) {
         self.rect = rect
-        
+
         playingVideo = video
         shouldReloadVideoIncrement += 1
-        
     }
 }
 
 struct VideoData: Identifiable, Hashable {
-
     let title: String
     let color: Color
     let id = UUID()
@@ -98,28 +95,26 @@ struct VideoData: Identifiable, Hashable {
         self.title = title
         self.color = color
     }
-    
+
     var thumbnail: UIImage {
         UIImage(named: "shichimi")!
     }
-    
+
     var videoItem: AVPlayerItem = {
         var videoName: String = "movie"
         var videoType: String = "mp4"
-        
+
         let url = Bundle.main.url(forResource: videoName, withExtension: videoType)!
         return AVPlayerItem(url: url)
     }()
-    
 
-    
     static func == (lhs: VideoData, rhs: VideoData) -> Bool {
         lhs.id == rhs.id
     }
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-    
 }
 
 #warning("viewModelにまとめるとカクつくので分ける。")
@@ -135,10 +130,4 @@ struct User: Hashable {
     var thumbnail: UIImage {
         UIImage(named: "kabigon2")!
     }
-    
-    
 }
-
-
-
-

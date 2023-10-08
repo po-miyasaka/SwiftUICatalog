@@ -11,8 +11,8 @@ enum Knock71 {
     struct ContentView: View {
         @State var showActivity: Bool = false
         var body: some View {
-            Toggle(isOn: $showActivity, label: {Text("Show Activity")})
-                .sheet(isPresented: $showActivity,content: {
+            Toggle(isOn: $showActivity, label: { Text("Show Activity") })
+                .sheet(isPresented: $showActivity, content: {
                     UIActivityViewControllerRepresentable()
                 })
         }
@@ -20,22 +20,16 @@ enum Knock71 {
 }
 
 struct UIActivityViewControllerRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UIActivityViewController {
+    func makeUIViewController(context _: Context) -> UIActivityViewController {
         let items: [Any] = ["Hello, World!", URL(string: "https://www.example.com/")!]
-            
-           return  UIActivityViewController(activityItems: items, applicationActivities: nil)
+
+        return UIActivityViewController(activityItems: items, applicationActivities: nil)
     }
-    
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
-        
-    }
-    
+
+    func updateUIViewController(_: UIActivityViewController, context _: Context) {}
+
     typealias UIViewControllerType = UIActivityViewController
-    
-    
 }
-
-
 
 #Preview {
     Knock71.ContentView()

@@ -16,22 +16,19 @@ struct ShortsView: View {
             case playingView
             case homeView
         }
-        
+
         let source: Source
         let data: ShortData
-        
     }
-   
+
     @Binding var transitionContext: TransitionContext?
-    
+
     var body: some View {
         let height = screenSize.height - safeArea().bottom - toolbarHeight
         ZStack(alignment: .topLeading) {
-            
             ScrollView {
                 LazyVStack {
-                    ZStack() {
-                        
+                    ZStack {
                         transitionContext?.data.color.frame(height: height)
                         Text("shorts")
                     }
@@ -50,6 +47,5 @@ struct ShortsView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        
     }
 }

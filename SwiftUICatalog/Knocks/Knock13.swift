@@ -8,12 +8,11 @@
 import SwiftUI
 
 enum Knock13 {
-    
     struct SectionData: Identifiable {
         let id: String
         let rows: [String]
     }
-    
+
     struct ContentView: View {
         @State var sections: [SectionData] = [.init(id: "Pokemon", rows: ["pikachu", "kabigon"]), .init(id: "Trainer", rows: ["Takeshi", "Kasumi"])]
         var body: some View {
@@ -28,7 +27,6 @@ enum Knock13 {
                                     }
                                 }
                             }
-                            
                         }
                     }.listStyle(PlainListStyle())
                 }
@@ -36,12 +34,8 @@ enum Knock13 {
                 // Fallback on earlier versions
                 Text("not16.0")
             }
-            
         }
     }
-    
-    
-
 }
 
 #Preview {

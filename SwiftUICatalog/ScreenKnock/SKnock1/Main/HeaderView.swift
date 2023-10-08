@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct HeaderView<Attached: View>: View {
-    
     var attachedViewHeight: CGFloat
     @ViewBuilder var attachedView: () -> Attached
     var body: some View {
@@ -20,11 +19,9 @@ struct HeaderView<Attached: View>: View {
                             .resizable()
                             .frame(width: 25, height: 25)
                             .foregroundColor(.red)
-                        Text("YouTube").foregroundColor(.white).bold().font(.title).frame(maxWidth: .infinity,  alignment: .leading)
-                        
-                    }.onTapGesture {
-                        
-                    }
+                        Text("YouTube").foregroundColor(.white).bold().font(.title).frame(maxWidth: .infinity, alignment: .leading)
+
+                    }.onTapGesture {}
                 })
                 Image(systemName: "bell.badge").resizable().scaledToFit()
                     .frame(width: 22, height: 22)
@@ -36,4 +33,3 @@ struct HeaderView<Attached: View>: View {
         .padding(8)
     }
 }
-

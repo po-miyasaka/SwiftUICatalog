@@ -14,7 +14,6 @@ import UIKit
     impactFeedbackgenerator.impactOccurred()
 }
 
-
 let defaultTags: [HashTag] = [
     .init(tag: "love"),
     .init(tag: "instagood"),
@@ -69,7 +68,7 @@ let defaultTags: [HashTag] = [
     .init(tag: "cat"),
     .init(tag: "instamood"),
     .init(tag: "igers"),
-    
+
     .init(tag: "sun"),
     .init(tag: "flowers"),
     .init(tag: "sky"),
@@ -112,7 +111,6 @@ let defaultTags: [HashTag] = [
     .init(tag: "blackandwhite"),
 ]
 
-
 // https://www.hackingwithswift.com/quick-start/swiftui/how-to-detect-the-location-of-a-tap-inside-a-view
 struct TouchLocatingView: UIViewRepresentable {
     // The types of touches users want to be notified about
@@ -134,7 +132,7 @@ struct TouchLocatingView: UIViewRepresentable {
     // Whether touch information should continue after the user's finger has left the view
     var limitToBounds = true
 
-    func makeUIView(context: Context) -> TouchLocatingUIView {
+    func makeUIView(context _: Context) -> TouchLocatingUIView {
         // Create the underlying UIView, passing in our configuration
         let view = TouchLocatingUIView()
         view.onUpdate = onUpdate
@@ -143,8 +141,7 @@ struct TouchLocatingView: UIViewRepresentable {
         return view
     }
 
-    func updateUIView(_ uiView: TouchLocatingUIView, context: Context) {
-    }
+    func updateUIView(_: TouchLocatingUIView, context _: Context) {}
 
     // The internal UIView responsible for catching taps
     class TouchLocatingUIView: UIView {
@@ -166,28 +163,28 @@ struct TouchLocatingView: UIViewRepresentable {
         }
 
         // Triggered when a touch starts.
-        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        override func touchesBegan(_ touches: Set<UITouch>, with _: UIEvent?) {
             guard let touch = touches.first else { return }
             let location = touch.location(in: self)
             send(location, forEvent: .started)
         }
 
         // Triggered when an existing touch moves.
-        override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        override func touchesMoved(_ touches: Set<UITouch>, with _: UIEvent?) {
             guard let touch = touches.first else { return }
             let location = touch.location(in: self)
             send(location, forEvent: .moved)
         }
 
         // Triggered when the user lifts a finger.
-        override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        override func touchesEnded(_ touches: Set<UITouch>, with _: UIEvent?) {
             guard let touch = touches.first else { return }
             let location = touch.location(in: self)
             send(location, forEvent: .ended)
         }
 
         // Triggered when the user's touch is interrupted, e.g. by a low battery alert.
-        override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        override func touchesCancelled(_ touches: Set<UITouch>, with _: UIEvent?) {
             guard let touch = touches.first else { return }
             let location = touch.location(in: self)
             send(location, forEvent: .ended)
@@ -223,7 +220,6 @@ struct TouchLocater: ViewModifier {
 // A new method on View that makes it easier to apply our touch locater view.
 extension View {
     func onTouch(type: TouchLocatingView.TouchType = .all, limitToBounds: Bool = true, perform: @escaping (CGPoint) -> Void) -> some View {
-        self.modifier(TouchLocater(type: type, limitToBounds: limitToBounds, perform: perform))
+        modifier(TouchLocater(type: type, limitToBounds: limitToBounds, perform: perform))
     }
 }
-

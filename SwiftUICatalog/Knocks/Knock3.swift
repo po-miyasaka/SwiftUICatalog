@@ -10,21 +10,15 @@ enum Knock3 {
     struct ContentView: View {
         var body: some View {
             VStack {
-                
-                    Image("kabigon2", bundle: nil)
-                        .resizable()
-                        .scaledToFill()
-                        .frame( maxWidth: 150, maxHeight: 150)
-                        
-                        .clipShape(Circle())
-                        
-                        
-                        
- 
+                Image("kabigon2", bundle: nil)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(maxWidth: 150, maxHeight: 150)
+
+                    .clipShape(Circle())
             }
         }
     }
-    
 }
 
 #Preview {

@@ -1,6 +1,5 @@
-
-import SwiftUI
 import Combine
+import SwiftUI
 
 enum AKnock9 {
     @available(iOS 17.0, *)
@@ -11,9 +10,7 @@ enum AKnock9 {
         let viewSize: CGSize
         var body: some View {
             ScrollView(.horizontal) {
-                
                 LazyHStack(spacing: 8) {
-                   
                     ForEach(arr) { tag in
                         GeometryReader { proxy in
                             let rect = proxy.frame(in: .named("ScrollView"))
@@ -24,10 +21,9 @@ enum AKnock9 {
                             let offsetSign: CGFloat = isGoingRight ? -1 : 1
                             let minMargin: CGFloat = 32
                             let maxOffset = minMargin
-                            
+
                             let calculatedOffset: CGFloat = offsetSign * min(offsetAbs, maxOffset)
-                            
-                            
+
                             ZStack(alignment: .center) {
                                 Color.white
                                 Text(tag.tag).foregroundStyle(.black).font(.title)
@@ -38,7 +34,6 @@ enum AKnock9 {
                             .offset(x: when ? calculatedOffset : 0)
                         }
                         .frame(width: 200)
-                        
                     }
                 }
                 .modifier(ScrollViewOffsetModifier(scrollVelocity: $scrollVelocity, isGoingRight: $isGoingRight))
@@ -55,7 +50,7 @@ enum AKnock9 {
         @Binding var isGoingRight: Bool
 
         func body(content: Content) -> some View {
-            return content
+            content
                 .overlay(
                     GeometryReader { proxy in
                         Color.blue.opacity(0.0001)

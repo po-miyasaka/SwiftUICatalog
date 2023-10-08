@@ -8,21 +8,17 @@
 import SwiftUI
 
 enum Knock48 {
-    
     struct ContentView: View {
         @AppStorage("str") var str: String = "str"
-  
+
         var body: some View {
             VStack {
                 TextField(str, text: $str)
             }
-            
         }
     }
-    
 }
 
 #Preview {
     Knock48.ContentView()
 }
-

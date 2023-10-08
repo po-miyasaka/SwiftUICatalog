@@ -15,26 +15,20 @@ enum Knock84 {
                     ZoomImage(size: proxy.size, imageName: "kabigon2")
                 }
             }
-            
         }
     }
-
 }
 
 struct ZoomImage: UIViewRepresentable {
     let size: CGSize
     let imageName: String
-    func makeUIView(context: Context) -> ZoomImageView {
+    func makeUIView(context _: Context) -> ZoomImageView {
         ZoomImageView(size: size, image: UIImage(named: imageName)!)
     }
-    
-    func updateUIView(_ uiView: ZoomImageView, context: Context) {
-        
-    }
-    
+
+    func updateUIView(_: ZoomImageView, context _: Context) {}
+
     typealias UIViewType = ZoomImageView
-    
-    
 }
 
 class ZoomImageView: UIView, UIScrollViewDelegate {
@@ -68,18 +62,19 @@ class ZoomImageView: UIView, UIScrollViewDelegate {
             uiImageView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             uiImageView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             uiImageView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            uiImageView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
+            uiImageView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
         ])
     }
 
-    required init?(coder: NSCoder) {
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return uiImageView
+    func viewForZooming(in _: UIScrollView) -> UIView? {
+        uiImageView
     }
 }
+
 #Preview {
     Knock84.ContentView()
 }

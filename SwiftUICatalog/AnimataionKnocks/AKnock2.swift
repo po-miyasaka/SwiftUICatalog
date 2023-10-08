@@ -5,11 +5,10 @@
 //  Created by po_miyasaka on 2023/09/28.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 enum AKnock2 {
-    
     @available(iOS 15.0, *)
     struct ContentView: View {
         @State var isOn = false
@@ -18,10 +17,9 @@ enum AKnock2 {
                 isOn ? Color.secondary : Color.white
                 SkyButton(isOn: $isOn)
             }.ignoresSafeArea()
-            
         }
     }
-    
+
     @available(iOS 15.0, *)
     struct SkyButton: View, Sendable {
         @State var progress: Double = 0.0
@@ -34,12 +32,12 @@ enum AKnock2 {
             _isNight = isOn
             isNightForBackGround = isOn.wrappedValue
         }
+
         var body: some View {
             button
         }
-        
+
         var button: some View {
-            
             ZStack(alignment: .center) {
                 isNightForBackGround ? Color.black : Color.blue
                 cloudBack.rotationEffect(.degrees(isNight ? -180.0 : 0.0), anchor: .init(x: 3, y: 0))
@@ -53,28 +51,26 @@ enum AKnock2 {
                 meteo
                 buttonOutLine
             }
-            
+
             .onTapGesture {
-                
                 withAnimation(Animation.spring(duration: 0.4, bounce: 0.4, blendDuration: 0.3)) {
                     isNight.toggle()
                 }
                 if !isNightForBackGround {
                     isNightForBackGround = true
-                    
+
                 } else {
                     withAnimation(Animation.spring(duration: 0.4, bounce: 0.0, blendDuration: 0.3)) {
                         isNightForBackGround = false
                     }
-                    
                 }
-                
+
                 shootingProgress = 0
                 Task { @MainActor in
                     triggerHaptic()
                 }
                 Task {
-                    try await Task.sleep(nanoseconds:2_000_000_000)
+                    try await Task.sleep(nanoseconds: 2_000_000_000)
                     if isNight {
                         withAnimation(.easeInOut(duration: 1.4)) {
                             shootingProgress = 1
@@ -86,7 +82,7 @@ enum AKnock2 {
             .clipShape(Capsule().size(width: 150, height: 60))
             .contentShape(Capsule().size(width: 150, height: 60))
         }
-        
+
         @ViewBuilder
         var cloud: some View {
             let cloudParts: [(CGFloat, CGFloat, CGFloat, CGFloat)] = [
@@ -101,15 +97,14 @@ enum AKnock2 {
                 (-10, 60, 50, 50),
                 (0, 60, 50, 50),
             ]
-            
+
             ForEach(cloudParts, id: \.0) { offsetX, offsetY, width, height in
-                cloudPart(color: { Color.white }, offsetX: offsetX, offsetY: offsetY, width:width, height: height)
+                cloudPart(color: { Color.white }, offsetX: offsetX, offsetY: offsetY, width: width, height: height)
             }
         }
-        
+
         @ViewBuilder
         var cloudBack: some View {
-            
             let cloudParts: [(CGFloat, CGFloat, CGFloat, CGFloat)] = [
                 (-60, 25, 30, 30),
                 (-30, 20, 30, 30),
@@ -117,15 +112,14 @@ enum AKnock2 {
                 (0, 25, 40, 40),
                 (25, 25, 40, 40),
                 (35, 20, 50, 50),
-                (65, -15, 50, 50)
+                (65, -15, 50, 50),
             ]
-            
+
             ForEach(cloudParts, id: \.0) { offsetX, offsetY, width, height in
-                cloudPart(color: { Color.cyan }, offsetX: offsetX, offsetY: offsetY, width:width, height: height)
+                cloudPart(color: { Color.cyan }, offsetX: offsetX, offsetY: offsetY, width: width, height: height)
             }
-            
         }
-        
+
         @ViewBuilder
         func cloudPart(color: () -> some View, offsetX: CGFloat, offsetY: CGFloat, width: CGFloat, height: CGFloat) -> some View {
             color()
@@ -133,9 +127,7 @@ enum AKnock2 {
                 .clipShape(Circle())
                 .offset(x: offsetX, y: offsetY)
         }
-        
-        
-        
+
         @ViewBuilder
         var mainStarLight: some View {
             Color.white.frame(width: 300, height: 300).clipShape(Circle()).opacity(isNight ? 0.0 : 0.3)
@@ -144,19 +136,19 @@ enum AKnock2 {
             Color.white.frame(width: 90, height: 90).clipShape(Circle()).opacity(0.07)
             mainStar
         }
-        
+
         var buttonOutLine: some View {
             Rectangle().clipShape(Capsule().stroke(lineWidth: 3)).frame(width: 150, height: 60).opacity(isNight ? 0.1 : 0.3).offset(x: 1, y: 1).shadow(color: .white, radius: 2, x: 2, y: 2)
         }
-        
+
         @State var starScale = 1.0
         @State var starScale2 = 1.0
         @State var starScale3 = 1.0
-        
+
         var twinkle: some View {
             Image("twinkle", bundle: .main).renderingMode(.template).resizable().foregroundStyle(.white)
         }
-        
+
         @ViewBuilder
         var stars: some View {
             Group {
@@ -166,7 +158,7 @@ enum AKnock2 {
                 twinkle.frame(width: 20 * starScale, height: 20 * starScale).offset(x: -35, y: -20)
                 twinkle.frame(width: 15 * starScale2, height: 15 * starScale2).offset(x: -50, y: 15)
                 twinkle.frame(width: 20 * starScale3, height: 20 * starScale3).offset(x: 10, y: 20)
-                
+
             }.onAppear(perform: {
                 withAnimation(Animation.easeIn(duration: 0.9).repeatForever(autoreverses: true)) {
                     starScale = 1.6
@@ -179,35 +171,35 @@ enum AKnock2 {
                 }
             })
         }
-        
+
         @ViewBuilder
         var mainStar: some View {
             Color.yellow.frame(width: 45, height: 45).clipShape(Circle()).opacity(0.9).shadow(color: .white.opacity(0.5), radius: 0.1, x: -2, y: -2).shadow(color: .black.opacity(0.5), radius: 2, x: 2, y: 2)
             Color.white.frame(width: 43, height: 43).clipShape(Circle()).opacity(0.6).shadow(color: .white, radius: 2, x: -2, y: -2)
             Color.yellow.frame(width: 42, height: 42).clipShape(Circle()).opacity(0.9).shadow(color: .white.opacity(0.9), radius: 0.1, x: -2, y: -2).shadow(color: .black.opacity(0.3), radius: 2, x: 2, y: 2)
         }
-        
+
         var moon: some View {
             Group {
-                Color.init(uiColor: .lightGray).frame(width: 45, height: 45).clipShape(Circle()).opacity(0.99).offset(x: 45)
+                Color(uiColor: .lightGray).frame(width: 45, height: 45).clipShape(Circle()).opacity(0.99).offset(x: 45)
                 Color.gray.frame(width: 10, height: 10).clipShape(Circle()).opacity(0.99).offset(x: 55, y: 5)
                 Color.gray.frame(width: 15, height: 15).clipShape(Circle()).opacity(0.99).offset(x: 35, y: 0)
                 Color.gray.frame(width: 4, height: 4).clipShape(Circle()).opacity(0.99).offset(x: 55, y: -10)
             }
         }
-        
+
         @State var shootingProgress: Double = 0.1
         var meteo: some View {
             Color.white.clipShape(Capsule()).offset(y: -5).modifier(Shooting(animatableData: shootingProgress)).rotationEffect(.degrees(-40), anchor: .center).opacity(0.9)
         }
     }
-    
+
     struct Shooting: AnimatableModifier {
         var animatableData: Double
-        
+
         func body(content: Content) -> some View {
             content.offset(x: 60 - (120 * animatableData))
-                .frame(width: max(15 - (abs(15 - 30 * (animatableData))), 0), height: max(2 - (abs(2 - 4 * (animatableData))), 0))
+                .frame(width: max(15 - abs(15 - 30 * animatableData), 0), height: max(2 - abs(2 - 4 * animatableData), 0))
         }
     }
 }

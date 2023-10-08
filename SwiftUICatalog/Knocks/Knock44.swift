@@ -5,40 +5,38 @@
 //  Created by po_miyasaka on 2023/09/22.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 enum Knock44 {
-    
     @available(iOS 15, *)
     @MainActor
     struct ContentView: View {
         @ObservedObject var r = Repository()
-        @State var repos: Array<Repo> = []
+        @State var repos: [Repo] = []
         @State var query = ""
-        
+
         func search() {
             r.search(query: query, completion: { result in
-                withAnimation(.easeOut, {
+                withAnimation(.easeOut) {
                     repos += result
-                })
-                
+                }
+
             })
         }
-        
+
         var body: some View {
-            
             VStack {
                 TextField("query", text: $query).onSubmit {
                     repos = []
                     search()
                 }
                 .textFieldStyle(RoundedBorderTextFieldStyle()).padding()
-                
+
                 List {
                     Section(
                         content: {
-                            ForEach(Array(zip(repos, repos.indices)) , id: \.0.id) { repository, index in
+                            ForEach(Array(zip(repos, repos.indices)), id: \.0.id) { repository, _ in
                                 Text(repository.name).task {
                                     if repository == repos.last {
                                         search()
@@ -56,13 +54,9 @@ enum Knock44 {
                     )
                 }
             }
-            
         }
     }
-    
 }
-
-
 
 @available(iOS 15, *)
 #Preview {

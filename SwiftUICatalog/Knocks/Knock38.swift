@@ -14,13 +14,9 @@ enum Knock38 {
             Button("show", action: {
                 isPresentSheet = true
             }).sheet(isPresented: $isPresentSheet, content: {
-                
-                
                 NavigationView {
                     VStack {
                         Text("sheet")
-                        
-                        
                     }
                 }.if {
                     if #available(iOS 15.0, *) {
@@ -29,8 +25,7 @@ enum Knock38 {
                         // Fallback on earlier versions
                     }
                 }
-                
-                
+
             })
         }
     }
@@ -39,4 +34,3 @@ enum Knock38 {
 #Preview {
     Knock38.ContentView()
 }
-

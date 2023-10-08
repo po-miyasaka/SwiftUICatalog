@@ -11,7 +11,7 @@ struct VideoCell: View {
     let videoData: VideoData
     @State var rect: CGRect = .zero
     let playingVideoNameSpaceID: Namespace.ID?
-    let onTap: (VideoData, CGRect) -> ()
+    let onTap: (VideoData, CGRect) -> Void
     var body: some View {
         VStack {
             GeometryReader { proxy in
@@ -24,10 +24,10 @@ struct VideoCell: View {
                 onTap(videoData, rect)
             }
             .frame(minHeight: 200).clipped()
-                
+
             HStack(alignment: .top) {
                 Image(uiImage: videoData.user.thumbnail).resizable().scaledToFit().frame(width: 25, height: 25).clipShape(Circle()).padding(.vertical, 4)
-                VStack (alignment: .leading) {
+                VStack(alignment: .leading) {
                     Text(videoData.title).bold().font(.body).lineLimit(2)
                     HStack {
                         Text("\(videoData.user.name) - \(videoData.user.note)").font(.caption)
@@ -35,14 +35,13 @@ struct VideoCell: View {
                 }
                 .font(.caption)
                 .frame(maxWidth: .infinity, alignment: .topLeading)
-                
+
                 Image(systemName: "ellipsis")
-                    .rotationEffect(.degrees(90),anchor: .center)
+                    .rotationEffect(.degrees(90), anchor: .center)
                     .frame(maxWidth: 10, maxHeight: 10)
                     .padding(.vertical, 8)
-                
+
             }.padding(.horizontal)
         }
-        
     }
 }

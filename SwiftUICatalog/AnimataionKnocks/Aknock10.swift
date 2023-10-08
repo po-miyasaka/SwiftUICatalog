@@ -1,14 +1,12 @@
-
-
 // Using this library
 // https://github.com/ryanlintott/LookingGlassUI
 
-import GameplayKit
-import SwiftUI
 import Combine
 import CoreMotion
-import Metal
+import GameplayKit
 import LookingGlassUI
+import Metal
+import SwiftUI
 enum AKnock10 {
     @available(iOS 17.0, *)
     struct ContentView: View {
@@ -21,15 +19,15 @@ enum AKnock10 {
             let cgImage = image!.cgImage
             return Image(cgImage!, scale: 1, label: Text(""))
         }()
+
         let motionManager = CMMotionManager()
 
         var body: some View {
-            VStack (alignment: .leading){
-                
+            VStack(alignment: .leading) {
 //                Text("Pitch: \(pitch)")
 //                Text("Roll: \(roll)")
 //                Text("Yaw: \(yaw)")
-                
+
                 VStack {
                     Image("kabigon3").resizable()
                         .frame(width: 200, height: 200)
@@ -40,15 +38,14 @@ enum AKnock10 {
                     }
                     Image("kabigon3").resizable()
                         .frame(width: 200, height: 200)
-                    .parallax(multiplier: 40, maxOffset: 100)
-                    
+                        .parallax(multiplier: 40, maxOffset: 100)
                 }
-                
+
 //                Canvas{ context, size in
 //                    var imageContext = context
-//                    
+//
 //                    //                    imageContext.addFilter(.alphaThreshold(min: 0.4, color: .black))
-//                        
+//
 //                    imageContext.addFilter(
 //                          .colorShader(
 //                            ShaderLibrary.holographic(.image(image), .float(pitch))
@@ -58,25 +55,24 @@ enum AKnock10 {
 //                        let image = CGPoint(x: size.width / 2, y: size.height / 2)
 //                        graphicsContext.draw(context.resolveSymbol(id: ID.image)!, at: image)
 //                    })
-//                    
+//
 //                } symbols: {
 //                    RefreshImage(image: UIImage(systemName: "pencil.circle.fill")!).tag(ID.image)
 //                }
 //                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .onAppear {
+                .onAppear {
 //                        startMotionUpdates()
-                    }
-                    .onDisappear {
-                        motionManager.stopDeviceMotionUpdates()
-                    }
+                }
+                .onDisappear {
+                    motionManager.stopDeviceMotionUpdates()
+                }
             }
         }
-        
- 
+
         func startMotionUpdates() {
             if motionManager.isDeviceMotionAvailable {
                 motionManager.deviceMotionUpdateInterval = 0.1
-                motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { (motion, error) in
+                motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { motion, _ in
                     if let attitude = motion?.attitude {
                         self.pitch = attitude.pitch
                         self.roll = attitude.roll
@@ -85,6 +81,7 @@ enum AKnock10 {
                 }
             }
         }
+
         struct RefreshImage: View {
             @State var image: UIImage
             @State var angle: Int = 0
@@ -93,18 +90,14 @@ enum AKnock10 {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 200, height: 200)
-                
             }
-            
-            
         }
     }
+
     enum ID: CaseIterable, Hashable {
         case image
     }
-    
 }
-
 
 @available(iOS 17.0, *)
 #Preview {

@@ -12,21 +12,18 @@ enum Knock51 {
             Image("kabigon", bundle: nil)
                 .resizable()
                 .scaledToFit()
-                .frame(maxWidth:150 ,maxHeight: 200)
-                .onLongPressGesture(perform: {
-                    
-                })
+                .frame(maxWidth: 150, maxHeight: 200)
+                .onLongPressGesture(perform: {})
                 .contextMenu(menuItems: {
                     VStack {
                         Text("a")
                         Text("b")
                     }
                 })
-            
         }
     }
-    
 }
+
 #Preview {
     Knock51.ContentView()
 }

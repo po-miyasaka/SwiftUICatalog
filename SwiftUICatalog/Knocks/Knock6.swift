@@ -12,56 +12,48 @@ enum Knock6 {
         var body: some View {
             if #available(iOS 16.0, *) {
                 NavigationStack {
-                    VStack (alignment: .center) {
+                    VStack(alignment: .center) {
                         image()
                         Text("カビゴンの画面").font(.caption)
                     }.navigationTitle("Kabigon")
                 }
             } else {
                 NavigationView {
-                    VStack (alignment: .center) {
+                    VStack(alignment: .center) {
                         image()
                         Text("カビゴンの画面").font(.caption)
                     }.navigationTitle("Kabigon")
                 }
             }
-            
         }
-        
+
         func image() -> some View {
             Image("kabigon2", bundle: nil)
                 .resizable()
                 .scaledToFill()
-                .frame( maxWidth: 250, maxHeight: 250)
+                .frame(maxWidth: 250, maxHeight: 250)
                 .clipShape(Circle())
                 ._overlay()
-                .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
+                .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 1/*@END_MENU_TOKEN@*/)
         }
     }
-    
-    
-
 }
 
 private extension View {
-   @ViewBuilder
-   func _overlay() -> some View {
-       
-       
-     if #available(iOS 15.0, *) {
-         overlay {
-             Circle().strokeBorder(.red, lineWidth: 5)
-         }
-     } else {
-         ZStack {
-             self
-             Circle().strokeBorder(.red, lineWidth: 5)
-         }
-     }
-   }
+    @ViewBuilder
+    func _overlay() -> some View {
+        if #available(iOS 15.0, *) {
+            overlay {
+                Circle().strokeBorder(.red, lineWidth: 5)
+            }
+        } else {
+            ZStack {
+                self
+                Circle().strokeBorder(.red, lineWidth: 5)
+            }
+        }
+    }
 }
-
-
 
 #Preview {
     Knock6.ContentView()

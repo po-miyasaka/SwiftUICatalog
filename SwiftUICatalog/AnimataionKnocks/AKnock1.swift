@@ -5,11 +5,10 @@
 //  Created by po_miyasaka on 2023/09/28.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 enum AKnock1 {
-    
     struct ContentView: View {
         @State private var completedLongPress = false
         var body: some View {
@@ -24,7 +23,7 @@ enum AKnock1 {
             }
         }
     }
-    
+
     struct LongTapButton: View {
         let title: String
         let time: Double
@@ -36,29 +35,28 @@ enum AKnock1 {
         @State var cancellable: AnyCancellable?
         @State var buttonScaleForCompletion: Double = 1
         @GestureState var pressing = false
-        
+
         var longPress: some Gesture {
             LongPressGesture(minimumDuration: time)
-                .updating($pressing, body: { value, gestureState, transaction in
+                .updating($pressing, body: { value, gestureState, _ in
                     gestureState = value
                 })
                 .onEnded { finished in
-                    
+
                     if finished {
                         self.completedLongPress = true
                         buttonScaleForCompletion = 0.7
                         Task { @MainActor in
                             triggerHaptic()
                         }
-                            
-                        
+
                         withAnimation(Animation.spring(response: 0.4, dampingFraction: 0.4, blendDuration: 4)) {
                             buttonScaleForCompletion = 1
                         }
                     }
                 }
         }
-        
+
         var body: some View {
             Circle()
                 .fill(self.completedLongPress ? Color.green : Color.blue)
@@ -66,15 +64,15 @@ enum AKnock1 {
                 .gesture(longPress)
                 .modifier(DrawingCircleModifier(complete: completedLongPress, animatableData: progress))
                 .onChange(of: pressing, perform: { pressing in
-                    
-                    if pressing && !completedLongPress {
+
+                    if pressing, !completedLongPress {
                         startTime = Date()
                         timer = Timer.publish(every: 0.01, on: .main, in: .default).autoconnect()
                         cancellable = timer?.sink(receiveValue: { date in
-                            self.progress = date.timeIntervalSince(startTime ?? Date() ) / time
+                            self.progress = date.timeIntervalSince(startTime ?? Date()) / time
                         })
                     } else {
-                        withAnimation{
+                        withAnimation {
                             progress = 0
                         }
                         cancellable?.cancel()
@@ -97,7 +95,7 @@ enum AKnock1 {
                     }
                 )
         }
-        
+
         struct DrawingCircleModifier: AnimatableModifier {
             var complete: Bool
             var animatableData: Double
@@ -108,7 +106,7 @@ enum AKnock1 {
                     Color.blue
                 }
             }
-            
+
             var baseScale: Double {
                 if isPressing {
                     return 1.0
@@ -116,15 +114,15 @@ enum AKnock1 {
                     return 1.0
                 }
             }
-            
+
             var isPressing: Bool {
                 animatableData != 0
             }
-            
+
             func body(content: Content) -> some View {
                 content.scaleEffect(
                     CGSize(
-                        width: max(baseScale - (animatableData * 10) , 0.85),
+                        width: max(baseScale - (animatableData * 10), 0.85),
                         height: max(baseScale - (animatableData * 10), 0.85)
                     )
                 )
@@ -144,12 +142,7 @@ enum AKnock1 {
                         .stroke(color, lineWidth: 5)
                     }
                 )
-                
             }
         }
-        
     }
-    
-    
 }
-

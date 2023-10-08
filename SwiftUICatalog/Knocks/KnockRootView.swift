@@ -9,7 +9,6 @@ import SwiftUI
 enum Knock {
     struct ContentView: View {
         var body: some View {
-            
             ZStack(alignment: .center) {
                 Color.white.ignoresSafeArea()
                 Knock101

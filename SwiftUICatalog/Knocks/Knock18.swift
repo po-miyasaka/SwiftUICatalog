@@ -12,29 +12,23 @@ enum Knock18 {
         @State var tapped = false
         var body: some View {
             Text(tapped ? "A" : "B").font(.caption)
-            
-            Button( action: {
+
+            Button(action: {
                 tapped.toggle()
             }, label: {
                 HStack {
                     Image("kabigon2", bundle: nil)
                         .resizable()
                         .scaledToFill()
-                        .frame( maxWidth: 50, maxHeight: 50)
+                        .frame(maxWidth: 50, maxHeight: 50)
                         .clipShape(Circle())
                     Text("tap here").font(.caption)
                 }
                 .padding()
-                .border(Color.black, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
+                .border(Color.black, width: 1/*@END_MENU_TOKEN@*/)
             })
-            
-            
-            
         }
     }
-    
-    
-    
 }
 
 #Preview {

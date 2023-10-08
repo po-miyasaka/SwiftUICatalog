@@ -8,16 +8,14 @@
 import SwiftUI
 
 enum Knock10 {
-    
     struct SectionData: Identifiable {
         let id: String
         let rows: [String]
     }
-    
+
     struct ContentView: View {
         @State var sections: [SectionData] = [.init(id: "Pokemon", rows: ["pikachu", "kabigon"]), .init(id: "Trainer", rows: ["Takeshi", "Kasumi"])]
         var body: some View {
-            
             List {
                 ForEach(sections) { section in
                     if #available(iOS 15.0, *) {
@@ -33,15 +31,10 @@ enum Knock10 {
                             }
                         }
                     }
-                    
                 }
             }
-            
         }
     }
-    
-    
-
 }
 
 #Preview {

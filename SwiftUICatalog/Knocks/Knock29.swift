@@ -9,7 +9,6 @@ import SwiftUI
 
 enum Knock29 {
     struct ContentView: View {
-        
         @State var selected = ""
         @State var selected2 = ""
         @State var arr = ["pika", "kabigon", "kirinriki"]
@@ -23,7 +22,7 @@ enum Knock29 {
                 }, label: {
                     Text("Pokkemooon")
                 })
-                
+
                 Picker(selection: $selected2, content: {
                     ForEach(arr2, id: \.self) { item in
                         Text(item)
@@ -32,12 +31,8 @@ enum Knock29 {
                     Text("Pokkemooon")
                 })
             }
-            
         }
     }
-    
-    
-
 }
 
 #Preview {

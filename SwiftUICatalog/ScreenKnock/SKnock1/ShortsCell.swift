@@ -12,7 +12,6 @@ struct ShortData: Hashable {
     let color: Color
 }
 
-
 struct ShortsCell: View {
     let shortsData: [ShortData]
     let transition: (ShortData) -> Void
@@ -21,17 +20,17 @@ struct ShortsCell: View {
             Text("Shorts").bold()
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach (shortsData, id: \.title) { shortData in
+                    ForEach(shortsData, id: \.title) { shortData in
                         ZStack {
                             shortData.color.frame(width: 200, height: 300).onTapGesture {
                                 transition(shortData)
                             }
                             Image(systemName: "ellipsis")
-                                .rotationEffect(.degrees(90),anchor: .center)
+                                .rotationEffect(.degrees(90), anchor: .center)
                                 .frame(width: 10, height: 10)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                                 .padding()
-                            
+
                             VStack {
                                 Text(shortData.title).foregroundColor(.white).bold().font(.body).lineLimit(2).shadow(radius: 2)
                                 HStack {
@@ -39,12 +38,8 @@ struct ShortsCell: View {
                                 }
                             }.padding()
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-                            
-                            
-                            
+
                         }.clipShape(RoundedRectangle(cornerRadius: 16))
-                        
-                        
                     }
                 }
             }

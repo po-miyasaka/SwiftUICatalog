@@ -12,7 +12,7 @@ struct Knock23: View {
         Image("kabigon2", bundle: nil)
             .resizable()
             .scaledToFill()
-            .frame( maxWidth: 50, maxHeight: 50)
+            .frame(maxWidth: 50, maxHeight: 50)
             .clipShape(Circle())
             ._overlay()
             .shadow(radius: 3, x: 2, y: 2)
@@ -20,21 +20,19 @@ struct Knock23: View {
 }
 
 private extension View {
-   @ViewBuilder
-   func _overlay() -> some View {
-       
-       
-     if #available(iOS 15.0, *) {
-         overlay {
-             Circle().strokeBorder(.white, lineWidth: 2)
-         }
-     } else {
-         ZStack {
-             self
-             Circle().strokeBorder(.red, lineWidth: 5)
-         }
-     }
-   }
+    @ViewBuilder
+    func _overlay() -> some View {
+        if #available(iOS 15.0, *) {
+            overlay {
+                Circle().strokeBorder(.white, lineWidth: 2)
+            }
+        } else {
+            ZStack {
+                self
+                Circle().strokeBorder(.red, lineWidth: 5)
+            }
+        }
+    }
 }
 
 #Preview {

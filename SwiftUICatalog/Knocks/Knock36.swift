@@ -19,9 +19,7 @@ enum Knock36 {
                 withAnimation {
                     shouldPush = true
                 }
-                
             }
-            
         }
     }
 }

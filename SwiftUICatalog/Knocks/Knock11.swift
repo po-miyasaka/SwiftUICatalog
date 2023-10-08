@@ -8,12 +8,11 @@
 import SwiftUI
 
 enum Knock11 {
-    
     struct SectionData: Identifiable {
         let id: String
         let rows: [String]
     }
-    
+
     struct ContentView: View {
         @State var sections: [SectionData] = [.init(id: "Pokemon", rows: ["pikachu", "kabigon"]), .init(id: "Trainer", rows: ["Takeshi", "Kasumi"])]
         var body: some View {
@@ -27,19 +26,13 @@ enum Knock11 {
                                 }
                             }
                         }
-                        
                     }
                 }
             }
-            
         }
     }
-    
-    
-
 }
 
 #Preview {
     Knock11.ContentView()
 }
-

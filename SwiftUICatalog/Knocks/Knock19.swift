@@ -20,12 +20,12 @@ struct Knock19: View {
                 isPresentAlert = true
             }
         })
-        ._alert(isPresented: $isPresentAlert, title: "input error", data: "", action: { _ in
-            Button("ok", action: {
-                print("ok")
+            ._alert(isPresented: $isPresentAlert, title: "input error", data: "", action: { _ in
+                Button("ok", action: {
+                    print("ok")
             })
         }).sheet(isPresented: $isPresentSheet, content: {
-            Text(str)
+                Text(str)
         })
     }
 }

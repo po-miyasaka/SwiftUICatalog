@@ -8,7 +8,6 @@
 import SwiftUI
 
 enum Knock14 {
-    
     struct ContentView: View {
         @State var isShowingAlert = false
         var body: some View {
@@ -19,13 +18,12 @@ enum Knock14 {
                       message: Text("do you like kabigon"),
                       primaryButton: .default(Text("OK"),
                                               action: {
-                    print("OK")
+                                                  print("OK")
                 }),
                       secondaryButton: .cancel())
             })
         }
     }
-    
 }
 
 #Preview {

@@ -8,12 +8,11 @@
 import SwiftUI
 
 enum Knock26 {
-    
     struct SectionData: Identifiable {
         let id: String
         let rows: [String]
     }
-    
+
     struct ContentView: View {
         @State var selected: String?
         @State var sections: [SectionData] = [.init(id: "Pokemon", rows: ["pikachu", "kabigon"]), .init(id: "Trainer", rows: ["Takeshi", "Kasumi"])]
@@ -28,13 +27,11 @@ enum Knock26 {
                                     selected = row
                                     isPresentingAlert = true
                                 })
-                                
-                                
+
                             }.onDelete(perform: { offsets in
-                                offsets.forEach { offset in
-                                    
+                                offsets.forEach { _ in
                                 }
-                                print(section.id, offsets.map{$0})
+                                print(section.id, offsets.map { $0 })
                             })
                         }
                     } else {
@@ -42,35 +39,25 @@ enum Knock26 {
                             ForEach(section.rows, id: \.self) { row in
                                 Text(row)
                             }.onDelete(perform: { offsets in
-                                offsets.forEach { offset in
-                                    
+                                offsets.forEach { _ in
                                 }
-                                print(section.id, offsets.map{$0})
+                                print(section.id, offsets.map { $0 })
                             })
                         }
                     }
-                    
                 }
                 ._alert(isPresented: $isPresentingAlert, title: "tapped", message: selected ?? "",
-                         data: selected, action: { _ in
-                   
+                        data: selected, action: { _ in
+
                })
                 .toolbar(content: {
                     EditButton()
                 })
             }
-            
         }
-        
-        
     }
 }
-
-
-
-
 
 #Preview {
     Knock26.ContentView()
 }
-

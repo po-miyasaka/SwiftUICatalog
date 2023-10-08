@@ -16,14 +16,13 @@ enum Knock35 {
             if #available(iOS 16.0, *) {
                 ScrollView {
                     Grid(horizontalSpacing: 8, verticalSpacing: 8) {
-                        ForEach(0..<5) { row in
+                        ForEach(0 ..< 5) { row in
                             GridRow {
-                                ForEach(0..<5) { column in
+                                ForEach(0 ..< 5) { column in
                                     VStack {
                                         Color.green
                                         Text("(\(column), \(row))")
                                     }
-                                    
                                 }
                             }
                         }
@@ -46,12 +45,11 @@ enum Knock35 {
                     /*@START_MENU_TOKEN@*/Text("Placeholder")/*@END_MENU_TOKEN@*/
                     /*@START_MENU_TOKEN@*/Text("Placeholder")/*@END_MENU_TOKEN@*/
                 })
-                
             }
         }
     }
-    
 }
+
 #Preview {
     Knock35.ContentView()
 }

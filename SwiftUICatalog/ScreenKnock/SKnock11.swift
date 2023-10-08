@@ -7,13 +7,11 @@
 
 import AVFoundation
 import AVKit
+import Combine
 import SwiftUI
 import UIKit
-import Combine
-
 
 enum SKnock1 {
-    
     enum Page: Hashable {
         case home
         case shorts
@@ -21,7 +19,7 @@ enum SKnock1 {
         case subscription
         case library
     }
-    
+
     struct ContentView: View {
         @State var current: Page = .home
         @StateObject var viewModel: viewModel = .init()
@@ -38,21 +36,22 @@ enum SKnock1 {
         @State var shortsTransitionContext: ShortsTransitionContext?
         @State var playbackProgress: Double = 0.0
         @State var isFull: Bool = false
-        
+
         @State var mini: Bool = false
         @Namespace var full
-        
+
         var isMini: Bool {
             currentOffset != 0
         }
+
         let pageArray: [(title: String, imageName: String, tag: Page)] = [
             ("Home", "house", .home),
             ("Shorts", "mount", .shorts),
             ("", "plus.circle", .create),
             ("Subscription", "bell", .subscription),
-            ("Library", "books.vertical", .library)
+            ("Library", "books.vertical", .library),
         ]
-        
+
         var body: some View {
             let containerHeight = viewSize.height - toolbarHeight - safeAreaBottomHeight - safeAreaTopHeight
             ZStack {
@@ -69,9 +68,8 @@ enum SKnock1 {
                     shortsView
                     toolbarView
                         .frame(maxWidth: viewSize.width, maxHeight: .infinity, alignment: .bottom)
-                        .offset(y: (viewModel.video != nil) ? max(containerHeight - offset - toolbarHeight, 0) : 0 )
+                        .offset(y: (viewModel.video != nil) ? max(containerHeight - offset - toolbarHeight, 0) : 0)
                         .zIndex(2)
-                    
                 }
                 .ignoresSafeArea(edges: [.bottom])
                 //            .ignoresSafeArea([.top])
@@ -82,55 +80,49 @@ enum SKnock1 {
                     miniVideoWidth = viewSize.width * 0.4
                     mini = true
                 })
-                
+
                 if isFull {
                     MoviePlayerView(showFullscreen: $isFull, playbackProgress: $playbackProgress)
                         .matchedGeometryEffect(id: "full", in: full, isSource: isFull)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                    
+
                         .rotationEffect(.degrees(isFull ? 90 : 0), anchor: .center)
                         .background(Color.black)
                         .ignoresSafeArea()
-                    
                 }
             }
             .onChange(of: mini, perform: { value in
-                
+
                 if value {
                     currentOffset = viewSize.height - toolbarHeight - safeAreaBottomHeight - miniVideoHeight - safeAreaTopHeight
                     cancellable?.cancel()
-                    cancellable =  Timer.publish(every: 0.01, on: .main, in: .common).autoconnect().sink(receiveValue: { _ in
+                    cancellable = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect().sink(receiveValue: { _ in
                         if offset >= currentOffset {
-                            
                             cancellable?.cancel()
                             offset = currentOffset
                         } else {
                             offset += 20
                         }
-                        
+
                     })
                 } else {
                     currentOffset = 0
                     cancellable?.cancel()
-                    cancellable =  Timer.publish(every: 0.01, on: .main, in: .common).autoconnect().sink(receiveValue: { _ in
+                    cancellable = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect().sink(receiveValue: { _ in
                         if offset <= currentOffset {
-                            
                             cancellable?.cancel()
                             offset = currentOffset
                         } else {
                             offset -= 20
                         }
-                        
+
                     })
                 }
-                
+
             })
         }
-        
-        
-        
+
         var headerView: some View {
-            
             HStack(spacing: 0) {
                 Button(action: {}, label: {
                     HStack(spacing: 8) {
@@ -138,11 +130,9 @@ enum SKnock1 {
                             .resizable()
                             .frame(width: 25, height: 25)
                             .foregroundColor(.red)
-                        Text("YouTube").foregroundColor(.white).bold().font(.title).frame(maxWidth: .infinity,  alignment: .leading)
-                        
-                    }.onTapGesture {
-                        
-                    }
+                        Text("YouTube").foregroundColor(.white).bold().font(.title).frame(maxWidth: .infinity, alignment: .leading)
+
+                    }.onTapGesture {}
                 })
                 Image(systemName: "bell.badge")
             }
@@ -150,11 +140,10 @@ enum SKnock1 {
             .frame(maxWidth: .infinity)
             .padding(8)
         }
-        
+
         var toolbarView: some View {
-            
-            GeometryReader { proxy in
-                
+            GeometryReader { _ in
+
                 VStack {
                     HStack(alignment: .top, spacing: 0) {
                         ForEach(pageArray, id: \.title) { page in
@@ -169,7 +158,7 @@ enum SKnock1 {
                                 if case .create = page.tag {
                                     Image(systemName: page.imageName)
                                         .resizable()
-                                        .foregroundColor(.gray).frame( width: 33, height: 33)
+                                        .foregroundColor(.gray).frame(width: 33, height: 33)
                                 } else {
                                     VStack {
                                         Image(systemName: page.imageName).foregroundColor(.gray)
@@ -183,7 +172,7 @@ enum SKnock1 {
                 }
             }.background(Color.black).frame(height: safeAreaBottomHeight + toolbarHeight)
         }
-        
+
         @ViewBuilder
         var shortsView: some View {
             if shortsTransitionContext != nil {
@@ -192,36 +181,31 @@ enum SKnock1 {
                     safeAreaTopHeight: safeAreaTopHeight,
                     shortsTransitionContext: $shortsTransitionContext
                 )
-                
-                
-                
+
                 .transition(.asymmetric(insertion: .backslide, removal: .slide)).zIndex(shortsTransitionContext == .tabButton ? 0 : 1)
                 .ignoresSafeArea(edges: [.top])
             }
         }
-        
-        
+
         func getSafeAreaBottom() -> UIEdgeInsets {
-            
             let keyWindow: UIWindow? = UIApplication.shared.windows
-                .filter({$0.isKeyWindow}).first
-            
+                .filter { $0.isKeyWindow }.first
+
             let result = (keyWindow?.safeAreaInsets) ?? .zero
             return result
-            
         }
-        
-#warning("こんな感じの切り出しどなの")
+
+        #warning("こんな感じの切り出しどなの")
         var mainTabView: some View {
             TabView(selection: $current) {
                 ForEach(pageArray, id: \.title) { data in
-#warning("arrayにView含めたいけどAnyView使いたくない。")
+                    #warning("arrayにView含めたいけどAnyView使いたくない。")
                     Group {
-                        GeometryReader  { proxy in
+                        GeometryReader { _ in
                             switch data.tag {
                             case .home:
                                 HomeView(shortsTransitionContext: $shortsTransitionContext, viewModel: viewModel)
-                                
+
                             case .shorts:
                                 Text("")
                             case .create:
@@ -236,31 +220,30 @@ enum SKnock1 {
                     .tag(
                         data.tag
                     )
-                    
                 }
             }
         }
+
         @ViewBuilder
         var playingView: some View {
             let containerHeight = viewSize.height - toolbarHeight - safeAreaBottomHeight - safeAreaTopHeight
             let shrinkThreshold: CGFloat = containerHeight / 1.4
             let overShrinkThreshold = shrinkThreshold < offset
-            
+
             let videoHeight = max(
                 miniVideoHeight, defaultVideoHeight - (
-                    overShrinkThreshold ? (defaultVideoHeight * ((offset - shrinkThreshold) / (containerHeight - shrinkThreshold) )) : 0)
+                    overShrinkThreshold ? (defaultVideoHeight * ((offset - shrinkThreshold) / (containerHeight - shrinkThreshold))) : 0)
             )
-            
+
             let videoWidth = max(
-                miniVideoWidth ,
-                viewSize.width - (overShrinkThreshold ? containerHeight * ((offset - shrinkThreshold) / (containerHeight  - shrinkThreshold) ) : 0)
+                miniVideoWidth,
+                viewSize.width - (overShrinkThreshold ? containerHeight * ((offset - shrinkThreshold) / (containerHeight - shrinkThreshold)) : 0)
             )
-            
+
             let playViewHeight = max(100, viewSize.height - videoHeight - offset)
-            let playViewOpacity = max(0, 1 - (offset / (viewSize.height  - toolbarHeight)))
-            
+            let playViewOpacity = max(0, 1 - (offset / (viewSize.height - toolbarHeight)))
+
             VStack(alignment: .leading, spacing: 0) {
-                
                 videoView(videoWidth: videoWidth, videoHeight: videoHeight)
                     .offset(y: offset)
                     .gesture(
@@ -272,36 +255,35 @@ enum SKnock1 {
                                 let previousValue = isMini
                                 let threshold = isMini ? containerHeight / 1.1 : containerHeight / 10
                                 let shouldMini = offset >= threshold
-                                
+
                                 let noChange = previousValue == shouldMini
-                                
+
                                 if noChange {
-                                    offset  = currentOffset
-                                } else if  offset <= threshold {
+                                    offset = currentOffset
+                                } else if offset <= threshold {
                                     mini = false
                                 } else {
                                     mini = true
                                 }
                             }
                     )
-                
+
                 VideoDetailView(
                     viewModel: viewModel, shortsTransitionContext: $shortsTransitionContext,
                     mini: $mini,
-                    viewSize: viewSize)
+                    viewSize: viewSize
+                )
                 .offset(y: offset)
                 .frame(maxHeight: max(0, playViewHeight))
                 //                        .opacity(playViewOpacity)
             }
         }
-        
-        
-#warning( "ボタンで囲むと画像のサイズに影響がある。。")
-#warning("普通にvideoWidthを設定すると隠れているときに文字がつぶれているせいかラベルにだけアニメーションがきかない")
+
+        #warning("ボタンで囲むと画像のサイズに影響がある。。")
+        #warning("普通にvideoWidthを設定すると隠れているときに文字がつぶれているせいかラベルにだけアニメーションがきかない")
         func videoView(videoWidth: CGFloat, videoHeight: CGFloat) -> some View {
             ZStack(alignment: .leading) {
                 HStack(alignment: .center, spacing: 32) {
-                    
                     Color.black.frame(width: miniVideoWidth, height: miniVideoHeight)
                     VStack(alignment: .leading) {
                         Text("Video title").font(.caption).frame(maxWidth: .infinity, alignment: .leading)
@@ -309,8 +291,7 @@ enum SKnock1 {
                     }
                     .frame(alignment: .leading)
                     .frame(maxWidth: .infinity)
-                    
-                    
+
                     Image(systemName: "play.fill")
                         .resizable()
                         .scaledToFit()
@@ -318,50 +299,42 @@ enum SKnock1 {
                         .onTapGesture {
                             UIMovieView.player.pause()
                         }
-                    
-                    
+
                     Image(systemName: "xmark").resizable().scaledToFit()
                         .frame(maxHeight: 24)
                         .onTapGesture {
                             viewModel.video = nil
                         }
-                    
                 }
                 .padding(.trailing)
                 .frame(maxWidth: viewSize.width, maxHeight: videoHeight, alignment: .top)
-                
+
                 ZStack {
                     MoviePlayerView(showFullscreen: $isFull, playbackProgress: $playbackProgress)
                         .matchedGeometryEffect(id: "full", in: full, isSource: !isFull)
                         .frame(maxWidth: videoWidth, maxHeight: videoHeight, alignment: .center)
-                    
+
                         .onTapGesture {
                             if isMini {
                                 mini = false
                             }
                         }
-                    
                 }
             }
             .background(Color.black)
             .frame(maxWidth: viewSize.width, maxHeight: videoHeight, alignment: .top)
-            
         }
-        
-        
     }
-    
+
     struct VideoDetailView: View, Animatable {
         @ObservedObject var viewModel: viewModel
         @Binding var shortsTransitionContext: ShortsTransitionContext?
         @Binding var mini: Bool
-        
+
         var viewSize: CGSize
         @State var offset: CGFloat = .zero
         var body: some View {
-            
             ZStack(alignment: .top) {
-                
                 ScrollView(showsIndicators: false) {
                     GeometryReader { proxy in
                         let _ = Task {
@@ -369,9 +342,8 @@ enum SKnock1 {
                         }
                         Color.clear
                     }.frame(height: .zero)
-                    
+
                     ZStack(alignment: .top) {
-                        
                         VStack(alignment: .leading, spacing: 16) {
                             titleView
                             userView
@@ -385,9 +357,9 @@ enum SKnock1 {
                     }
                 }
                 let threshold: CGFloat = -300
-                
-                let pointY = min(0, max(-44, threshold + abs(offset)  ))
-                
+
+                let pointY = min(0, max(-44, threshold + abs(offset)))
+
                 TagsView().offset(
                     y: pointY
                 ).clipShape(Rectangle().size(.init(width: viewSize.width, height: 44)))
@@ -396,11 +368,8 @@ enum SKnock1 {
             .frame(maxWidth: viewSize.width, alignment: .center)
             .ignoresSafeArea()
             .coordinateSpace(name: "VideoDetail")
-            
-            
-            
         }
-        
+
         var titleView: some View {
             VStack(alignment: .leading) {
                 Text("Video Title").font(.headline).bold()
@@ -409,18 +378,16 @@ enum SKnock1 {
                     Text("10 mo ago").font(.caption)
                     Text("...more").font(.caption).bold()
                 }
-                
+
             }.padding(.top, 8)
         }
-        
+
         var userView: some View {
-            
             HStack {
                 Image("kabigon2").resizable().scaledToFit().frame(maxWidth: 33, maxHeight: 33).clipShape(Circle())
                 Text("Youtuber Name").font(.body).frame(maxWidth: .infinity, alignment: .leading)
                 Text("1.45M").font(.caption).bold()
-                
-                
+
                 HStack {
                     Image(systemName: "bell").resizable().scaledToFit().frame(maxWidth: 14, maxHeight: 14)
                     Image(systemName: "chevron.down").resizable().scaledToFit().frame(maxWidth: 14, maxHeight: 14)
@@ -429,9 +396,9 @@ enum SKnock1 {
                 .padding(.horizontal, 8)
                 .background(Color.gray)
                 .clipShape(Capsule())
-                
             }
         }
+
         @ViewBuilder
         var buttonsView: some View {
             let dataArray: [(imageName: String, text: String)] = [
@@ -441,52 +408,41 @@ enum SKnock1 {
                 ("scissors", "Clip"),
                 ("plus.square.on.square", "Save"),
             ]
-            
+
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     rateButton
-                    
+
                     ForEach(dataArray, id: \.text) { data in
-                        
-                        
-                        Button(action: {
-                            
-                        }, label: {
+
+                        Button(action: {}, label: {
                             HStack(spacing: 4) {
                                 Image(systemName: data.imageName)
                                     .resizable().scaledToFit()
                                     .frame(maxWidth: 14, maxHeight: 14)
                                 Text(data.text).font(.caption).bold().frame(maxWidth: .infinity).layoutPriority(1)
-                                
                             }
                         })
-                        .padding(.vertical, 8)
-                        .padding(.horizontal, 8)
-                        .background(Color.gray)
-                        .clipShape(Capsule())
-                        
-                        
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 8)
+                            .background(Color.gray)
+                            .clipShape(Capsule())
                     }
                 }
-                
+
             }.frame(maxHeight: 30)
         }
-        
+
         var rateButton: some View {
-            
-            
             HStack(spacing: 8) {
                 Button(action: {}, label: {
                     HStack {
                         Image(systemName: "hand.thumbsup")
                             .resizable().scaledToFit().frame(maxWidth: 14, maxHeight: 14)
                         Text("25K").font(.caption).bold().frame(maxWidth: .infinity).layoutPriority(1)
-                        
                     }
                 })
-                
-                
-                
+
                 Divider()
                 Button(action: {}, label: {
                     Image(systemName: "hand.thumbsdown").resizable().scaledToFit().frame(maxWidth: 14, maxHeight: 14)
@@ -497,7 +453,7 @@ enum SKnock1 {
             .background(Color.gray)
             .clipShape(Capsule())
         }
-        
+
         var commentView: some View {
             VStack(alignment: .leading) {
                 HStack(alignment: .bottom) {
@@ -517,31 +473,31 @@ enum SKnock1 {
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
-        
+
         var recommendedView: some View {
             LazyVStack(alignment: .leading, spacing: 32) {
                 ForEach(viewModel.recommendedObjects, id: \.self) { data in
                     switch data {
-                    case .ad(let data):
+                    case let .ad(data):
                         AdCell(adData: data)
-                    case .shorts(let data):
+                    case let .shorts(data):
                         ShortsCell(shortsData: data, transition: {
-                            withAnimation
-                            {
+                            withAnimation {
                                 shortsTransitionContext = .playingView
                                 mini = true
                             }
-                            
+
                         })
-                    case .video(let data):
+                    case let .video(data):
                         VideoCell(videoData: data)
                     }
                 }
             }
         }
     }
-    class viewModel:NSObject, ObservableObject {
-        @Published var video: Video? = nil
+
+    class viewModel: NSObject, ObservableObject {
+        @Published var video: Video?
         @Published var recommendedObjects: [RecommendedType] = [
             .ad(.init(title: "ad1", color: .purple)),
             .video(.init(title: "video1", color: .red)),
@@ -559,7 +515,7 @@ enum SKnock1 {
                     .init(title: "short7", color: .white),
                     .init(title: "short8", color: .red),
                     .init(title: "short9", color: .yellow),
-                    .init(title: "short10", color: .red)
+                    .init(title: "short10", color: .red),
                 ]
             ),
             .video(.init(title: "video5", color: .red)),
@@ -581,52 +537,52 @@ enum SKnock1 {
                     .init(title: "short17", color: .red),
                     .init(title: "short18", color: .blue),
                     .init(title: "short19", color: .green),
-                    .init(title: "short20", color: .red)
+                    .init(title: "short20", color: .red),
                 ]
             ),
         ]
     }
-    
+
     class Video {
         var thumbnail: UIImage = .init(named: "kabigon")!
         var videoItem: AVPlayerItem = {
             var videoName: String = "movie"
             var videoType: String = "mp4"
-            
+
             let url = Bundle.main.url(forResource: videoName, withExtension: videoType)!
             return AVPlayerItem(url: url)
         }()
     }
-    
+
     enum RecommendedType: Hashable {
         case ad(AdData)
         case video(VideoData)
         case shorts([ShortData])
     }
-    
+
     struct AdData: Hashable {
         let title: String
         let color: Color
     }
-    
+
     struct VideoData: Hashable {
         let title: String
         let color: Color
     }
+
     struct ShortData: Hashable {
         let title: String
         let color: Color
     }
-    
+
     struct VideoCell: View {
         let videoData: VideoData
         var body: some View {
             VStack {
-                
                 videoData.color.frame(height: 200)
                 HStack(alignment: .top) {
                     Image("kabigon2").resizable().scaledToFit().frame(width: 25, height: 25).clipShape(Circle()).padding(.vertical, 4)
-                    VStack (alignment: .leading) {
+                    VStack(alignment: .leading) {
                         Text(videoData.title).bold().font(.body).lineLimit(2)
                         HStack {
                             Text("RJ Pasin - Topic・65K views・1 days ago").font(.caption)
@@ -634,18 +590,16 @@ enum SKnock1 {
                     }
                     .font(.caption)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
-                    
+
                     Image(systemName: "ellipsis")
-                        .rotationEffect(.degrees(90),anchor: .center)
+                        .rotationEffect(.degrees(90), anchor: .center)
                         .frame(maxWidth: 10, maxHeight: 10)
                         .padding(.vertical, 8)
-                    
                 }
             }
-            
         }
     }
-    
+
     struct ShortsCell: View {
         //    @Binding var shortsTransitionContext: ShortsTransitionContext?
         let shortsData: [ShortData]
@@ -655,17 +609,17 @@ enum SKnock1 {
                 Text("Shorts").bold()
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
-                        ForEach (shortsData, id: \.title) { shortData in
+                        ForEach(shortsData, id: \.title) { shortData in
                             ZStack {
                                 shortData.color.frame(width: 200, height: 300).onTapGesture {
                                     transition()
                                 }
                                 Image(systemName: "ellipsis")
-                                    .rotationEffect(.degrees(90),anchor: .center)
+                                    .rotationEffect(.degrees(90), anchor: .center)
                                     .frame(width: 10, height: 10)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                                     .padding()
-                                
+
                                 VStack {
                                     Text(shortData.title).foregroundColor(.white).bold().font(.body).lineLimit(2).shadow(radius: 2)
                                     HStack {
@@ -673,24 +627,19 @@ enum SKnock1 {
                                     }
                                 }.padding()
                                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-                                
-                                
-                                
+
                             }.clipShape(RoundedRectangle(cornerRadius: 16))
-                            
-                            
                         }
                     }
                 }
             }
         }
     }
-    
-    struct AdCell: View  {
+
+    struct AdCell: View {
         let adData: AdData
         var body: some View {
             VStack {
-                
                 adData.color.frame(height: 300)
                 HStack {
                     Text("詳細").font(.caption).bold().frame(maxWidth: .infinity, alignment: .leading)
@@ -701,16 +650,15 @@ enum SKnock1 {
                         .frame(height: 14)
                         .foregroundColor(.blue)
                 }.background(Color.black)
-                
+
                 HStack {
                     Image("kabigon3").resizable().scaledToFit().frame(maxWidth: 20, maxHeight: 20).clipShape(Circle())
-                    VStack (alignment: .leading) {
+                    VStack(alignment: .leading) {
                         Text("Ad Title").bold().font(.body).lineLimit(1)
-                        Text("Firebase is an app development platform that helps you build and grow apps and games users love. Backed by Google and trusted by millions of businesses around the world.").font(.caption) .lineLimit(2)
+                        Text("Firebase is an app development platform that helps you build and grow apps and games users love. Backed by Google and trusted by millions of businesses around the world.").font(.caption).lineLimit(2)
                         HStack {
                             Text("Sponserd・").font(.caption).bold()
                             Text("Firebase").font(.caption)
-                            
                         }
                     }
                     .font(.caption)
@@ -718,10 +666,9 @@ enum SKnock1 {
                     Image(systemName: "chevron.down").frame(maxWidth: 10, maxHeight: 10)
                 }
             }
-            
         }
     }
-    
+
     struct HomeView: View {
         @Binding var shortsTransitionContext: ShortsTransitionContext?
         @ObservedObject var viewModel: viewModel
@@ -745,31 +692,29 @@ enum SKnock1 {
                         .init(title: "short7", color: .white),
                         .init(title: "short8", color: .red),
                         .init(title: "short9", color: .yellow),
-                        .init(title: "short10", color: .red)
+                        .init(title: "short10", color: .red),
                     ], transition: {
                         withAnimation {
                             shortsTransitionContext = .homeView
                         }
                     })
                     Color.black.frame(height: 50)
-                    
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)            }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            }
         }
     }
-    
+
     struct ShortsView: View {
         var height: CGFloat
         var safeAreaTopHeight: CGFloat
         @Binding var shortsTransitionContext: ShortsTransitionContext?
-        
+
         var body: some View {
             ZStack(alignment: .topLeading) {
-                
                 ScrollView {
                     LazyVStack {
-                        ZStack() {
-                            
+                        ZStack {
                             Color.red.frame(height: height)
                             Text("shorts")
                         }
@@ -788,21 +733,20 @@ enum SKnock1 {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            
         }
     }
-    
+
     struct MoviePlayerView: View {
-        
         @State private var isPlaying: Bool = true
         @Binding var playbackProgress: Double
         @State private var totalDuration: Double = 1.0
-        @State var userControlledProgress: Double? = nil
+        @State var userControlledProgress: Double?
         @Binding private var showFullscreen: Bool
         init(showFullscreen: Binding<Bool>, playbackProgress: Binding<Double>) {
             _showFullscreen = showFullscreen
             _playbackProgress = playbackProgress
         }
+
         var body: some View {
             ZStack(alignment: .center) {
                 MovieView(isPlaying: $isPlaying, playbackProgress: $playbackProgress,
@@ -810,7 +754,7 @@ enum SKnock1 {
                           totalDuration: $totalDuration, isFull: $showFullscreen).onLongPressGesture(perform: {
                     showFullscreen.toggle()
                 })
-                
+
                 HStack(alignment: .bottom) {
                     Button(action: {
                         isPlaying.toggle()
@@ -823,7 +767,7 @@ enum SKnock1 {
                                 .foregroundColor(.gray)
                                 .contentShape(Rectangle().size(.init(width: 100, height: 100)))
                                 .padding()
-                            
+
                         }.frame(maxWidth: 60, maxHeight: 60, alignment: .bottomLeading)
                     }
                     Spacer()
@@ -840,17 +784,16 @@ enum SKnock1 {
                                 .foregroundColor(.gray)
                                 .contentShape(Rectangle().size(.init(width: 100, height: 100)))
                                 .padding()
-                            
+
                         }.frame(maxWidth: 60, maxHeight: 60, alignment: .bottomTrailing)
-                        
                     }
                 }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-                
+
                 Slider(value: $playbackProgress) { editing in
                     if editing {
                         isPlaying = false
                         print("editing", playbackProgress)
-                        
+
                     } else {
                         print("not editing", playbackProgress)
                         isPlaying = true
@@ -861,38 +804,36 @@ enum SKnock1 {
                     UISlider.appearance().minimumTrackTintColor = .red
                     UISlider.appearance().maximumTrackTintColor = .gray
                     UISlider.appearance().setThumbImage(UIImage(), for: .normal)
-                    
                 }
-                
+
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                 .frame(minHeight: 60)
                 .offset(y: 16)
-                
             }
         }
     }
-    
+
     struct MovieView: UIViewRepresentable {
         @Binding var isPlaying: Bool
         @Binding var playbackProgress: Double
         @Binding var userControlledProgress: Double?
         @Binding var totalDuration: Double
         @Binding var isFull: Bool
-        
+
         func makeUIView(context: Context) -> UIMovieView {
             let view = UIMovieView()
             view.delegate = context.coordinator
             view.changeProgress(value: playbackProgress)
             return view
         }
-        
-        func updateUIView(_ uiView: UIMovieView, context: Context) {
+
+        func updateUIView(_ uiView: UIMovieView, context _: Context) {
             if isPlaying {
                 uiView.play()
             } else {
                 uiView.pause()
             }
-            
+
             uiView.full(isFull: isFull)
             if userControlledProgress != nil {
                 uiView.changeProgress(value: playbackProgress)
@@ -901,30 +842,28 @@ enum SKnock1 {
                 }
             }
         }
-        
+
         func makeCoordinator() -> Coordinator {
             Coordinator(self)
         }
-        
+
         class Coordinator: NSObject, UIMovieViewDelegate {
             var parent: MovieView
-            
+
             init(_ parent: MovieView) {
                 self.parent = parent
             }
-            
+
             func moviePlayer(didUpdatePlaybackTime time: Double) {
-                parent.playbackProgress =  time / parent.totalDuration
+                parent.playbackProgress = time / parent.totalDuration
             }
-            
+
             func moviePlayer(didUpdateTotalDuration duration: Double) {
                 parent.totalDuration = duration
             }
         }
     }
-    
 
-    
     class UIMovieView: UIView {
         static let player = AVPlayer()
         private var playerLayer: AVPlayerLayer?
@@ -933,64 +872,61 @@ enum SKnock1 {
             super.init(frame: frame)
             setupPlayer()
         }
-        
+
         required init?(coder: NSCoder) {
             super.init(coder: coder)
             setupPlayer()
         }
-        
+
         private func setupPlayer() {
             playerLayer = AVPlayerLayer(player: UIMovieView.player)
-            
+
             if let playerLayer = playerLayer {
-                playerLayer.frame = self.bounds
+                playerLayer.frame = bounds
                 playerLayer.videoGravity = .resizeAspectFill
                 layer.addSublayer(playerLayer)
             }
             setupPlayerPeriodicTimeObserver()
         }
-        
+
         func play() {
             Self.player.play()
         }
-        
+
         func changeProgress(value: CGFloat) {
             guard let duration = Self.player.currentItem?.duration else { return }
-            
+
             let totalSeconds = CMTimeGetSeconds(duration)
             let newTimeSeconds = totalSeconds * Double(value)
             let newTime = CMTime(seconds: newTimeSeconds, preferredTimescale: 600)
-            
+
             Self.player.seek(to: newTime, toleranceBefore: .zero, toleranceAfter: .zero)
         }
-        
+
         func pause() {
             Self.player.pause()
         }
-        
+
         weak var delegate: UIMovieViewDelegate?
         func full(isFull: Bool) {
             if isFull != self.isFull {
                 self.isFull = isFull
                 layoutSubviews()
             }
-            
         }
-        
+
         override func layoutSubviews() {
-            
             if isFull {
-                
                 let x = (bounds.width / 2) - (bounds.height / 2)
                 let y = (bounds.height / 2) - (bounds.width / 2)
                 playerLayer?.frame = bounds
-                playerLayer?.frame = CGRect(x: x , y: y, width: bounds.height, height: bounds.width)
+                playerLayer?.frame = CGRect(x: x, y: y, width: bounds.height, height: bounds.width)
             } else {
-                playerLayer?.frame = self.bounds
+                playerLayer?.frame = bounds
             }
             super.layoutSubviews()
         }
-        
+
         // This assumes the video is not live streaming and has a definitive end
         func setupPlayerPeriodicTimeObserver() {
             let interval = CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
@@ -998,26 +934,21 @@ enum SKnock1 {
                 guard let self = self else { return }
                 let timeNow = CMTimeGetSeconds(time)
                 self.delegate?.moviePlayer(didUpdatePlaybackTime: timeNow)
-                
+
                 if let totalDuration = Self.player.currentItem?.duration {
                     let totalSeconds = CMTimeGetSeconds(totalDuration)
                     self.delegate?.moviePlayer(didUpdateTotalDuration: totalSeconds)
                 }
             }
         }
-        
     }
-    
+
     enum ShortsTransitionContext {
         case tabButton
         case playingView
         case homeView
     }
-    
- 
-    
 }
-
 
 protocol UIMovieViewDelegate1: AnyObject {
     func moviePlayer(didUpdatePlaybackTime time: Double)
@@ -1028,16 +959,11 @@ extension AnyTransition {
     static var backslide: AnyTransition {
         AnyTransition.asymmetric(
             insertion: .move(edge: .trailing),
-            removal: .move(edge: .leading))}
+            removal: .move(edge: .leading)
+        )
+    }
 }
 
 #Preview {
     SKnock1.ContentView()
 }
-
-
-
-
-
-
-
