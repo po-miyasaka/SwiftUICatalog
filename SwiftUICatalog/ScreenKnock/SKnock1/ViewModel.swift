@@ -27,11 +27,10 @@ class ViewModel: NSObject, ObservableObject {
     @Published var isFull: Bool = false
     @Published var shouldShowCreateModal: Bool = false
     @Published var recommendedObjects: [RecommendedType] = [
-        .video(.init(title: "video1", color: .red)),
-        .video(.init(title: "video2", color: .green)),
+        .video(.init(title: "video1", imageName: "thumb1")),
+        .video(.init(title: "video2", imageName: "thumb2")),
         .ad(.init(title: "ad1", color: .purple)),
-        .video(.init(title: "video3", color: .blue)),
-        .video(.init(title: "video4", color: .purple)),
+        .video(.init(title: "video3", imageName: "thumb3")),
         .shorts(
             [
                 .init(title: "short1", color: .yellow),
@@ -46,14 +45,12 @@ class ViewModel: NSObject, ObservableObject {
                 .init(title: "short10", color: .red),
             ]
         ),
-        .video(.init(title: "video5", color: .red)),
-        .video(.init(title: "video6", color: .green)),
-        .video(.init(title: "video7", color: .blue)),
-        .video(.init(title: "video8", color: .purple)),
-        .video(.init(title: "video9", color: .white)),
+        .video(.init(title: "video4", imageName: "thumb4")),
+        .video(.init(title: "video5", imageName: "thumb5")),
         .ad(.init(title: "ad1", color: .pink)),
-        .video(.init(title: "video10", color: .green)),
-        .video(.init(title: "video11", color: .gray)),
+        .video(.init(title: "video6", imageName: "thumb6")),
+        .video(.init(title: "video7", imageName: "thumb7")),
+        
         .shorts(
             [
                 .init(title: "short11", color: .yellow),
@@ -88,16 +85,16 @@ class ViewModel: NSObject, ObservableObject {
 
 struct VideoData: Identifiable, Hashable {
     let title: String
-    let color: Color
+    let imageName: String
     let id = UUID()
     let user = User(name: "Hoge User", note: "Topic・65K views・1 days ago")
-    init(title: String, color: Color) {
+    init(title: String, imageName: String) {
         self.title = title
-        self.color = color
+        self.imageName = imageName
     }
 
     var thumbnail: UIImage {
-        UIImage(named: "shichimi")!
+        UIImage(named: imageName)!
     }
 
     var videoItem: AVPlayerItem = {
