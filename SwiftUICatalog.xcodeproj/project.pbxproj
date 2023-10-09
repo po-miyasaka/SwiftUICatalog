@@ -435,6 +435,7 @@
 				D59768CA2AD05A4700FE88B2 /* CreateModal.swift */,
 				D5332B002AD248850069F4DB /* TagsView.swift */,
 				D59768CE2AD05A7000FE88B2 /* ViewModel.swift */,
+				D59768DD2AD111BF00FE88B2 /* LayoutObject.swift */,
 				D59768D72AD1092000FE88B2 /* VideoCell.swift */,
 				D59768D92AD10A9800FE88B2 /* AdCell.swift */,
 				D59768DB2AD10ACB00FE88B2 /* ShortsCell.swift */,
@@ -446,7 +447,6 @@
 			isa = PBXGroup;
 			children = (
 				D59768C02AD059C300FE88B2 /* MainView.swift */,
-				D59768DD2AD111BF00FE88B2 /* LayoutObject.swift */,
 				D59768D02AD05C1600FE88B2 /* MainTabView.swift */,
 				D59768D32AD0DE6500FE88B2 /* HeaderView.swift */,
 				D59768D52AD0DE8300FE88B2 /* ToolbarView.swift */,

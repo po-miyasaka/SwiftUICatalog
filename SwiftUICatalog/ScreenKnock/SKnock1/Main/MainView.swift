@@ -8,6 +8,8 @@
 import Combine
 import SwiftUI
 
+
+// YouTubeっぽいUIの再現
 struct MainView<ViewModel: ViewModelProtocol>: View {
     @StateObject var viewModel:  ViewModel
     @StateObject var layoutObject: LayoutObject
@@ -33,7 +35,7 @@ struct MainView<ViewModel: ViewModelProtocol>: View {
                 mainTabView
                 if viewModel.output.playingVideo != nil {
                     PlayingView(layoutObject: layoutObject, viewModel: viewModel, fullNameSpaceID: fullNameSpaceID)
-                    
+                        VideoMetaView(layoutObject: layoutObject, viewModel: viewModel)
                 }
                 if viewModel.output.shortsTransitionContext != nil {
                     ShortsView(viewModel: viewModel, layoutObject: layoutObject)
@@ -44,9 +46,7 @@ struct MainView<ViewModel: ViewModelProtocol>: View {
                 layoutObject.showVideo(with: viewModel.output.tappedImageRect)
             })
             .ignoresSafeArea(edges: [.bottom])
-            .modal(shouldShow: .init(get: { viewModel.output.shouldShowCreateModal }, set: { _ in
-                viewModel.input.closeModal()
-            })) {
+            .modal(shouldShow: .init(get: { viewModel.output.shouldShowCreateModal }, set: { _ in viewModel.input.closeModal() })) {
                 CreateModal()
             }
             

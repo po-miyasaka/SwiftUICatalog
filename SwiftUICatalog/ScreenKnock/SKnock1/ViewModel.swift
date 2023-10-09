@@ -29,6 +29,7 @@ protocol ViewModelOutput {
     var shouldShowCreateModal: Bool { get }
     var recommendedObjects: [RecommendedType] { get }
     var shouldShowVideoMetaView: Bool { get }
+    
 }
 
 @MainActor
@@ -44,6 +45,8 @@ protocol ViewModelInput {
     func showPage(page: Page)
     func showCreateModal()
     func select(video: VideoData, tappedImageRect: CGRect)
+    func hideMetaView()
+    func showMetaView()
     
 }
 @MainActor

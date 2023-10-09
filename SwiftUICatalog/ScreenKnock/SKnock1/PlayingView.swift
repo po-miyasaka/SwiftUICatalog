@@ -19,16 +19,6 @@ struct PlayingView<ViewModel: ViewModelProtocol>: View {
         ZStack {
             VStack(alignment: .leading, spacing: 0) {
                 videoView()
-                    .offset(y: layoutObject.offset)
-                    .gesture(
-                        DragGesture()
-                            .onChanged { value in
-                                layoutObject.updateOffset(transition: value.translation)
-                            }
-                            .onEnded { _ in
-                                layoutObject.dragEnd()
-                            }
-                    )
                 
                 VideoDetailView(viewModel: viewModel, layoutObject: layoutObject)
                     .offset(y: layoutObject.offset)
@@ -115,9 +105,16 @@ struct PlayingView<ViewModel: ViewModelProtocol>: View {
         }
         .background(Color.black)
         .frame(maxWidth: layoutObject.screenSize.width, maxHeight: layoutObject.videoHeight, alignment: .top)
-        
-        
-        
+        .offset(y: layoutObject.offset)
+        .gesture(
+            DragGesture()
+                .onChanged { value in
+                    layoutObject.updateVideoViewOffset(transition: value.translation)
+                }
+                .onEnded { _ in
+                    layoutObject.videoViewDragEnd()
+                }
+        )
     }
 }
 
@@ -127,6 +124,7 @@ struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
     @State var scrollOffset: CGFloat = .zero
     var body: some View {
         ZStack(alignment: .top) {
+            
             ScrollView(showsIndicators: false) {
                 GeometryReader { proxy in
                     let _ = Task {
@@ -181,18 +179,18 @@ struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
     
     var titleView: some View {
         VStack(alignment: .leading) {
-            Text("Video Title").font(.headline).bold()
+            Text(viewModel.output.playingVideo?.title ?? "Video Title").font(.headline).bold()
             HStack {
                 Text("1.4M views").font(.caption)
                 Text("10 mo ago").font(.caption)
                 Text("...more").font(.caption).bold()
             }
-            
         }
         .padding(.top, 8)
-            .onTapGesture {
-                
-            }
+        .background(Color.black)
+        .onTapGesture {
+            layoutObject.showMeta()
+        }
     }
     
     var userView: some View {
@@ -309,5 +307,75 @@ struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
                 }
             }
         }
+    }
+}
+
+
+struct VideoMetaView<ViewModel: ViewModelProtocol>: View {
+    @ObservedObject var layoutObject: LayoutObject
+    @ObservedObject var viewModel: ViewModel
+    var body: some View {
+        VStack(spacing: 8) {
+            VStack {
+                Capsule().frame(width: 100, height: 5).frame(maxWidth: .infinity, alignment: .center).foregroundColor(.gray).padding(.top, 32)
+                HStack
+                {
+                    Text("Description").font(.title).bold().frame(maxWidth: .infinity, alignment: .leading)
+                    Image(systemName: "xmark").resizable().scaledToFit().frame(height: 20).onTapGesture {
+                        layoutObject.hideMeta()
+                    }
+                }
+            }
+            .background(Color.black)
+            
+            Divider()
+            ScrollView {
+                VStack(alignment: .leading, spacing: 32) {
+                    Text("Video Title").font(.title2)
+                    VStack(spacing: 8) {
+                        HStack
+                        {
+                            VStack {
+                                Text("2.7K").bold()
+                                Text("Likes").font(.caption)
+                            }.frame(maxWidth: .infinity)
+                            VStack {
+                                Text("234,483").bold()
+                                Text("Views").font(.caption)
+                            }.frame(maxWidth: .infinity)
+                            VStack {
+                                Text("2 aug").bold()
+                                Text("2023").font(.caption)
+                            }.frame(maxWidth: .infinity)
+                            
+                        }
+                        Divider()
+                    }
+                    Text("""
+Starlink - スターリンクは、電源とお金があればOK
+アンテナも必要だけど届いたらどこへでも持っていけます（※プラン次第）
+
+今後はインターネットのサーバーも軌道上に打ち上げられることでしょう
+そして火星のTesla OptimusロボをNeuralinkの脳チップで動かすようになって
+物理的に宇宙に行かずとも、インターネット経由で宇宙が身近に感じる日々
+
+・・・なんて未来もあり得そうだなと思わせてくれる衛星通信サービスでした
+""")
+                }
+            }
+        }
+        .padding(.horizontal)
+        .background(Color.black)
+        .offset(y: layoutObject.metaViewOffset)
+        .gesture(
+            DragGesture()
+                .onChanged { value in
+                    print(value.translation.height)
+                    layoutObject.updateMetaViewOffset(transition: value.translation)
+                }
+                .onEnded { _ in
+                    layoutObject.metaDragEnd()
+                }
+        )
     }
 }

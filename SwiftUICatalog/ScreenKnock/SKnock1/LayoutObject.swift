@@ -9,11 +9,15 @@ import SwiftUI
 import Combine
 class LayoutObject: ObservableObject {
     @Published var offset: CGFloat = .zero
-    @Published var currentOffset: CGFloat = .zero
+    @Published var metaViewOffset: CGFloat
+    
+    var currentOffset: CGFloat = .zero
+    var currentMetaViewOffset: CGFloat
+    var originVideoHeight: CGFloat = 250
     var showingMiniPlayer: Bool {
         currentOffset != 0
     }
-    @Published var defaultVideoHeight: CGFloat = 250
+    
     
     let safeAreaProvider: () -> UIEdgeInsets?
     let screenSize: CGSize
@@ -22,6 +26,8 @@ class LayoutObject: ObservableObject {
     init(screenSize: CGSize, safeAreaProvider: @escaping () -> UIEdgeInsets?) {
         self.safeAreaProvider = safeAreaProvider
         self.screenSize = screenSize
+        metaViewOffset = screenSize.height
+        currentMetaViewOffset = screenSize.height
     }
     
     var miniVideoWidth: CGFloat {
@@ -54,7 +60,6 @@ class LayoutObject: ObservableObject {
     
     var containerHeight: CGFloat {
         screenSize.height - toolbarHeight - safeArea.top
-        
     }
     
     var shrinkThreshold: CGFloat {
@@ -66,8 +71,8 @@ class LayoutObject: ObservableObject {
     
     var videoHeight: CGFloat {
         return max(
-            miniVideoHeight, defaultVideoHeight - (
-                isOverShrinkThreshold ? (defaultVideoHeight * ((offset - shrinkThreshold) / (containerHeight - shrinkThreshold))) : 0)
+            miniVideoHeight, originVideoHeight - (
+                isOverShrinkThreshold ? (originVideoHeight * ((offset - shrinkThreshold) / (containerHeight - shrinkThreshold))) : 0)
         )
     }
     
@@ -94,8 +99,49 @@ class LayoutObject: ObservableObject {
         screenSize.height - toolbarHeight
     }
     
-    func updateOffset(transition: CGSize) {
+    func updateVideoViewOffset(transition: CGSize) {
         offset = currentOffset + transition.height
+    }
+    
+    func updateMetaViewOffset(transition: CGSize) {
+        metaViewOffset = currentMetaViewOffset + transition.height
+    }
+    
+    var metaMinY: CGFloat {
+        videoHeight + offset
+    }
+    
+    func showFullMeta() {
+        currentMetaViewOffset = 0
+        withAnimation {
+            metaViewOffset = currentMetaViewOffset
+        }
+        
+    }
+    
+    func showMeta() {
+        currentMetaViewOffset = metaMinY
+        withAnimation {
+            metaViewOffset = currentMetaViewOffset
+        }
+    }
+    
+    func hideMeta() {
+        currentMetaViewOffset = screenSize.height
+        withAnimation {
+            metaViewOffset = currentMetaViewOffset
+        }
+    }
+    
+    func metaDragEnd() {
+        let gap = metaMinY - metaViewOffset
+        if gap > 100 {
+            showFullMeta()
+        } else if gap < 100 && gap > -100 {
+            showMeta()
+        } else {
+            hideMeta()
+        }
     }
     
     func showMini() {
@@ -103,7 +149,7 @@ class LayoutObject: ObservableObject {
     }
     
     var cancellable: AnyCancellable?
-    func dragEnd() {
+    func videoViewDragEnd() {
         let previousValue = showingMiniPlayer
         let threshold = showingMiniPlayer ? containerHeight / 1.1 : containerHeight / 10
         let shouldMini = offset >= threshold
@@ -126,10 +172,10 @@ class LayoutObject: ObservableObject {
     func updatePlayingVideoLayout(shouldMinify: Bool) {
         currentOffset = shouldMinify ? miniVideoMiniY : 0
         
-        #warning("アニメーション使うとMovieViewの描画が追いつかない。")
-//        withAnimation() {
-//            offset = currentOffset
-//        }
+#warning("アニメーション使うとMovieViewの描画が追いつかない。")
+        //        withAnimation() {
+        //            offset = currentOffset
+        //        }
         
         cancellable?.cancel()
         cancellable = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect().sink(receiveValue: { [weak self] _ in
@@ -147,9 +193,5 @@ class LayoutObject: ObservableObject {
             offset += shouldMinify ? 20 : -20
         }
     }
-    
-    
-    
-    
     
 }

@@ -30,7 +30,9 @@ struct AnimationModalModifier<V: View>: ViewModifier {
                             maxHeight: .infinity,
                             alignment: .bottom
                         ).transition(
-                            .asymmetric(insertion: .move(edge: .bottom), removal: .move(edge: .bottom))
+                            .asymmetric(
+                                insertion: .move(edge: .bottom),
+                                removal: .move(edge: .bottom))
                         )
                         .zIndex(3)
                     }
