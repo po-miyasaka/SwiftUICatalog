@@ -10,14 +10,12 @@ import SwiftUI
 struct PlayingView<ViewModel: ViewModelProtocol>: View {
     @ObservedObject var layoutObject: LayoutObject
     @ObservedObject var viewModel: ViewModel
-    @State var cancellable: AnyCancellable?
     @State var shouldShowThumbnail: Bool = true
     let fullNameSpaceID: Namespace.ID
     
-    
     @ViewBuilder
     var body: some View {
-
+        
         ZStack {
             VStack(alignment: .leading, spacing: 0) {
                 videoView()
@@ -25,74 +23,36 @@ struct PlayingView<ViewModel: ViewModelProtocol>: View {
                     .gesture(
                         DragGesture()
                             .onChanged { value in
-                                layoutObject.offset = layoutObject.currentOffset + value.translation.height
+                                layoutObject.updateOffset(transition: value.translation)
                             }
                             .onEnded { _ in
-                                let previousValue = layoutObject.showingMiniPlayer
-                                let threshold = layoutObject.showingMiniPlayer ? layoutObject.containerHeight / 1.1 : layoutObject.containerHeight / 10
-                                let shouldMini = layoutObject.offset >= threshold
-
-                                let noChange = previousValue == shouldMini
-
-                                if noChange {
-                                    layoutObject.offset = layoutObject.currentOffset
-                                } else if layoutObject.offset <= threshold {
-                                    layoutObject.showingMiniPlayer = false
-                                } else {
-                                    layoutObject.showingMiniPlayer = true
-                                }
+                                layoutObject.dragEnd()
                             }
                     )
-                    
+                
                 VideoDetailView(viewModel: viewModel, layoutObject: layoutObject)
                     .offset(y: layoutObject.offset)
                     .frame(maxHeight: max(0, layoutObject.playViewHeight))
             }
         }
-        .onChange(of: layoutObject.showingMiniPlayer, perform: { value in
-
-            if value {
-                layoutObject.currentOffset = layoutObject.miniVideoMiniY
-                cancellable?.cancel()
-                cancellable = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect().sink(receiveValue: { _ in
-                    if layoutObject.offset >= layoutObject.currentOffset {
-                        cancellable?.cancel()
-                        layoutObject.offset = layoutObject.currentOffset
-                    } else {
-                        layoutObject.offset += 20
-                    }
-
-                })
-            } else {
-                layoutObject.currentOffset = 0
-                cancellable?.cancel()
-                cancellable = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect().sink(receiveValue: { _ in
-                    if layoutObject.offset <= layoutObject.currentOffset {
-                        cancellable?.cancel()
-                        layoutObject.offset = layoutObject.currentOffset
-                    } else {
-                        layoutObject.offset -= 20
-                    }
-
-                })
-            }
-
-        })
     }
-
+    
     func videoView() -> some View {
         
         ZStack(alignment: .leading) {
             
             HStack(alignment: .center, spacing: 32) {
-                Color.black.frame(width: layoutObject.miniVideoWidth, height: layoutObject.miniVideoHeight)
+                Color.black
+                    .frame(
+                        width: layoutObject.miniVideoWidth,
+                        height: layoutObject.miniVideoHeight)
                 VStack(alignment: .leading) {
                     Text("Video title").font(.caption).frame(maxWidth: .infinity, alignment: .leading)
                     Text("User name").font(.caption).foregroundColor(.gray).frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .frame(alignment: .leading)
                 .frame(maxWidth: .infinity)
-
+                
                 Image(systemName: "play.fill")
                     .resizable()
                     .scaledToFit()
@@ -100,8 +60,10 @@ struct PlayingView<ViewModel: ViewModelProtocol>: View {
                     .onTapGesture {
                         viewModel.input.pause()
                     }
-
-                Image(systemName: "xmark").resizable().scaledToFit()
+                
+                Image(systemName: "xmark")
+                    .resizable()
+                    .scaledToFit()
                     .frame(maxHeight: 24)
                     .onTapGesture {
                         viewModel.input.closeVideo()
@@ -110,7 +72,7 @@ struct PlayingView<ViewModel: ViewModelProtocol>: View {
             .padding(.trailing)
             .frame(maxWidth: layoutObject.screenSize.width,
                    maxHeight: layoutObject.videoHeight, alignment: .top)
-
+            
             ZStack {
                 MoviePlayerView(
                     showFullscreen: .init(
@@ -118,24 +80,27 @@ struct PlayingView<ViewModel: ViewModelProtocol>: View {
                         set: { _ in  viewModel.input.showFull()}),
                     playbackProgress: .init(
                         get: { viewModel.output.playbackProgress },
-                        set: {
-                            viewModel.input.updateProgress($0)
-                    }),
-                    showingMiniPlayer: $layoutObject.showingMiniPlayer,
+                        set: { viewModel.input.updateProgress($0) }),
+                    showingMiniPlayer: .init(get: { layoutObject.showingMiniPlayer },
+                                             set: { _ in }),
                     viewModel: viewModel
                 )
-                    .matchedGeometryEffect(id: "full", in: fullNameSpaceID, isSource: !viewModel.output.isFull)
-
-                    .frame(maxWidth: layoutObject.videoWidth, maxHeight: layoutObject.videoHeight, alignment: .center)
-
-                    .onTapGesture {
-                        if layoutObject.showingMiniPlayer {
-                            layoutObject.showingMiniPlayer = false
-                        }
+                .onTapGesture {
+                    if layoutObject.showingMiniPlayer {
+                        layoutObject.updatePlayingVideoLayout(shouldMinify: false)
                     }
-                    .onChange(of: viewModel.output.shouldReloadVideoIncrement, perform: { _ in
-                        shouldShowThumbnail = true
-                    })
+                }
+                .matchedGeometryEffect(id: "full",
+                                       in: fullNameSpaceID,
+                                       isSource: !viewModel.output.isFull)
+                
+                .frame(maxWidth: layoutObject.videoWidth,
+                       maxHeight: layoutObject.videoHeight,
+                       alignment: .center)
+                .onChange(of: viewModel.output.shouldReloadVideoIncrement) { _ in
+                    shouldShowThumbnail = true
+                }
+                
                 if let image = viewModel.output.playingVideo?.thumbnail, shouldShowThumbnail {
                     Image(uiImage: image).resizable().scaledToFill()
                         .frame(maxWidth: layoutObject.videoWidth, maxHeight: layoutObject.videoHeight, alignment: .center).clipped().allowsHitTesting(false)
@@ -150,21 +115,8 @@ struct PlayingView<ViewModel: ViewModelProtocol>: View {
         }
         .background(Color.black)
         .frame(maxWidth: layoutObject.screenSize.width, maxHeight: layoutObject.videoHeight, alignment: .top)
-        .onAppear {
-            if viewModel.output.shouldReloadVideoIncrement > 1 {
-                layoutObject.offset = viewModel.output.rect.minY - layoutObject.safeArea.top
-                layoutObject.showingMiniPlayer = false
-            } else {
-                layoutObject.offset = 0
-                layoutObject.currentOffset = 0
-            }
-        }
-        .onChange(of: viewModel.output.shouldReloadVideoIncrement, perform: { _ in
-            // onAppearのときはよばれない。
-            layoutObject.offset = viewModel.output.rect.minY - layoutObject.safeArea.top
-            layoutObject.showingMiniPlayer = false
-        })
-       
+        
+        
         
     }
 }
@@ -182,7 +134,7 @@ struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
                     }
                     Color.clear
                 }.frame(height: .zero)
-
+                
                 ZStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 16) {
                         titleView
@@ -196,9 +148,9 @@ struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
                 }
             }
             let threshold: CGFloat = -300
-
+            
             let pointY = min(0, max(-44, threshold + abs(scrollOffset)))
-
+            
             tagsView.offset(
                 y: pointY
             ).clipShape(Rectangle().size(.init(width: layoutObject.screenSize.width, height: 44)))
@@ -208,7 +160,7 @@ struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
         .ignoresSafeArea()
         .coordinateSpace(name: "VideoDetail")
     }
-
+    
     @ViewBuilder
     var tagsView: some View {
         let arr = ["Beatbox", "Cat", "DBD", "Watched", "Recently uploaded"]
@@ -226,7 +178,7 @@ struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
         .background(Color.black)
         .frame(maxHeight: 44)
     }
-
+    
     var titleView: some View {
         VStack(alignment: .leading) {
             Text("Video Title").font(.headline).bold()
@@ -235,19 +187,20 @@ struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
                 Text("10 mo ago").font(.caption)
                 Text("...more").font(.caption).bold()
             }
-
-        }.padding(.top, 8)
+            
+        }
+        .padding(.top, 8)
             .onTapGesture {
                 
             }
     }
-
+    
     var userView: some View {
         HStack {
             Image("kabigon2").resizable().scaledToFit().frame(maxWidth: 33, maxHeight: 33).clipShape(Circle())
             Text("Youtuber Name").font(.body).frame(maxWidth: .infinity, alignment: .leading)
             Text("1.45M").font(.caption).bold()
-
+            
             HStack {
                 Image(systemName: "bell").resizable().scaledToFit().frame(maxWidth: 14, maxHeight: 14)
                 Image(systemName: "chevron.down").resizable().scaledToFit().frame(maxWidth: 14, maxHeight: 14)
@@ -258,7 +211,7 @@ struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
             .clipShape(Capsule())
         }
     }
-
+    
     @ViewBuilder
     var buttonsView: some View {
         let dataArray: [(imageName: String, text: String)] = [
@@ -268,13 +221,13 @@ struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
             ("scissors", "Clip"),
             ("plus.square.on.square", "Save"),
         ]
-
+        
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
                 rateButton
-
+                
                 ForEach(dataArray, id: \.text) { data in
-
+                    
                     Button(action: {}, label: {
                         HStack(spacing: 4) {
                             Image(systemName: data.imageName)
@@ -283,16 +236,16 @@ struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
                             Text(data.text).font(.caption).bold().frame(maxWidth: .infinity).layoutPriority(1)
                         }
                     })
-                        .padding(.vertical, 8)
-                        .padding(.horizontal, 8)
-                        .background(Color.white.opacity(0.2))
-                        .clipShape(Capsule())
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 8)
+                    .background(Color.white.opacity(0.2))
+                    .clipShape(Capsule())
                 }
             }
-
+            
         }.frame(maxHeight: 30)
     }
-
+    
     var rateButton: some View {
         HStack(spacing: 8) {
             Button(action: {}, label: {
@@ -302,7 +255,7 @@ struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
                     Text("25K").font(.caption).bold().frame(maxWidth: .infinity).layoutPriority(1)
                 }
             })
-
+            
             Divider()
             Button(action: {}, label: {
                 Image(systemName: "hand.thumbsdown").resizable().scaledToFit().frame(maxWidth: 14, maxHeight: 14)
@@ -313,7 +266,7 @@ struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
         .background(Color.white.opacity(0.2))
         .clipShape(Capsule())
     }
-
+    
     var commentView: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .bottom) {
@@ -333,7 +286,7 @@ struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
-
+    
     @ViewBuilder
     var recommendedView: some View {
         LazyVStack(alignment: .leading, spacing: 32) {
@@ -345,13 +298,13 @@ struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
                     ShortsCell(shortsData: data, transition: { data in
                         withAnimation {
                             viewModel.input.showShort(.init(source: .playingView, data: data))
-                            layoutObject.showingMiniPlayer = true
+                            layoutObject.updatePlayingVideoLayout(shouldMinify: true)
                         }
-
+                        
                     })
                 case let .video(data):
                     VideoCell(videoData: data) { video, _ in
-                        viewModel.input.select(video: video, rect: .zero)
+                        viewModel.input.select(video: video, tappedImageRect: .zero)
                     }
                 }
             }

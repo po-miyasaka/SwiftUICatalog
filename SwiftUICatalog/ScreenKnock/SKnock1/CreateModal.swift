@@ -25,7 +25,9 @@ struct CreateModal: View {
                 }
             }
 
-        }.padding().background(Color.white).clipShape(RoundedRectangle(cornerRadius: 10))
-            .padding()
+        }
+        .padding()
+        .background(Color.white).clipShape(RoundedRectangle(cornerRadius: 10))
+        .padding()
     }
 }

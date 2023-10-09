@@ -48,7 +48,10 @@ struct ShortsView<ViewModel: ViewModelProtocol>: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .transition(.asymmetric(insertion: .backslide, removal: .slide)).zIndex(context?.source == .tabButton ? 0 : 1)
+        .transition(
+            .asymmetric(insertion: .backslide,
+                                removal: .slide))
+        .zIndex(context?.source == .tabButton ? 0 : 1)
         .ignoresSafeArea(edges: [.top])
     }
 }

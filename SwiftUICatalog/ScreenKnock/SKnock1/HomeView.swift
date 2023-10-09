@@ -30,7 +30,6 @@ struct HomeView<ViewModel: ViewModelProtocol>: View {
                             cell(data: data)
                         }
                     }
-                    
                     Color.black.frame(height: 50)
                 }
                 
@@ -52,13 +51,13 @@ struct HomeView<ViewModel: ViewModelProtocol>: View {
             ShortsCell(shortsData: data, transition: { data in
                 withAnimation {
                     viewModel.input.showShort(.init(source: .homeView, data: data))
-                    layoutObject.showingMiniPlayer = true
+                    layoutObject.updatePlayingVideoLayout(shouldMinify: true)
                 }
                 
             })
         case let .video(data):
             VideoCell(videoData: data) { video, rect in
-                viewModel.input.select(video: video, rect: rect)
+                viewModel.input.select(video: video, tappedImageRect: rect)
             }
         }
     }

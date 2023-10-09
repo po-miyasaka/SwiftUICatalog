@@ -43,10 +43,11 @@ extension MainView {
         }
         
         .background(Color.black)
-        .frame(height: layoutObject.safeArea.bottom + layoutObject.toolbarHeight)
+        .frame(height: layoutObject.toolbarHeight)
         .frame(maxWidth: layoutObject.screenSize.width,
-               maxHeight: .infinity, alignment: .bottom)
-        .offset(y: (viewModel.output.playingVideo != nil) ? max(layoutObject.containerHeight - layoutObject.offset - layoutObject.toolbarHeight, 0) : 0)
+               maxHeight: .infinity,
+               alignment: .bottom)
+        .offset(y: (viewModel.output.playingVideo != nil) ? layoutObject.toolbarMinY : 0)
         .zIndex(2)
     }
     

@@ -10,6 +10,7 @@ import SwiftUI
 struct HeaderView<Attached: View>: View {
     var attachedViewHeight: CGFloat
     @ViewBuilder var attachedView: () -> Attached
+    let headerViewHeight: CGFloat = 44
     var body: some View {
         VStack {
             HStack(spacing: 0) {
@@ -34,7 +35,7 @@ struct HeaderView<Attached: View>: View {
             }
             attachedView()
         }
-        .frame(maxWidth: .infinity, minHeight: 44 + attachedViewHeight)
+        .frame(maxWidth: .infinity, minHeight: headerViewHeight + attachedViewHeight)
         .padding(8)
     }
 }

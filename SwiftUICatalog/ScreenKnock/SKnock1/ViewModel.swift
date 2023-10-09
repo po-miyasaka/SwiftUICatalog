@@ -16,10 +16,11 @@ enum RecommendedType: Hashable {
     case shorts([ShortData])
 }
 
+@MainActor
 protocol ViewModelOutput {
     var playingVideo: VideoData? { get }
     var shouldReloadVideoIncrement: Int { get }
-    var rect: CGRect { get }
+    var tappedImageRect: CGRect { get }
     var shortsTransitionContext: TransitionContext? { get }
     var current: Page { get }
     var playbackProgress: Double { get }
@@ -30,6 +31,7 @@ protocol ViewModelOutput {
     var shouldShowVideoMetaView: Bool { get }
 }
 
+@MainActor
 protocol ViewModelInput {
     func closeVideo()
     func pause()
@@ -41,7 +43,7 @@ protocol ViewModelInput {
     func closeModal()
     func showPage(page: Page)
     func showCreateModal()
-    func select(video: VideoData, rect: CGRect)
+    func select(video: VideoData, tappedImageRect: CGRect)
     
 }
 @MainActor
@@ -56,7 +58,7 @@ final class ViewModel: NSObject, ViewModelProtocol {
     @Published private(set) var _playingVideo: VideoData?
     @Published private(set) var _shouldReloadVideoIncrement: Int = 0
     private var _pauseSubject: PassthroughSubject<Void, Never> = .init()
-    private(set) var rect: CGRect = .zero
+    private(set) var tappedImageRect: CGRect = .zero
     @Published private(set) var _shortsTransitionContext: TransitionContext?
     @Published private(set) var _shouldShowVideoMetaView: Bool = false
     @Published private(set) var _current: Page = .home
@@ -134,8 +136,8 @@ extension ViewModel: ViewModelInput {
         _pauseSubject.send(())
     }
 
-    func select(video: VideoData, rect: CGRect) {
-        self.rect = rect
+    func select(video: VideoData, tappedImageRect: CGRect) {
+        self.tappedImageRect = tappedImageRect
 
         _playingVideo = video
         _shouldReloadVideoIncrement += 1

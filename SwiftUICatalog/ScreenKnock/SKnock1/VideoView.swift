@@ -14,12 +14,12 @@ struct MoviePlayerView<ViewModel: ViewModelProtocol>: View {
     @State private var totalDuration: Double = 1.0
     @State var userControlledProgress: Double?
     
-    #warning("直接つなぐとパフォーマンス悪いので修正")
+#warning("直接つなぐとパフォーマンス悪いので修正")
     @Binding var playbackProgress: Double
     @Binding private var showFullscreen: Bool
     @Binding var showingMiniPlayer: Bool
     @ObservedObject var viewModel: ViewModel
-
+    
     init(showFullscreen: Binding<Bool>, playbackProgress: Binding<Double>, showingMiniPlayer: Binding<Bool>,
          viewModel: ViewModel) {
         _showFullscreen = showFullscreen
@@ -27,7 +27,7 @@ struct MoviePlayerView<ViewModel: ViewModelProtocol>: View {
         _showingMiniPlayer = showingMiniPlayer
         self.viewModel = viewModel
     }
-
+    
     var body: some View {
         ZStack(alignment: .center) {
             MovieView(isPlaying: $isPlaying,
@@ -36,10 +36,7 @@ struct MoviePlayerView<ViewModel: ViewModelProtocol>: View {
                       totalDuration: $totalDuration,
                       isFull: $showFullscreen,
                       video: .init(get: {viewModel.output.playingVideo}, set: { _ in }))
-                .onLongPressGesture(perform: {
-                    showFullscreen.toggle()
-                })
-
+            
             HStack(alignment: .bottom) {
                 Button(action: {
                     isPlaying.toggle()
@@ -52,7 +49,7 @@ struct MoviePlayerView<ViewModel: ViewModelProtocol>: View {
                             .foregroundColor(.gray)
                             .contentShape(Rectangle().size(.init(width: 100, height: 100)))
                             .padding()
-
+                        
                     }.frame(maxWidth: 60, maxHeight: 60, alignment: .bottomLeading)
                 }
                 Spacer()
@@ -69,13 +66,13 @@ struct MoviePlayerView<ViewModel: ViewModelProtocol>: View {
                             .foregroundColor(.gray)
                             .contentShape(Rectangle().size(.init(width: 100, height: 100)))
                             .padding()
-
+                        
                     }.frame(maxWidth: 60, maxHeight: 60, alignment: .bottomTrailing)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-                .opacity(showingMiniPlayer ? 0 : 1)
-
+            .opacity(showingMiniPlayer ? 0 : 1)
+            
             Slider(value: $playbackProgress) { editing in
                 if editing {
                     isPlaying = false
@@ -103,25 +100,25 @@ struct MovieView: UIViewRepresentable {
     @Binding var totalDuration: Double
     @Binding var isFull: Bool
     @Binding var video: VideoData?
-
+    
     func makeUIView(context: Context) -> UIMovieView {
         let view = UIMovieView()
         view.delegate = context.coordinator
         view.changeProgress(value: playbackProgress)
         return view
     }
-
+    
     func updateUIView(_ uiView: UIMovieView, context _: Context) {
         if UIMovieView.player.currentItem != video?.videoItem {
             UIMovieView.player.replaceCurrentItem(with: video?.videoItem)
         }
-
+        
         if isPlaying {
             uiView.play()
         } else {
             uiView.pause()
         }
-
+        
         uiView.full(isFull: isFull)
         if userControlledProgress != nil {
             uiView.changeProgress(value: playbackProgress)
@@ -130,22 +127,22 @@ struct MovieView: UIViewRepresentable {
             }
         }
     }
-
+    
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
-
+    
     class Coordinator: NSObject, UIMovieViewDelegate, @unchecked Sendable {
         var parent: MovieView
-
+        
         init(_ parent: MovieView) {
             self.parent = parent
         }
-
+        
         func moviePlayer(didUpdatePlaybackTime time: Double) {
             parent.playbackProgress = time / parent.totalDuration
         }
-
+        
         func moviePlayer(didUpdateTotalDuration duration: Double) {
             parent.totalDuration = duration
         }
@@ -160,15 +157,15 @@ class UIMovieView: UIView {
         super.init(frame: frame)
         setupPlayer()
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupPlayer()
     }
-
+    
     private func setupPlayer() {
         playerLayer = AVPlayerLayer(player: Self.player)
-
+        
         if let playerLayer = playerLayer {
             playerLayer.frame = bounds
             playerLayer.videoGravity = .resizeAspectFill
@@ -176,21 +173,21 @@ class UIMovieView: UIView {
         }
         setupPlayerPeriodicTimeObserver()
     }
-
+    
     func play() {
         Self.player.play()
     }
-
+    
     func changeProgress(value: CGFloat) {
         guard let duration = Self.player.currentItem?.duration else { return }
-
+        
         let totalSeconds = CMTimeGetSeconds(duration)
         let newTimeSeconds = totalSeconds * Double(value)
         let newTime = CMTime(seconds: newTimeSeconds, preferredTimescale: 600)
-
+        
         Self.player.seek(to: newTime, toleranceBefore: .zero, toleranceAfter: .zero)
     }
-
+    
     func pause() {
         Self.player.pause()
     }
@@ -202,7 +199,7 @@ class UIMovieView: UIView {
             setNeedsLayout()
         }
     }
-
+    
     override func layoutSubviews() {
         if isFull {
             let x = (bounds.width / 2) - (bounds.height / 2)
@@ -214,8 +211,8 @@ class UIMovieView: UIView {
         }
         super.layoutSubviews()
     }
-   
-     func setupPlayerPeriodicTimeObserver() {
+    
+    func setupPlayerPeriodicTimeObserver() {
         let interval = CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
         Self.player.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main) { [weak self] time in
             guard let self = self else { return }

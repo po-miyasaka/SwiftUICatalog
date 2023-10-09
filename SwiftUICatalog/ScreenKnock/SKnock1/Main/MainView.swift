@@ -13,8 +13,7 @@ struct MainView<ViewModel: ViewModelProtocol>: View {
     @StateObject var layoutObject: LayoutObject
     @Namespace var fullNameSpaceID
     init(viewModel: ViewModel, layoutObject: LayoutObject) {
-        _viewModel = StateObject(wrappedValue:
-                                    viewModel)
+        _viewModel = StateObject(wrappedValue: viewModel)
         _layoutObject = StateObject(wrappedValue: layoutObject)
     }
     
@@ -31,7 +30,6 @@ struct MainView<ViewModel: ViewModelProtocol>: View {
 
         ZStack {
             ZStack(alignment: .topLeading) {
-                
                 mainTabView
                 if viewModel.output.playingVideo != nil {
                     PlayingView(layoutObject: layoutObject, viewModel: viewModel, fullNameSpaceID: fullNameSpaceID)
@@ -42,6 +40,9 @@ struct MainView<ViewModel: ViewModelProtocol>: View {
                 }
                 toolbarView
             }
+            .onChange(of: viewModel.output.shouldReloadVideoIncrement, perform: { _ in
+                layoutObject.showVideo(with: viewModel.output.tappedImageRect)
+            })
             .ignoresSafeArea(edges: [.bottom])
             .modal(shouldShow: .init(get: { viewModel.output.shouldShowCreateModal }, set: { _ in
                 viewModel.input.closeModal()
@@ -51,11 +52,16 @@ struct MainView<ViewModel: ViewModelProtocol>: View {
             
             if viewModel.output.isFull {
                 MoviePlayerView(
-                    showFullscreen: .init(get: { viewModel.output.isFull }, set: { _ in viewModel.input.hideFull()}),
-                    playbackProgress: .init(get: {viewModel.output.playbackProgress}, set: { _ in }),
+                    showFullscreen: .init(
+                        get: { viewModel.output.isFull },
+                        set: { _ in viewModel.input.hideFull() }),
+                    playbackProgress: .init(get: { viewModel.output.playbackProgress }, set: { _ in }),
                     showingMiniPlayer: .constant(false),
                     viewModel: viewModel
                 )
+                .onTapGesture {
+                    viewModel.input.hideFull()
+                }
                 .matchedGeometryEffect(id: "full", in: fullNameSpaceID, isSource: viewModel.output.isFull)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 .rotationEffect(.degrees(90), anchor: .center)
