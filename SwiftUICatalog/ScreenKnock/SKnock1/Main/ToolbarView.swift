@@ -39,14 +39,14 @@ extension MainView {
                     .padding(.top, 8)
                 }
             }
-            Color.black.frame(height: layoutValues.safeArea.bottom)
+            Color.black.frame(height: layoutObject.safeArea.bottom)
         }
         
         .background(Color.black)
-        .frame(height: layoutValues.safeArea.bottom + layoutValues.toolbarHeight)
-        .frame(maxWidth: layoutValues.screenSize.width,
+        .frame(height: layoutObject.safeArea.bottom + layoutObject.toolbarHeight)
+        .frame(maxWidth: layoutObject.screenSize.width,
                maxHeight: .infinity, alignment: .bottom)
-        .offset(y: (viewModel.output.playingVideo != nil) ? max(layoutValues.containerHeight - layoutObject.offset - layoutValues.toolbarHeight, 0) : 0)
+        .offset(y: (viewModel.output.playingVideo != nil) ? max(layoutObject.containerHeight - layoutObject.offset - layoutObject.toolbarHeight, 0) : 0)
         .zIndex(2)
     }
     

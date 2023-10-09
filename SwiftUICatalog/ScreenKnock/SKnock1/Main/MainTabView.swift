@@ -32,7 +32,9 @@ extension MainView {
                     GeometryReader { _ in
                         switch data.tag {
                         case .home:
-                            HomeView(viewModel: viewModel, layoutObject: layoutObject)
+                            HomeView(viewModel: viewModel
+                                     ,layoutObject: layoutObject
+                            )
                         case .shorts:
                             Text("")
                         case .create:
@@ -48,6 +50,6 @@ extension MainView {
                     data.tag
                 )
             }
-        }.overlay(Color.black.frame(height: layoutValues.safeArea.top).ignoresSafeArea(), alignment: .top)
+        }.overlay(Color.black.frame(height: layoutObject.safeArea.top).ignoresSafeArea(), alignment: .top)
     }
 }

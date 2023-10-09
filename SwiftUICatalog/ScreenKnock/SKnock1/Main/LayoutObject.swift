@@ -12,9 +12,6 @@ class LayoutObject: ObservableObject {
     @Published var currentOffset: CGFloat = .zero
     @Published var showingMiniPlayer: Bool = false
     @Published var defaultVideoHeight: CGFloat = 250
-}
-
-struct LayoutValues {
     
     let safeAreaProvider: () -> UIEdgeInsets?
     let screenSize: CGSize
@@ -30,9 +27,16 @@ struct LayoutValues {
         screenSize.width * 0.4
     }
     
-    
+    var _safeArea: UIEdgeInsets?
     var safeArea: UIEdgeInsets {
-        safeAreaProvider() ?? .zero
+        if let _safeArea {
+            return _safeArea
+        }
+        if let safeArea = safeAreaProvider() {
+            _safeArea = safeArea
+            return safeArea
+        }
+        return .zero
     }
     
     var miniVideoMiniY: CGFloat {
@@ -48,35 +52,35 @@ struct LayoutValues {
     var shrinkThreshold: CGFloat {
             containerHeight / 1.4
     }
-    func isOverShrinkThreshold(offset: CGFloat) -> Bool {
+    var isOverShrinkThreshold:  Bool {
         shrinkThreshold < offset
     }
 
-    func videoHeight(offset: CGFloat, defaultVideoHeight: CGFloat) ->  CGFloat {
+    var videoHeight: CGFloat {
         let s = shrinkThreshold
         let c = containerHeight
         return max(
             miniVideoHeight, defaultVideoHeight - (
-                isOverShrinkThreshold(offset: offset) ? (defaultVideoHeight * ((offset - s) / (c - s))) : 0)
+                isOverShrinkThreshold ? (defaultVideoHeight * ((offset - s) / (c - s))) : 0)
         )
     }
     
-    func videoWidth(offset: CGFloat) ->  CGFloat {
+    var videoWidth: CGFloat {
         return max(
             miniVideoWidth,
             screenSize.width - (
-                isOverShrinkThreshold(offset: offset) ? 
+                isOverShrinkThreshold ?
                 screenSize.width * ((offset - shrinkThreshold) / (containerHeight - shrinkThreshold))
                 : 0
             )
         )
     }
 
-    func playViewHeight(offset: CGFloat, defaultVideoHeight: CGFloat) -> CGFloat {
-        max(100.0, screenSize.height - videoHeight(offset: offset, defaultVideoHeight: defaultVideoHeight) - offset)
+    var playViewHeight: CGFloat {
+        max(100.0, screenSize.height - videoHeight - offset)
     }
     
-    func playViewOpacity(offset: CGFloat) -> CGFloat {
+    var playViewOpacity: CGFloat {
         max(0, 1 - (offset / (screenSize.height - toolbarHeight)))
     }
     

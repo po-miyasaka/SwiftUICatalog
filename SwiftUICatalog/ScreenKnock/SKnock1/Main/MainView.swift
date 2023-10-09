@@ -10,12 +10,12 @@ import SwiftUI
 
 struct MainView<ViewModel: ViewModelProtocol>: View {
     @StateObject var viewModel:  ViewModel
-    @StateObject var layoutObject: LayoutObject = .init()
-    @Environment(\.layoutValues) var layoutValues: LayoutValues
+    @StateObject var layoutObject: LayoutObject
     @Namespace var fullNameSpaceID
-    init(viewModel: ViewModel) {
+    init(viewModel: ViewModel, layoutObject: LayoutObject) {
         _viewModel = StateObject(wrappedValue:
                                     viewModel)
+        _layoutObject = StateObject(wrappedValue: layoutObject)
     }
     
     typealias PageData = (title: String, imageName: String, tag: Page)
@@ -38,7 +38,7 @@ struct MainView<ViewModel: ViewModelProtocol>: View {
                     
                 }
                 if viewModel.output.shortsTransitionContext != nil {
-                    ShortsView(viewModel: viewModel)
+                    ShortsView(viewModel: viewModel, layoutObject: layoutObject)
                 }
                 toolbarView
             }

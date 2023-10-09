@@ -10,7 +10,6 @@ import SwiftUI
 struct HomeView<ViewModel: ViewModelProtocol>: View {
     @ObservedObject var viewModel: ViewModel
     @ObservedObject var layoutObject: LayoutObject
-    @Environment(\.layoutValues) var layoutValues: LayoutValues
     @State var scrollOffset: CGFloat = .zero
     @ViewBuilder
     var body: some View {

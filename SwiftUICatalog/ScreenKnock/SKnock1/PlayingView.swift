@@ -8,7 +8,6 @@
 import Combine
 import SwiftUI
 struct PlayingView<ViewModel: ViewModelProtocol>: View {
-    @Environment(\.layoutValues) var layoutValues
     @ObservedObject var layoutObject: LayoutObject
     @ObservedObject var viewModel: ViewModel
     @State var cancellable: AnyCancellable?
@@ -30,7 +29,7 @@ struct PlayingView<ViewModel: ViewModelProtocol>: View {
                             }
                             .onEnded { _ in
                                 let previousValue = layoutObject.showingMiniPlayer
-                                let threshold = layoutObject.showingMiniPlayer ? layoutValues.containerHeight / 1.1 : layoutValues.containerHeight / 10
+                                let threshold = layoutObject.showingMiniPlayer ? layoutObject.containerHeight / 1.1 : layoutObject.containerHeight / 10
                                 let shouldMini = layoutObject.offset >= threshold
 
                                 let noChange = previousValue == shouldMini
@@ -47,13 +46,13 @@ struct PlayingView<ViewModel: ViewModelProtocol>: View {
                     
                 VideoDetailView(viewModel: viewModel, layoutObject: layoutObject)
                     .offset(y: layoutObject.offset)
-                    .frame(maxHeight: max(0, layoutValues.playViewHeight(offset: layoutObject.offset, defaultVideoHeight: layoutObject.defaultVideoHeight)))
+                    .frame(maxHeight: max(0, layoutObject.playViewHeight))
             }
         }
         .onChange(of: layoutObject.showingMiniPlayer, perform: { value in
 
             if value {
-                layoutObject.currentOffset = layoutValues.miniVideoMiniY
+                layoutObject.currentOffset = layoutObject.miniVideoMiniY
                 cancellable?.cancel()
                 cancellable = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect().sink(receiveValue: { _ in
                     if layoutObject.offset >= layoutObject.currentOffset {
@@ -86,7 +85,7 @@ struct PlayingView<ViewModel: ViewModelProtocol>: View {
         ZStack(alignment: .leading) {
             
             HStack(alignment: .center, spacing: 32) {
-                Color.black.frame(width: layoutValues.miniVideoWidth, height: layoutValues.miniVideoHeight)
+                Color.black.frame(width: layoutObject.miniVideoWidth, height: layoutObject.miniVideoHeight)
                 VStack(alignment: .leading) {
                     Text("Video title").font(.caption).frame(maxWidth: .infinity, alignment: .leading)
                     Text("User name").font(.caption).foregroundColor(.gray).frame(maxWidth: .infinity, alignment: .leading)
@@ -109,8 +108,8 @@ struct PlayingView<ViewModel: ViewModelProtocol>: View {
                     }
             }
             .padding(.trailing)
-            .frame(maxWidth: layoutValues.screenSize.width,
-                   maxHeight: layoutValues.videoHeight(offset: layoutObject.offset, defaultVideoHeight: layoutObject.defaultVideoHeight), alignment: .top)
+            .frame(maxWidth: layoutObject.screenSize.width,
+                   maxHeight: layoutObject.videoHeight, alignment: .top)
 
             ZStack {
                 MoviePlayerView(
@@ -127,7 +126,7 @@ struct PlayingView<ViewModel: ViewModelProtocol>: View {
                 )
                     .matchedGeometryEffect(id: "full", in: fullNameSpaceID, isSource: !viewModel.output.isFull)
 
-                    .frame(maxWidth: layoutValues.videoWidth(offset: layoutObject.offset), maxHeight: layoutValues.videoHeight(offset: layoutObject.offset, defaultVideoHeight: layoutObject.defaultVideoHeight), alignment: .center)
+                    .frame(maxWidth: layoutObject.videoWidth, maxHeight: layoutObject.videoHeight, alignment: .center)
 
                     .onTapGesture {
                         if layoutObject.showingMiniPlayer {
@@ -139,7 +138,7 @@ struct PlayingView<ViewModel: ViewModelProtocol>: View {
                     })
                 if let image = viewModel.output.playingVideo?.thumbnail, shouldShowThumbnail {
                     Image(uiImage: image).resizable().scaledToFill()
-                        .frame(maxWidth: layoutValues.videoWidth(offset: layoutObject.offset), maxHeight: layoutValues.videoHeight(offset: layoutObject.offset, defaultVideoHeight: layoutObject.defaultVideoHeight), alignment: .center).clipped().allowsHitTesting(false)
+                        .frame(maxWidth: layoutObject.videoWidth, maxHeight: layoutObject.videoHeight, alignment: .center).clipped().allowsHitTesting(false)
                         .onAppear {
                             Task {
                                 try await Task.sleep(nanoseconds: 800_000_000)
@@ -150,10 +149,10 @@ struct PlayingView<ViewModel: ViewModelProtocol>: View {
             }
         }
         .background(Color.black)
-        .frame(maxWidth: layoutValues.screenSize.width, maxHeight: layoutValues.videoHeight(offset: layoutObject.offset, defaultVideoHeight: layoutObject.defaultVideoHeight), alignment: .top)
+        .frame(maxWidth: layoutObject.screenSize.width, maxHeight: layoutObject.videoHeight, alignment: .top)
         .onAppear {
             if viewModel.output.shouldReloadVideoIncrement > 1 {
-                layoutObject.offset = viewModel.output.rect.minY - layoutValues.safeArea.top
+                layoutObject.offset = viewModel.output.rect.minY - layoutObject.safeArea.top
                 layoutObject.showingMiniPlayer = false
             } else {
                 layoutObject.offset = 0
@@ -162,7 +161,7 @@ struct PlayingView<ViewModel: ViewModelProtocol>: View {
         }
         .onChange(of: viewModel.output.shouldReloadVideoIncrement, perform: { _ in
             // onAppearのときはよばれない。
-            layoutObject.offset = viewModel.output.rect.minY - layoutValues.safeArea.top
+            layoutObject.offset = viewModel.output.rect.minY - layoutObject.safeArea.top
             layoutObject.showingMiniPlayer = false
         })
        
@@ -173,7 +172,6 @@ struct PlayingView<ViewModel: ViewModelProtocol>: View {
 struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
     @ObservedObject var viewModel: ViewModel
     @ObservedObject var layoutObject: LayoutObject
-    @Environment(\.layoutValues) var layoutValues
     @State var scrollOffset: CGFloat = .zero
     var body: some View {
         ZStack(alignment: .top) {
@@ -203,10 +201,10 @@ struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
 
             tagsView.offset(
                 y: pointY
-            ).clipShape(Rectangle().size(.init(width: layoutValues.screenSize.width, height: 44)))
+            ).clipShape(Rectangle().size(.init(width: layoutObject.screenSize.width, height: 44)))
         }
         .background(Color.black)
-        .frame(maxWidth: layoutValues.screenSize.width, alignment: .center)
+        .frame(maxWidth: layoutObject.screenSize.width, alignment: .center)
         .ignoresSafeArea()
         .coordinateSpace(name: "VideoDetail")
     }

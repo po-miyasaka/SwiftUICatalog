@@ -20,7 +20,7 @@ struct TransitionContext {
 
 struct ShortsView<ViewModel: ViewModelProtocol>: View {
     @ObservedObject var viewModel: ViewModel
-    @Environment(\.layoutValues) var layoutValues: LayoutValues
+    @ObservedObject var layoutObject: LayoutObject
 
     var body: some View {
         let context = viewModel.output.shortsTransitionContext
@@ -30,7 +30,7 @@ struct ShortsView<ViewModel: ViewModelProtocol>: View {
                     ZStack {
                         let data = context?.data
                         Image(uiImage: UIImage(named: data?.imageName ?? "short1")!)
-                            .resizable().scaledToFill().frame(height: layoutValues.shortsHeight)
+                            .resizable().scaledToFill().frame(height: layoutObject.shortsHeight)
                         Text(data?.title ?? "short")
                     }
                 }
@@ -44,7 +44,7 @@ struct ShortsView<ViewModel: ViewModelProtocol>: View {
                     Image(systemName: "chevron.left").resizable().frame(height: 25).foregroundColor(.white)
                 }).frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                     .padding()
-                    .padding(.top, layoutValues.safeArea.top)
+                    .padding(.top, layoutObject.safeArea.top)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
