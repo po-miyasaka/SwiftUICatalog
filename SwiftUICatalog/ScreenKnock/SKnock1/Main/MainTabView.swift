@@ -7,25 +7,32 @@
 
 import SwiftUI
 
-extension MainView {
-    enum Page: Hashable {
-        case home
-        case shorts
-        case create
-        case subscription
-        case library
-    }
+enum Page: Hashable {
+    case home
+    case shorts
+    case create
+    case subscription
+    case library
+}
 
+extension MainView {
+    
+    
     @ViewBuilder
     var mainTabView: some View {
-        TabView(selection: $viewModel.current) {
+        
+        TabView(selection: .init(get: {
+            viewModel.output.current
+        }, set: {
+            viewModel.input.showPage(page: $0)
+        })) {
             ForEach(pageArray, id: \.title) { data in
 
                 Group {
                     GeometryReader { _ in
                         switch data.tag {
                         case .home:
-                            HomeView(viewModel: viewModel, offsetObject: offsetObject, playingVideoNameSpaceID: playingNameSpaceID)
+                            HomeView(viewModel: viewModel, layoutObject: layoutObject)
                         case .shorts:
                             Text("")
                         case .create:
@@ -41,10 +48,6 @@ extension MainView {
                     data.tag
                 )
             }
-        }.overlay(Color.black.frame(height: safeArea().top).ignoresSafeArea(), alignment: .top)
+        }.overlay(Color.black.frame(height: layoutValues.safeArea.top).ignoresSafeArea(), alignment: .top)
     }
-}
-
-#Preview {
-    MainView()
 }

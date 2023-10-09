@@ -9,16 +9,19 @@ import AVFoundation
 import AVKit
 import SwiftUI
 
-struct MoviePlayerView: View {
+struct MoviePlayerView<ViewModel: ViewModelProtocol>: View {
     @State private var isPlaying: Bool = true
-    @Binding var playbackProgress: Double
     @State private var totalDuration: Double = 1.0
     @State var userControlledProgress: Double?
+    
+    #warning("直接つなぐとパフォーマンス悪いので修正")
+    @Binding var playbackProgress: Double
     @Binding private var showFullscreen: Bool
     @Binding var showingMiniPlayer: Bool
     @ObservedObject var viewModel: ViewModel
 
-    init(showFullscreen: Binding<Bool>, playbackProgress: Binding<Double>, showingMiniPlayer: Binding<Bool>, viewModel: ViewModel) {
+    init(showFullscreen: Binding<Bool>, playbackProgress: Binding<Double>, showingMiniPlayer: Binding<Bool>,
+         viewModel: ViewModel) {
         _showFullscreen = showFullscreen
         _playbackProgress = playbackProgress
         _showingMiniPlayer = showingMiniPlayer
@@ -32,7 +35,7 @@ struct MoviePlayerView: View {
                       userControlledProgress: $userControlledProgress,
                       totalDuration: $totalDuration,
                       isFull: $showFullscreen,
-                      video: $viewModel.playingVideo)
+                      video: .init(get: {viewModel.output.playingVideo}, set: { _ in }))
                 .onLongPressGesture(perform: {
                     showFullscreen.toggle()
                 })
@@ -69,7 +72,8 @@ struct MoviePlayerView: View {
 
                     }.frame(maxWidth: 60, maxHeight: 60, alignment: .bottomTrailing)
                 }
-            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                 .opacity(showingMiniPlayer ? 0 : 1)
 
             Slider(value: $playbackProgress) { editing in
@@ -85,7 +89,6 @@ struct MoviePlayerView: View {
                 UISlider.appearance().maximumTrackTintColor = .gray
                 UISlider.appearance().setThumbImage(UIImage(), for: .normal)
             }
-
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
             .frame(minHeight: 60)
             .offset(y: 16)
@@ -132,7 +135,7 @@ struct MovieView: UIViewRepresentable {
         Coordinator(self)
     }
 
-    class Coordinator: NSObject, UIMovieViewDelegate {
+    class Coordinator: NSObject, UIMovieViewDelegate, @unchecked Sendable {
         var parent: MovieView
 
         init(_ parent: MovieView) {
@@ -191,12 +194,12 @@ class UIMovieView: UIView {
     func pause() {
         Self.player.pause()
     }
-
-    weak var delegate: UIMovieViewDelegate?
+    
+    weak var delegate: (UIMovieViewDelegate & Sendable)?
     func full(isFull: Bool) {
         if isFull != self.isFull {
             self.isFull = isFull
-            layoutSubviews()
+            setNeedsLayout()
         }
     }
 
@@ -211,18 +214,21 @@ class UIMovieView: UIView {
         }
         super.layoutSubviews()
     }
-
-    // This assumes the video is not live streaming and has a definitive end
-    func setupPlayerPeriodicTimeObserver() {
+   
+     func setupPlayerPeriodicTimeObserver() {
         let interval = CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
         Self.player.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main) { [weak self] time in
             guard let self = self else { return }
             let timeNow = CMTimeGetSeconds(time)
-            self.delegate?.moviePlayer(didUpdatePlaybackTime: timeNow)
-
-            if let totalDuration = Self.player.currentItem?.duration {
-                let totalSeconds = CMTimeGetSeconds(totalDuration)
-                self.delegate?.moviePlayer(didUpdateTotalDuration: totalSeconds)
+            Task { @MainActor in
+                self.delegate?.moviePlayer(didUpdatePlaybackTime: timeNow)
+                
+                if let totalDuration = Self.player.currentItem?.duration {
+                    let totalSeconds = CMTimeGetSeconds(totalDuration)
+                    
+                    self.delegate?.moviePlayer(didUpdateTotalDuration: totalSeconds)
+                }
+                
             }
         }
     }
@@ -239,9 +245,3 @@ protocol UIMovieViewDelegate: AnyObject {
     func moviePlayer(didUpdateTotalDuration duration: Double)
 }
 
-protocol AVPlayerProtocol {
-    func play()
-    func pause()
-}
-
-extension AVPlayer: AVPlayerProtocol {}

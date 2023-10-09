@@ -10,7 +10,6 @@ import SwiftUI
 struct VideoCell: View {
     let videoData: VideoData
     @State var rect: CGRect = .zero
-    let playingVideoNameSpaceID: Namespace.ID?
     let onTap: (VideoData, CGRect) -> Void
     var body: some View {
         VStack {

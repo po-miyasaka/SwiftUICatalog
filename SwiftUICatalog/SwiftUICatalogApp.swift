@@ -10,26 +10,44 @@ import SwiftUI
 
 @main
 struct SwiftUICatalogApp: App {
-    var body: some Scene {
-        WindowGroup {
-            if #available(iOS 17.0, *) {
-//                AKnock5.ContentView().frame(height: 200)
-                MainView()
-                    .environment(\.screenSize, UIScreen.main.bounds.size)
-                    .environment(\.safeArea) { UIApplication.shared.windows
-                        .filter { $0.isKeyWindow }.first?.safeAreaInsets ?? .zero
-                    }
 
-            } else {
-                // Fallback on earlier versions
-            }
+    var body: some Scene {
+        
+        
+        WindowGroup {
+            MainView(viewModel: ViewModel())
+                .environment(\.layoutValues, 
+                    LayoutValues(
+                        screenSize: UIScreen.main.bounds.size ,
+                        safeAreaProvider: {
+                            UIApplication.shared.windows
+                                .filter { $0.isKeyWindow }.first?.safeAreaInsets
+                        }
+                    )
+                )
         }
+    }
+}
+
+private struct LayoutValuesKey: EnvironmentKey {
+    static var defaultValue: LayoutValues = {
+        LayoutValues(screenSize: .zero,
+                     safeAreaProvider: {.zero})
+    }()
+    
+    typealias Value = LayoutValues
+}
+
+extension EnvironmentValues {
+    var layoutValues: LayoutValues {
+        get { self[LayoutValuesKey.self] }
+        set { self[LayoutValuesKey.self] = newValue }
     }
 }
 
 private struct ScreenSizeKey: EnvironmentKey {
     static var defaultValue: CGSize = .zero
-
+    
     typealias Value = CGSize
 }
 
@@ -37,18 +55,5 @@ extension EnvironmentValues {
     var screenSize: CGSize {
         get { self[ScreenSizeKey.self] }
         set { self[ScreenSizeKey.self] = newValue }
-    }
-}
-
-private struct SafeAreaKey: EnvironmentKey {
-    static var defaultValue: () -> UIEdgeInsets = { .zero }
-
-    typealias Value = () -> UIEdgeInsets
-}
-
-extension EnvironmentValues {
-    var safeArea: () -> UIEdgeInsets {
-        get { self[SafeAreaKey.self] }
-        set { self[SafeAreaKey.self] = newValue }
     }
 }

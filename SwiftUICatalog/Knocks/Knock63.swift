@@ -33,7 +33,7 @@ enum Knock63 {
     }
 
     class VM: ObservableObject {
-        var heightString: CurrentValueSubject<String, Never> = .init("") // これも行ける
+        var heightString: CurrentValueSubject<String, Never> = .init("") 
 
         lazy var bindingHeightString: Binding<String> = .init(get: { [weak self] in
             self?.heightString.value ?? ""

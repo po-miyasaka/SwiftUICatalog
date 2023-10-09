@@ -10,38 +10,57 @@ import SwiftUI
 extension MainView {
     @ViewBuilder
     var toolbarView: some View {
-        GeometryReader { _ in
-            VStack {
-                HStack(alignment: .top, spacing: 0) {
-                    ForEach(pageArray, id: \.title) { page in
-                        Button(action: {
-                            if page.tag == .create {
-                                viewModel.shouldShowCreateModal = true
-
-                            } else if page.tag == .shorts {
-                                viewModel.current = page.tag
-                                viewModel.shortsTransitionContext = .init(source: .tabButton, data: .init(title: "Shorts", color: .red))
-                            } else {
-                                viewModel.current = page.tag
-                                viewModel.shortsTransitionContext = nil
+        
+        VStack {
+            
+            HStack(alignment: .top, spacing: 0) {
+                ForEach(pageArray, id: \.title) { page in
+                    Button(action: {
+                        tapAction(page: page)
+                    }, label: {
+                        if case .create = page.tag {
+                            Image(systemName: page.imageName)
+                                .resizable()
+                                .foregroundColor(.gray)
+                                .frame(width: 33, height: 33)
+                        } else {
+                            VStack {
+                                Image(systemName: page.imageName).resizable()
+                                    .scaledToFit()
+                                    .frame(height: 22)
+                                    .foregroundColor(.gray)
+                                Text(page.title)
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
                             }
-                        }, label: {
-                            if case .create = page.tag {
-                                Image(systemName: page.imageName)
-                                    .resizable()
-                                    .foregroundColor(.gray).frame(width: 33, height: 33)
-                            } else {
-                                VStack {
-                                    Image(systemName: page.imageName).resizable().scaledToFit().frame(height: 22).foregroundColor(.gray)
-                                    Text(page.title).foregroundColor(.gray).font(.caption)
-                                }
-                            }
-                        }).frame(maxWidth: .infinity)
-                            .padding(.top, 8)
-                    }
+                        }
+                    })
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 8)
                 }
-                Color.black.frame(height: safeArea().bottom)
             }
-        }.background(Color.black).frame(height: safeArea().bottom + toolbarHeight)
+            Color.black.frame(height: layoutValues.safeArea.bottom)
+        }
+        
+        .background(Color.black)
+        .frame(height: layoutValues.safeArea.bottom + layoutValues.toolbarHeight)
+        .frame(maxWidth: layoutValues.screenSize.width,
+               maxHeight: .infinity, alignment: .bottom)
+        .offset(y: (viewModel.output.playingVideo != nil) ? max(layoutValues.containerHeight - layoutObject.offset - layoutValues.toolbarHeight, 0) : 0)
+        .zIndex(2)
+    }
+    
+    func tapAction(page: PageData) {
+        if page.tag == .create {
+            viewModel.input.showCreateModal()
+            
+        } else if page.tag == .shorts {
+            viewModel.input.showPage(page: page.tag)
+            viewModel.input.showShort(.init(source: .tabButton, data: .init(title: "Shorts", imageName: "short1")))
+        } else {
+            viewModel.input.showPage(page: page.tag)
+            viewModel.input.hideShort()
+        }
+        
     }
 }

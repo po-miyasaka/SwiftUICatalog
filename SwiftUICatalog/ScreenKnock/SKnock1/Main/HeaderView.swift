@@ -19,17 +19,22 @@ struct HeaderView<Attached: View>: View {
                             .resizable()
                             .frame(width: 25, height: 25)
                             .foregroundColor(.red)
-                        Text("YouTube").foregroundColor(.white).bold().font(.title).frame(maxWidth: .infinity, alignment: .leading)
+                        Text("YouTube")
+                            .foregroundColor(.white)
+                            .bold()
+                            .font(.title)
+                            .frame(maxWidth: .infinity, alignment: .leading)
 
                     }.onTapGesture {}
                 })
-                Image(systemName: "bell.badge").resizable().scaledToFit()
+                Image(systemName: "bell.badge")
+                    .resizable()
+                    .scaledToFit()
                     .frame(width: 22, height: 22)
             }
             attachedView()
         }
-        .frame(minHeight: 44 + attachedViewHeight)
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, minHeight: 44 + attachedViewHeight)
         .padding(8)
     }
 }

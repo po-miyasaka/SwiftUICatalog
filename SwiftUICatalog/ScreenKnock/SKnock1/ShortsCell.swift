@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ShortData: Hashable {
     let title: String
-    let color: Color
+    let imageName: String
 }
 
 struct ShortsCell: View {
@@ -22,7 +22,10 @@ struct ShortsCell: View {
                 HStack {
                     ForEach(shortsData, id: \.title) { shortData in
                         ZStack {
-                            shortData.color.frame(width: 200, height: 300).onTapGesture {
+                            
+                            Image(uiImage: UIImage(named: shortData.imageName)!)
+                                .resizable().scaledToFill().frame(width: 200, height: 300)
+                                .onTapGesture {
                                 transition(shortData)
                             }
                             Image(systemName: "ellipsis")

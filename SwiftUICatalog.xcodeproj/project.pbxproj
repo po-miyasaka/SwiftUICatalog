@@ -45,7 +45,8 @@
 		D538BE0B2AC6665A00D3EE25 /* Aknock3.swift in Sources */ = {isa = PBXBuildFile; fileRef = D538BE0A2AC6665A00D3EE25 /* Aknock3.swift */; };
 		D538BE0D2AC66C2F00D3EE25 /* AUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D538BE0C2AC66C2F00D3EE25 /* AUtil.swift */; };
 		D557B7F42AC7A15700559930 /* AKnock5.swift in Sources */ = {isa = PBXBuildFile; fileRef = D557B7F32AC7A15700559930 /* AKnock5.swift */; };
-		D55874562AD271A8005EE53A /* S1Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55874552AD271A8005EE53A /* S1Util.swift */; };
+		D55874562AD271A8005EE53A /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55874552AD271A8005EE53A /* Modal.swift */; };
+		D55874582AD2B817005EE53A /* vs2.mov in Resources */ = {isa = PBXBuildFile; fileRef = D55874572AD2B817005EE53A /* vs2.mov */; };
 		D56AACC72AC811EE00950767 /* AKnock7.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56AACC62AC811EE00950767 /* AKnock7.swift */; };
 		D57153C02ACC154B007A0768 /* LookingGlassUI in Frameworks */ = {isa = PBXBuildFile; productRef = D57153BF2ACC154B007A0768 /* LookingGlassUI */; };
 		D57153C32ACC6DD6007A0768 /* SKnock11.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57153C22ACC6DD6007A0768 /* SKnock11.swift */; };
@@ -101,7 +102,7 @@
 		D59768D82AD1092000FE88B2 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768D72AD1092000FE88B2 /* VideoCell.swift */; };
 		D59768DA2AD10A9800FE88B2 /* AdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768D92AD10A9800FE88B2 /* AdCell.swift */; };
 		D59768DC2AD10ACB00FE88B2 /* ShortsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768DB2AD10ACB00FE88B2 /* ShortsCell.swift */; };
-		D59768DE2AD111BF00FE88B2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768DD2AD111BF00FE88B2 /* Constants.swift */; };
+		D59768DE2AD111BF00FE88B2 /* LayoutObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59768DD2AD111BF00FE88B2 /* LayoutObject.swift */; };
 		D59FFB9C2ACEA8AE00B8E569 /* movie.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D59FFB9B2ACEA87F00B8E569 /* movie.mp4 */; };
 		D5A3E0A22AC5339700D2EA2C /* Knock101.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A3E0A12AC5339700D2EA2C /* Knock101.swift */; };
 		D5A3E0A52AC54C8D00D2EA2C /* AKnock1.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A3E0A42AC54C8D00D2EA2C /* AKnock1.swift */; };
@@ -174,7 +175,8 @@
 		D538BE0A2AC6665A00D3EE25 /* Aknock3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Aknock3.swift; sourceTree = "<group>"; };
 		D538BE0C2AC66C2F00D3EE25 /* AUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUtil.swift; sourceTree = "<group>"; };
 		D557B7F32AC7A15700559930 /* AKnock5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKnock5.swift; sourceTree = "<group>"; };
-		D55874552AD271A8005EE53A /* S1Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = S1Util.swift; sourceTree = "<group>"; };
+		D55874552AD271A8005EE53A /* Modal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
+		D55874572AD2B817005EE53A /* vs2.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = vs2.mov; sourceTree = "<group>"; };
 		D56AACC62AC811EE00950767 /* AKnock7.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKnock7.swift; sourceTree = "<group>"; };
 		D57153C22ACC6DD6007A0768 /* SKnock11.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKnock11.swift; sourceTree = "<group>"; };
 		D58D15082AC8E23B0010BC01 /* AKnock8.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKnock8.swift; sourceTree = "<group>"; };
@@ -229,7 +231,7 @@
 		D59768D72AD1092000FE88B2 /* VideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
 		D59768D92AD10A9800FE88B2 /* AdCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdCell.swift; sourceTree = "<group>"; };
 		D59768DB2AD10ACB00FE88B2 /* ShortsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortsCell.swift; sourceTree = "<group>"; };
-		D59768DD2AD111BF00FE88B2 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		D59768DD2AD111BF00FE88B2 /* LayoutObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutObject.swift; sourceTree = "<group>"; };
 		D59FFB9B2ACEA87F00B8E569 /* movie.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = movie.mp4; sourceTree = "<group>"; };
 		D5A3E0A12AC5339700D2EA2C /* Knock101.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knock101.swift; sourceTree = "<group>"; };
 		D5A3E0A42AC54C8D00D2EA2C /* AKnock1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKnock1.swift; sourceTree = "<group>"; };
@@ -416,6 +418,7 @@
 				D59768BF2AD059B100FE88B2 /* SKnock1 */,
 				D57153C22ACC6DD6007A0768 /* SKnock11.swift */,
 				D59FFB9B2ACEA87F00B8E569 /* movie.mp4 */,
+				D55874572AD2B817005EE53A /* vs2.mov */,
 			);
 			path = ScreenKnock;
 			sourceTree = "<group>";
@@ -427,7 +430,7 @@
 				D59768C22AD059E000FE88B2 /* VideoView.swift */,
 				D59768C42AD05A0600FE88B2 /* PlayingView.swift */,
 				D59768C62AD05A1300FE88B2 /* HomeView.swift */,
-				D55874552AD271A8005EE53A /* S1Util.swift */,
+				D55874552AD271A8005EE53A /* Modal.swift */,
 				D59768C82AD05A1A00FE88B2 /* ShortsView.swift */,
 				D59768CA2AD05A4700FE88B2 /* CreateModal.swift */,
 				D5332B002AD248850069F4DB /* TagsView.swift */,
@@ -443,7 +446,7 @@
 			isa = PBXGroup;
 			children = (
 				D59768C02AD059C300FE88B2 /* MainView.swift */,
-				D59768DD2AD111BF00FE88B2 /* Constants.swift */,
+				D59768DD2AD111BF00FE88B2 /* LayoutObject.swift */,
 				D59768D02AD05C1600FE88B2 /* MainTabView.swift */,
 				D59768D32AD0DE6500FE88B2 /* HeaderView.swift */,
 				D59768D52AD0DE8300FE88B2 /* ToolbarView.swift */,
@@ -535,6 +538,7 @@
 			files = (
 				D59FFB9C2ACEA8AE00B8E569 /* movie.mp4 in Resources */,
 				D50545292ABA41BF00CE1BF4 /* Preview Assets.xcassets in Resources */,
+				D55874582AD2B817005EE53A /* vs2.mov in Resources */,
 				D50545262ABA41BF00CE1BF4 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -565,7 +569,7 @@
 				D5904FC42ABEC8A00073E9D8 /* Knock45.swift in Sources */,
 				D5E15D0D2AC1EA6F00DD618F /* Knock72.swift in Sources */,
 				D505455C2ABB7F0C00CE1BF4 /* Knock22.swift in Sources */,
-				D59768DE2AD111BF00FE88B2 /* Constants.swift in Sources */,
+				D59768DE2AD111BF00FE88B2 /* LayoutObject.swift in Sources */,
 				D5904FAC2ABD1E170073E9D8 /* Knock34.swift in Sources */,
 				D59768C32AD059E000FE88B2 /* VideoView.swift in Sources */,
 				D50545542ABB052500CE1BF4 /* Knock17.swift in Sources */,
@@ -657,7 +661,7 @@
 				D5904FD22ABF388F0073E9D8 /* Knock52.swift in Sources */,
 				D50545222ABA41BE00CE1BF4 /* SwiftUICatalogApp.swift in Sources */,
 				D5904FC82ABF1A040073E9D8 /* Knock47.swift in Sources */,
-				D55874562AD271A8005EE53A /* S1Util.swift in Sources */,
+				D55874562AD271A8005EE53A /* Modal.swift in Sources */,
 				D50C3FBD2AC491D700255761 /* Knock87.swift in Sources */,
 				D50C3FB72AC45B8F00255761 /* Knock84.swift in Sources */,
 				D5904FD02ABF33A10073E9D8 /* Knock51.swift in Sources */,
@@ -819,10 +823,13 @@
 				MTL_LANGUAGE_REVISION = Metal31;
 				PRODUCT_BUNDLE_IDENTIFIER = "jp.po-miyasaka.SwiftUICatalog.SwiftUICatalog";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -853,10 +860,13 @@
 				MTL_LANGUAGE_REVISION = Metal31;
 				PRODUCT_BUNDLE_IDENTIFIER = "jp.po-miyasaka.SwiftUICatalog.SwiftUICatalog";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

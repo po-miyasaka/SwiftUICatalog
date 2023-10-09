@@ -7,88 +7,72 @@
 
 import Combine
 import SwiftUI
-struct PlayingView: View {
-    @Environment(\.safeArea) var safeArea
-    @Environment(\.screenSize) var screenSize
-    @State var defaultVideoHeight: CGFloat = 250
+struct PlayingView<ViewModel: ViewModelProtocol>: View {
+    @Environment(\.layoutValues) var layoutValues
+    @ObservedObject var layoutObject: LayoutObject
     @ObservedObject var viewModel: ViewModel
-    @ObservedObject var offsetObject: OffsetObject
     @State var cancellable: AnyCancellable?
-    let fullNameSpaceID: Namespace.ID
-    let playingVideoNameSpaceID: Namespace.ID
     @State var shouldShowThumbnail: Bool = true
+    let fullNameSpaceID: Namespace.ID
+    
+    
     @ViewBuilder
-
     var body: some View {
-        let containerHeight = screenSize.height - toolbarHeight - safeArea().bottom - safeArea().top
-        let shrinkThreshold: CGFloat = containerHeight / 1.4
-        let overShrinkThreshold = shrinkThreshold < offsetObject.offset
 
-        let videoHeight = max(
-            miniVideoHeight, defaultVideoHeight - (
-                overShrinkThreshold ? (defaultVideoHeight * ((offsetObject.offset - shrinkThreshold) / (containerHeight - shrinkThreshold))) : 0)
-        )
-
-        let videoWidth = max(
-            miniVideoWidth(screenWidth: screenSize.width),
-            screenSize.width - (overShrinkThreshold ? containerHeight * ((offsetObject.offset - shrinkThreshold) / (containerHeight - shrinkThreshold)) : 0)
-        )
-
-        let playViewHeight = max(100, screenSize.height - videoHeight - offsetObject.offset)
-        let playViewOpacity = max(0, 1 - (offsetObject.offset / (screenSize.height - toolbarHeight)))
-
-        VStack(alignment: .leading, spacing: 0) {
-            videoView(videoWidth: videoWidth, videoHeight: videoHeight)
-
-                .offset(y: offsetObject.offset)
-                .gesture(
-                    DragGesture()
-                        .onChanged { value in
-                            offsetObject.offset = offsetObject.currentOffset + value.translation.height
-                        }
-                        .onEnded { _ in
-                            let previousValue = offsetObject.showingMiniPlayer
-                            let threshold = offsetObject.showingMiniPlayer ? containerHeight / 1.1 : containerHeight / 10
-                            let shouldMini = offsetObject.offset >= threshold
-
-                            let noChange = previousValue == shouldMini
-
-                            if noChange {
-                                offsetObject.offset = offsetObject.currentOffset
-                            } else if offsetObject.offset <= threshold {
-                                offsetObject.showingMiniPlayer = false
-                            } else {
-                                offsetObject.showingMiniPlayer = true
+        ZStack {
+            VStack(alignment: .leading, spacing: 0) {
+                videoView()
+                    .offset(y: layoutObject.offset)
+                    .gesture(
+                        DragGesture()
+                            .onChanged { value in
+                                layoutObject.offset = layoutObject.currentOffset + value.translation.height
                             }
-                        }
-                )
-            VideoDetailView(viewModel: viewModel, offsetObject: offsetObject)
-                .offset(y: offsetObject.offset)
-                .frame(maxHeight: max(0, playViewHeight))
+                            .onEnded { _ in
+                                let previousValue = layoutObject.showingMiniPlayer
+                                let threshold = layoutObject.showingMiniPlayer ? layoutValues.containerHeight / 1.1 : layoutValues.containerHeight / 10
+                                let shouldMini = layoutObject.offset >= threshold
+
+                                let noChange = previousValue == shouldMini
+
+                                if noChange {
+                                    layoutObject.offset = layoutObject.currentOffset
+                                } else if layoutObject.offset <= threshold {
+                                    layoutObject.showingMiniPlayer = false
+                                } else {
+                                    layoutObject.showingMiniPlayer = true
+                                }
+                            }
+                    )
+                    
+                VideoDetailView(viewModel: viewModel, layoutObject: layoutObject)
+                    .offset(y: layoutObject.offset)
+                    .frame(maxHeight: max(0, layoutValues.playViewHeight(offset: layoutObject.offset, defaultVideoHeight: layoutObject.defaultVideoHeight)))
+            }
         }
-        .onChange(of: offsetObject.showingMiniPlayer, perform: { value in
+        .onChange(of: layoutObject.showingMiniPlayer, perform: { value in
 
             if value {
-                offsetObject.currentOffset = screenSize.height - toolbarHeight - safeArea().bottom - miniVideoHeight - safeArea().top
+                layoutObject.currentOffset = layoutValues.miniVideoMiniY
                 cancellable?.cancel()
                 cancellable = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect().sink(receiveValue: { _ in
-                    if offsetObject.offset >= offsetObject.currentOffset {
+                    if layoutObject.offset >= layoutObject.currentOffset {
                         cancellable?.cancel()
-                        offsetObject.offset = offsetObject.currentOffset
+                        layoutObject.offset = layoutObject.currentOffset
                     } else {
-                        offsetObject.offset += 20
+                        layoutObject.offset += 20
                     }
 
                 })
             } else {
-                offsetObject.currentOffset = 0
+                layoutObject.currentOffset = 0
                 cancellable?.cancel()
                 cancellable = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect().sink(receiveValue: { _ in
-                    if offsetObject.offset <= offsetObject.currentOffset {
+                    if layoutObject.offset <= layoutObject.currentOffset {
                         cancellable?.cancel()
-                        offsetObject.offset = offsetObject.currentOffset
+                        layoutObject.offset = layoutObject.currentOffset
                     } else {
-                        offsetObject.offset -= 20
+                        layoutObject.offset -= 20
                     }
 
                 })
@@ -97,10 +81,12 @@ struct PlayingView: View {
         })
     }
 
-    func videoView(videoWidth: CGFloat, videoHeight: CGFloat) -> some View {
+    func videoView() -> some View {
+        
         ZStack(alignment: .leading) {
+            
             HStack(alignment: .center, spacing: 32) {
-                Color.black.frame(width: miniVideoWidth(screenWidth: screenSize.width), height: miniVideoHeight)
+                Color.black.frame(width: layoutValues.miniVideoWidth, height: layoutValues.miniVideoHeight)
                 VStack(alignment: .leading) {
                     Text("Video title").font(.caption).frame(maxWidth: .infinity, alignment: .leading)
                     Text("User name").font(.caption).foregroundColor(.gray).frame(maxWidth: .infinity, alignment: .leading)
@@ -113,35 +99,47 @@ struct PlayingView: View {
                     .scaledToFit()
                     .frame(maxHeight: 24)
                     .onTapGesture {
-                        viewModel.pause()
+                        viewModel.input.pause()
                     }
 
                 Image(systemName: "xmark").resizable().scaledToFit()
                     .frame(maxHeight: 24)
                     .onTapGesture {
-                        viewModel.playingVideo = nil
+                        viewModel.input.closeVideo()
                     }
             }
             .padding(.trailing)
-            .frame(maxWidth: screenSize.width, maxHeight: videoHeight, alignment: .top)
+            .frame(maxWidth: layoutValues.screenSize.width,
+                   maxHeight: layoutValues.videoHeight(offset: layoutObject.offset, defaultVideoHeight: layoutObject.defaultVideoHeight), alignment: .top)
 
             ZStack {
-                MoviePlayerView(showFullscreen: $viewModel.isFull, playbackProgress: $viewModel.playbackProgress, showingMiniPlayer: $offsetObject.showingMiniPlayer, viewModel: viewModel)
-                    .matchedGeometryEffect(id: "full", in: fullNameSpaceID, isSource: !viewModel.isFull)
+                MoviePlayerView(
+                    showFullscreen: .init(
+                        get: { viewModel.output.isFull },
+                        set: { _ in  viewModel.input.showFull()}),
+                    playbackProgress: .init(
+                        get: { viewModel.output.playbackProgress },
+                        set: {
+                            viewModel.input.updateProgress($0)
+                    }),
+                    showingMiniPlayer: $layoutObject.showingMiniPlayer,
+                    viewModel: viewModel
+                )
+                    .matchedGeometryEffect(id: "full", in: fullNameSpaceID, isSource: !viewModel.output.isFull)
 
-                    .frame(maxWidth: videoWidth, maxHeight: videoHeight, alignment: .center)
+                    .frame(maxWidth: layoutValues.videoWidth(offset: layoutObject.offset), maxHeight: layoutValues.videoHeight(offset: layoutObject.offset, defaultVideoHeight: layoutObject.defaultVideoHeight), alignment: .center)
 
                     .onTapGesture {
-                        if offsetObject.showingMiniPlayer {
-                            offsetObject.showingMiniPlayer = false
+                        if layoutObject.showingMiniPlayer {
+                            layoutObject.showingMiniPlayer = false
                         }
                     }
-                    .onChange(of: viewModel.shouldReloadVideoIncrement, perform: { _ in
+                    .onChange(of: viewModel.output.shouldReloadVideoIncrement, perform: { _ in
                         shouldShowThumbnail = true
                     })
-                if let image = viewModel.playingVideo?.thumbnail, shouldShowThumbnail {
+                if let image = viewModel.output.playingVideo?.thumbnail, shouldShowThumbnail {
                     Image(uiImage: image).resizable().scaledToFill()
-                        .frame(maxWidth: videoWidth, maxHeight: videoHeight, alignment: .center).clipped().allowsHitTesting(false)
+                        .frame(maxWidth: layoutValues.videoWidth(offset: layoutObject.offset), maxHeight: layoutValues.videoHeight(offset: layoutObject.offset, defaultVideoHeight: layoutObject.defaultVideoHeight), alignment: .center).clipped().allowsHitTesting(false)
                         .onAppear {
                             Task {
                                 try await Task.sleep(nanoseconds: 800_000_000)
@@ -152,15 +150,30 @@ struct PlayingView: View {
             }
         }
         .background(Color.black)
-        .frame(maxWidth: screenSize.width, maxHeight: videoHeight, alignment: .top)
+        .frame(maxWidth: layoutValues.screenSize.width, maxHeight: layoutValues.videoHeight(offset: layoutObject.offset, defaultVideoHeight: layoutObject.defaultVideoHeight), alignment: .top)
+        .onAppear {
+            if viewModel.output.shouldReloadVideoIncrement > 1 {
+                layoutObject.offset = viewModel.output.rect.minY - layoutValues.safeArea.top
+                layoutObject.showingMiniPlayer = false
+            } else {
+                layoutObject.offset = 0
+                layoutObject.currentOffset = 0
+            }
+        }
+        .onChange(of: viewModel.output.shouldReloadVideoIncrement, perform: { _ in
+            // onAppearのときはよばれない。
+            layoutObject.offset = viewModel.output.rect.minY - layoutValues.safeArea.top
+            layoutObject.showingMiniPlayer = false
+        })
+       
+        
     }
 }
 
-struct VideoDetailView: View, Animatable {
-    @Environment(\.screenSize) var screenSize
+struct VideoDetailView<ViewModel: ViewModelProtocol>: View, Animatable {
     @ObservedObject var viewModel: ViewModel
-    @ObservedObject var offsetObject: OffsetObject
-
+    @ObservedObject var layoutObject: LayoutObject
+    @Environment(\.layoutValues) var layoutValues
     @State var scrollOffset: CGFloat = .zero
     var body: some View {
         ZStack(alignment: .top) {
@@ -190,10 +203,10 @@ struct VideoDetailView: View, Animatable {
 
             tagsView.offset(
                 y: pointY
-            ).clipShape(Rectangle().size(.init(width: screenSize.width, height: 44)))
+            ).clipShape(Rectangle().size(.init(width: layoutValues.screenSize.width, height: 44)))
         }
         .background(Color.black)
-        .frame(maxWidth: screenSize.width, alignment: .center)
+        .frame(maxWidth: layoutValues.screenSize.width, alignment: .center)
         .ignoresSafeArea()
         .coordinateSpace(name: "VideoDetail")
     }
@@ -226,6 +239,9 @@ struct VideoDetailView: View, Animatable {
             }
 
         }.padding(.top, 8)
+            .onTapGesture {
+                
+            }
     }
 
     var userView: some View {
@@ -320,23 +336,24 @@ struct VideoDetailView: View, Animatable {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 
+    @ViewBuilder
     var recommendedView: some View {
         LazyVStack(alignment: .leading, spacing: 32) {
-            ForEach(viewModel.recommendedObjects, id: \.self) { data in
+            ForEach(viewModel.output.recommendedObjects, id: \.self) { data in
                 switch data {
-                case let .ad(data):
-                    AdCell(adData: data)
+                case let .ad(adData):
+                    AdCell(adData: adData)
                 case let .shorts(data):
                     ShortsCell(shortsData: data, transition: { data in
                         withAnimation {
-                            viewModel.shortsTransitionContext = .init(source: .playingView, data: data)
-                            offsetObject.showingMiniPlayer = true
+                            viewModel.input.showShort(.init(source: .playingView, data: data))
+                            layoutObject.showingMiniPlayer = true
                         }
 
                     })
                 case let .video(data):
-                    VideoCell(videoData: data, playingVideoNameSpaceID: nil) { video, _ in
-                        viewModel.select(video: video, rect: .zero)
+                    VideoCell(videoData: data) { video, _ in
+                        viewModel.input.select(video: video, rect: .zero)
                     }
                 }
             }
