@@ -16,17 +16,17 @@ enum AKnock11 {
         @State var editingText: String = ""
         @StateObject var viewModel: ChatViewModel = ChatViewModel()
         @State var shouldShowPHPView = false
+        @Environment(\.screenSize) var screenSize
+        @Environment(\.safeArea) var safeArea
         var body: some View {
-            
-            let screenSize = UIScreen.main.bounds.size
             VStack {
-                
-                
                 ScrollViewReader { proxy in
                     ScrollView {
+                        
                         LazyVStack(pinnedViews: .sectionFooters) {
                             
-                            ForEach(viewModel.sectionData) { section in
+                            ForEach(viewModel.sectionDataArray, id: \.date) { section in
+                                
                                 Section(
                                     content:
                                         {
@@ -41,6 +41,7 @@ enum AKnock11 {
                                             
                                         } ,footer: {
                                             Text(section.date.toDateOnlyString())
+                                                .foregroundColor(Color.gray)
                                                 .padding(.horizontal, 16)
                                                 .padding(.vertical, 4)
                                                 .background(Color.black.opacity(0.1))
@@ -49,20 +50,40 @@ enum AKnock11 {
                                 )
                                 
                             }
-                            
+                            if viewModel.isLoading {
+                                ProgressView()
+                            } else {
+                                ProgressView().hidden()
+                            }
                         }
                         .padding(.horizontal, 8)
+                        GeometryReader { proxy in
+                            // flipの影響を受けて反転する。
+                            let _ = print(proxy.frame(in: .global).minY - safeArea().top)
+                            Color.clear.preference(key: ScrollOffsetKey.self, value: proxy.frame(in: .global).minY - safeArea().top)
+                            
+                            
+                        }.frame(height: 0)
                         
-                    }.flip(.vertical)
-                        .onChange(of: viewModel.sectionData, perform: { _ in
-                            withAnimation {
-                                proxy.scrollTo(viewModel.sectionData[0].messages[0].id)
+                    }
+                    .flip(.vertical)
+                    .onChange(of: viewModel.shouldScrollToLatestOne, perform: { _ in
+                        withAnimation {
+                            proxy.scrollTo(viewModel.sectionDataArray[0].messages[0].id)
+                        }
+                    })
+                    .onPreferenceChange(ScrollOffsetKey.self, perform: { value in
+                        if value > 0 {
+                        Task {
+                                await viewModel.load()
                             }
-                        })
+                        }
                         
+                    })
+                    
                 }
                 
-                HStack {
+                HStack(spacing: 8) {
                     
                     Button(action: {
                         shouldShowPHPView = true
@@ -78,10 +99,10 @@ enum AKnock11 {
                             }
                             self.shouldShowPHPView = false
                         }))
-
+                        
                     })
                     
-                    TextField("", text: $editingText).textFieldStyle(RoundedBorderTextFieldStyle())
+                    TextField("message", text: $editingText).textFieldStyle(RoundedBorderTextFieldStyle())
                     Button(action: {
                         let newText = editingText
                         editingText = ""
@@ -98,16 +119,16 @@ enum AKnock11 {
                 .padding(.horizontal, 8)
             }
             
-//            .padding(.horizontal, 8) ScrollViewより上位にパディングをつけるとインジケーターの表示場所がいけてないことになる。
-            .onAppear {
-                Task {
-                    await viewModel.load()
-                }
-            }
-            
+            //            .padding(.horizontal, 8) ScrollViewより上位にパディングをつけるとインジケーターの表示場所がいけてないことになる。
+//            .onAppear {
+//                Task {
+//                    await viewModel.load()
+//                }
+//            }
+//            
             
         }
-            
+        
         
     }
     
@@ -126,38 +147,40 @@ enum AKnock11 {
         }
         
         var forMe: some View {
-            HStack(alignment: .top, spacing: 4) {
-                #warning("verticalflipしてるけど、ここでのbottomTrailingしたときに判定せずbottomTrailingが適用されている。")
-                Text(message.date.toTimeString()).foregroundColor(.gray).font(.caption).frame(maxHeight: .infinity, alignment: .bottomTrailing)
+            HStack(alignment: .top, spacing: 8) {
+#warning("verticalflipしてるけど、ここでのbottomTrailingしたときに判定せずbottomTrailingが適用されている。")
+                Text(message.date.toTimeString()).foregroundColor(.gray).font(.caption).frame(maxHeight: .infinity, alignment: .bottomLeading)
                 switch message.type {
                 case .text(let text):
-                    Text(text).onBubble(position: .right, screenSize: screenSize)
+                    Text(text).onBubble(position: .right, screenSize: screenSize).layoutPriority(1)
                 case .stamp(let image):
                     Image(uiImage: image.image ?? UIImage())
                         .resizable()
                         .scaledToFill()
                         .imageForMessage(position: .right, screenSize: screenSize)
                 }
-                
             }
             .flip(.vertical)
             .frame(maxWidth: .infinity, alignment: .trailing)
         }
         
         var forOpponent: some View {
-            HStack(alignment: .top, spacing: 4) {
+            HStack(alignment: .top, spacing: 8) {
                 if !message.user.imageName.isEmpty {
                     Image(uiImage: UIImage(named: message.user.imageName)!).resizable().scaledToFill().frame(width: 33, height: 33).frame(maxWidth: 33).frame(alignment: .bottom).clipShape(Circle()).shadow(radius: 1)
                 }
-                switch message.type {
-                case .text(let text):
-                    Text(text).onBubble(position: .left, screenSize: screenSize)
-                case .stamp(let image):
-                    Image(uiImage: image.image ?? UIImage())
-                        .resizable()
-                        .scaledToFill()
-                        .imageForMessage(position: .left, screenSize: screenSize)
+                VStack(alignment: .leading) {
+                    Text(message.user.name).foregroundColor(.gray).font(.caption2).bold().frame(maxHeight: .infinity, alignment: .bottomLeading)
+                    switch message.type {
+                    case .text(let text):
+                        Text(text).onBubble(position: .left, screenSize: screenSize).layoutPriority(1)
+                    case .stamp(let image):
+                        Image(uiImage: image.image ?? UIImage())
+                            .resizable()
+                            .scaledToFill()
+                            .imageForMessage(position: .left, screenSize: screenSize)
                         
+                    }
                 }
                 Text(message.date.toTimeString()).foregroundColor(.gray).font(.caption).frame( maxHeight: .infinity, alignment: .bottomLeading)
             }
@@ -266,47 +289,64 @@ enum AKnock11 {
     
     @MainActor
     class ChatViewModel: ObservableObject {
-        @Published var sectionData: [AKnock11.SectionData] = []
+        @Published var sectionDataArray: [AKnock11.SectionData] = []
+        @Published var isLoading: Bool = false
+        @Published var shouldScrollToLatestOne: Int = 0
         var messages: [Message] = []
         let group: Group = Group()
         var current: Int = 0
         
         func load() async {
-            try? await Task.sleep(nanoseconds: 3_000_000_000)
             
-            var new = demoDataArray[current].chunked(by: { $0.date.toDateOnlyString() == $1.date.toDateOnlyString() })
-            
-            if new.first?.first?.date.toDateOnlyString().toDate == sectionData.last?.date {
-                sectionData[sectionData.count - 1].messages += new.removeFirst()
+            // TODO: actorに逃がす。
+            if isLoading {
+                return
             }
-            sectionData += new.compactMap { newMessages in
+            isLoading = true
+            
+            
+            try? await Task.sleep(nanoseconds: 3_000_000_000)
+            if demoDataArray.count <= current {
+                isLoading = false
+                return
+            }
+            var new = demoDataArray[current].chunked(by: { $0.date.toDateOnlyString() == $1.date.toDateOnlyString() })
+            if new.first?.first?.date.toDateOnlyString() == sectionDataArray.last?.date.toDateOnlyString() {
+                // 同じ日付であればマージ
+                sectionDataArray[sectionDataArray.count - 1].messages += new.removeFirst()
+            }
+            
+            sectionDataArray += new.compactMap { newMessages in
                 (newMessages.first?.date).map { d in
                     SectionData(date: d, messages: Array(newMessages))
                 }
             }
-            
+            sectionDataArray.forEach { print($0.date) }
+            current += 1
+            isLoading = false
         }
         
         func addMessage(editingText: String) {
-            if sectionData.isEmpty {
-                sectionData = [SectionData(date: Date(), messages: [
+            if sectionDataArray.isEmpty {
+                sectionDataArray = [SectionData(date: Date(), messages: [
                     .init(type: .text(editingText), date: Date(), user: group.me)
                 ])]
             } else {
-                sectionData[0].messages.insert(.init(type: .text(editingText), date: Date(), user: group.me), at: 0)
+                sectionDataArray[0].messages.insert(.init(type: .text(editingText), date: Date(), user: group.me), at: 0)
             }
+            shouldScrollToLatestOne += 1
             
         }
         
         func addMessage(url: URL) {
-            if sectionData.isEmpty {
-                sectionData = [SectionData(date: Date(), messages: [
+            if sectionDataArray.isEmpty {
+                sectionDataArray = [SectionData(date: Date(), messages: [
                     .init(type: .stamp(.file(url)), date: Date(), user: group.me)
                 ])]
             } else {
-                sectionData[0].messages.insert(.init(type: .stamp(.file(url)), date: Date(), user: group.me), at: 0)
+                sectionDataArray[0].messages.insert(.init(type: .stamp(.file(url)), date: Date(), user: group.me), at: 0)
             }
-            
+            shouldScrollToLatestOne += 1
         }
         
         var demoDataArray: [[Message]] {
@@ -323,7 +363,7 @@ enum AKnock11 {
                     Message.init(type: .stamp(.string("kabigon3")), date: "2023/10/10 07:00:01".toDate, user: group.user[1])
                 ],
                 [
-
+                    
                     Message.init(type: .text("hi"), date: "2023/10/10 6:00:01".toDate, user: group.user[1]),
                     Message.init(type: .text("nantoka nare"), date: "2023/09/10 10:00:01".toDate, user: group.user[0]),
                     Message.init(type: .text("nooo"), date: "2023/09/10 10:00:00".toDate, user: group.user[0]),
@@ -337,7 +377,6 @@ enum AKnock11 {
                 [
                     Message.init(type: .stamp(.string("short5")), date: "2023/09/10 02:00:01".toDate, user: group.user[1]),
                     Message.init(type: .text("hi"), date: "2023/02/10 6:00:01".toDate, user: group.user[1]),
-                    Message.init(type: .text("New Comer!!!! pikachu"), date: "2023/02/10 10:00:01".toDate, user: User.common),
                     Message.init(type: .text("nantoka nare"), date: "2023/02/10 10:00:01".toDate, user: group.user[0]),
                     Message.init(type: .text("nooo"), date: "2023/02/10 10:00:00".toDate, user: group.user[0]),
                     
@@ -362,6 +401,12 @@ enum AKnock11 {
         case left
     }
     
+    struct ScrollOffsetKey: PreferenceKey {
+        static var defaultValue: CGFloat = .zero
+        static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+            value = nextValue()
+        }
+    }
     
     struct PHPView: UIViewControllerRepresentable {
         
@@ -373,19 +418,19 @@ enum AKnock11 {
             vc.delegate = delegate
             return vc
         }
-
+        
         func updateUIViewController(_: PHPickerViewController, context _: Context) {}
-
+        
         typealias UIViewControllerType = PHPickerViewController
     }
-
+    
     class Delegate: PHPickerViewControllerDelegate {
         
         var handler: (URL?) -> Void
         init(handler: @escaping (URL?) -> Void) {
             self.handler = handler
         }
-
+        
         func picker(_: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
             results.first?.itemProvider.loadObject(ofClass: UIImage.self, completionHandler: { [weak self] content, _ in
                 
@@ -428,11 +473,10 @@ extension View {
         return ZStack(alignment: isRight ? .topTrailing : .topLeading) {
             
             
-//            frame(maxWidth: screenSize.width * 0.5, alignment: .leading)
-                foregroundColor(Color.white)
+            //            frame(maxWidth: screenSize.width * 0.5, alignment: .leading)
+            foregroundColor(Color.white)
                 .padding(.vertical, 8)
                 .padding(.horizontal, 24)
-                .padding(isRight ? .trailing : .leading,  AKnock11.SpeechBubble.xOffset - 8)
                 .background(
                     Group {
                         if isRight { AKnock11.SpeechBubble().flip(.horizontal) } else { AKnock11.SpeechBubble()}
@@ -445,7 +489,7 @@ extension View {
     func imageForMessage(position: AKnock11.Position, screenSize: CGSize) -> some View {
         let isRight = position == .right
         return
-            frame(width: screenSize.width * 0.6, alignment: isRight ? .trailing : .leading)
+        frame(width: screenSize.width * 0.6, alignment: isRight ? .trailing : .leading)
             .clipShape(RoundedRectangle(cornerRadius: 20))
             .padding(isRight ? .trailing : .leading, AKnock11.SpeechBubble.xOffset)
     }
