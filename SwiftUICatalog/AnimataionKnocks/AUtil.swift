@@ -223,3 +223,49 @@ extension View {
         modifier(TouchLocater(type: type, limitToBounds: limitToBounds, perform: perform))
     }
 }
+
+extension DateFormatter {
+    static let customFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        return formatter
+    }()
+    
+    static let dateOnlyFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy / MM / dd"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        return formatter
+    }()
+    
+    static let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        formatter.amSymbol = "am"
+        formatter.pmSymbol = "pm"
+        return formatter
+    }()
+}
+
+extension String {
+    var toDate: Date {
+        return DateFormatter.customFormatter.date(from: self) ?? DateFormatter.dateOnlyFormatter.date(from: self)!
+    }
+}
+
+extension Date {
+    func toString() -> String {
+        return DateFormatter.customFormatter.string(from: self)
+    }
+    
+    func toDateOnlyString() -> String {
+        return DateFormatter.dateOnlyFormatter.string(from: self)
+    }
+    
+    func toTimeString() -> String {
+        return DateFormatter.timeFormatter.string(from: self)
+    }
+}

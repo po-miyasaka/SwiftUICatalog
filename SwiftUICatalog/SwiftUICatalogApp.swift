@@ -19,7 +19,7 @@ struct SwiftUICatalogApp: App {
 //                            UIApplication.shared.windows
 //                                .filter { $0.isKeyWindow }.first?.safeAreaInsets
 //                        }))
-            AKnock11()
+            AKnock11.ContentView()
         }
     }
 }

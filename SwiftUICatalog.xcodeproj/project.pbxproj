@@ -44,6 +44,7 @@
 		D5332B012AD248850069F4DB /* TagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5332B002AD248850069F4DB /* TagsView.swift */; };
 		D538BE0B2AC6665A00D3EE25 /* Aknock3.swift in Sources */ = {isa = PBXBuildFile; fileRef = D538BE0A2AC6665A00D3EE25 /* Aknock3.swift */; };
 		D538BE0D2AC66C2F00D3EE25 /* AUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D538BE0C2AC66C2F00D3EE25 /* AUtil.swift */; };
+		D53BB9AA2AD70226000D2A84 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = D53BB9A92AD70226000D2A84 /* Algorithms */; };
 		D557B7F42AC7A15700559930 /* AKnock5.swift in Sources */ = {isa = PBXBuildFile; fileRef = D557B7F32AC7A15700559930 /* AKnock5.swift */; };
 		D55874562AD271A8005EE53A /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55874552AD271A8005EE53A /* Modal.swift */; };
 		D55874582AD2B817005EE53A /* vs2.mov in Resources */ = {isa = PBXBuildFile; fileRef = D55874572AD2B817005EE53A /* vs2.mov */; };
@@ -271,6 +272,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D53BB9AA2AD70226000D2A84 /* Algorithms in Frameworks */,
 				D57153C02ACC154B007A0768 /* LookingGlassUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -493,6 +495,7 @@
 			name = SwiftUICatalog;
 			packageProductDependencies = (
 				D57153BF2ACC154B007A0768 /* LookingGlassUI */,
+				D53BB9A92AD70226000D2A84 /* Algorithms */,
 			);
 			productName = SwiftUICatalog;
 			productReference = D505451E2ABA41BE00CE1BF4 /* SwiftUICatalog.app */;
@@ -524,6 +527,7 @@
 			mainGroup = D50545152ABA41BE00CE1BF4;
 			packageReferences = (
 				D57153BE2ACC154B007A0768 /* XCRemoteSwiftPackageReference "LookingGlassUI" */,
+				D53BB9A82AD70226000D2A84 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
 			);
 			productRefGroup = D505451F2ABA41BE00CE1BF4 /* Products */;
 			projectDirPath = "";
@@ -898,6 +902,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		D53BB9A82AD70226000D2A84 /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
 		D57153BE2ACC154B007A0768 /* XCRemoteSwiftPackageReference "LookingGlassUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ryanlintott/LookingGlassUI";
@@ -909,6 +921,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		D53BB9A92AD70226000D2A84 /* Algorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D53BB9A82AD70226000D2A84 /* XCRemoteSwiftPackageReference "swift-algorithms" */;
+			productName = Algorithms;
+		};
 		D57153BF2ACC154B007A0768 /* LookingGlassUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D57153BE2ACC154B007A0768 /* XCRemoteSwiftPackageReference "LookingGlassUI" */;
