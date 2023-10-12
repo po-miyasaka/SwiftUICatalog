@@ -51,6 +51,10 @@ enum Knock79 {
         }
 
         func picker(_: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+            guard let result = results.first else  {
+                handler(nil)
+                return
+            }
             results.first?.itemProvider.loadObject(ofClass: UIImage.self, completionHandler: { [weak self] content, _ in
                 self?.handler(content as? UIImage)
             })

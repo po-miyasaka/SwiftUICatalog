@@ -94,14 +94,14 @@ enum AKnock11 {
                         Image(systemName: "photo").resizable().scaledToFit().frame(height: 25)
                     })
                     .sheet(isPresented: $shouldShowPHPView, content: {
-                        PHPView(delegate: Delegate(handler: { url in
+                        PHPView(handler: { url in
                             if let url {
                                 Task { @MainActor in
                                     viewModel.addMessage(url: url)
                                 }
                             }
                             self.shouldShowPHPView = false
-                        }))
+                        })
                         
                     })
                     
@@ -420,52 +420,67 @@ enum AKnock11 {
         }
     }
     
-    struct PHPView: UIViewControllerRepresentable, @unchecked Sendable {
+    struct PHPView: UIViewControllerRepresentable {
         
-        var delegate: Delegate? // coodinator使うのがよい。
-        func makeUIViewController(context _: Context) -> PHPickerViewController {
+        
+        var handler:  (URL?) -> Void
+        //        var delegate: Delegate? // coodinator使うのがよい。
+        func makeUIViewController(context : Context) -> PHPickerViewController {
             var configuration = PHPickerConfiguration.init(photoLibrary: .shared())
             configuration.filter = .images
             let vc = PHPickerViewController(configuration: configuration)
-            vc.delegate = delegate
+            vc.delegate = context.coordinator
             return vc
         }
         
         func updateUIViewController(_: PHPickerViewController, context _: Context) {}
         
         typealias UIViewControllerType = PHPickerViewController
-    }
-    
-    class Delegate: PHPickerViewControllerDelegate, @unchecked Sendable {
         
-        var handler:  (URL?) -> Void
-        init(handler: @escaping (URL?) -> Void) {
-            self.handler = handler
+        func makeCoordinator() -> Coordinator {
+            Coordinator(handler: handler)
         }
         
-        func picker(_: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-            results.first?.itemProvider.loadObject(ofClass: UIImage.self, completionHandler: { [weak self] content, _ in
-                
-                guard let data = (content as? UIImage)?.pngData() else {
-                    self?.handler(nil)
+        @MainActor
+        class Coordinator: NSObject, PHPickerViewControllerDelegate {
+            
+            var handler:  (URL?) -> Void
+            init(handler: @escaping (URL?) -> Void) {
+                self.handler = handler
+            }
+            
+            func picker(_: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+                guard let result = results.first else  {
+                    handler(nil)
                     return
                 }
-                let dir = FileManager.default.temporaryDirectory
-                let fileURL = dir.appendingPathComponent(UUID().uuidString + ".png")
-                do {
-                    try data.write(to: fileURL)
-                    self?.handler(fileURL)
-                } catch {
-                    print("Error saving image: \(error)")
-                    self?.handler(nil)
+                
+                result.itemProvider.loadObject(ofClass: UIImage.self, completionHandler: { [weak self] content, _ in
+                    
+                    guard let data = (content as? UIImage)?.pngData() else {
+                        self?.handler(nil)
+                        return
+                    }
+                    let dir = FileManager.default.temporaryDirectory
+                    let fileURL = dir.appendingPathComponent(UUID().uuidString + ".png")
+                    do {
+                        try data.write(to: fileURL)
+                        self?.handler(fileURL)
+                    } catch {
+                        print("Error saving image: \(error)")
+                        self?.handler(nil)
+                    }
+                    
+                    
                 }
-                
-                
+                )
             }
-            )
+            
         }
     }
+    
 }
+
 
 
 extension View {
